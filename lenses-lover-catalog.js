@@ -30,7 +30,7 @@ window.LL_CATALOG = {
   offer2: { qty:2, bundle:350, ar:'قطعتين بـ 350 ج.م', en:'2 for 350 EGP' }
 };
 window.LL_CATALOG.products.forEach(function(p){
-  p.img = 'images/products/' + p.id.replace('eqqual-berre-','') + '.webp';
+  p.img = 'https://cdn.lenseslover.com/products/' + p.id.replace(p.brand+'-','') + '.webp';
 });
 window.LL_CATALOG.byId = function(id){
   return window.LL_CATALOG.products.find(function(p){ return p.id===id; }) || null;
