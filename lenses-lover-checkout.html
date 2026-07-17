@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LENSES LOVER — من نحن / About</title>
+<title>LENSES LOVER — الدفع / Checkout</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -307,35 +307,57 @@
   .page-hero p.lead{ font-size:15.5px; color:var(--ivory-dim); max-width:560px; }
   @media (max-width:560px){ .page-hero h1{ font-size:32px; } }
 
-  /* ---------- about ---------- */
-  .about-intro{ display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:center; padding-block:30px 70px; }
-  @media (max-width:860px){ .about-intro{ grid-template-columns:1fr; } }
-  .about-intro h2{ font-size:30px; font-family:'Reem Kufi',sans-serif; margin-bottom:18px; line-height:1.35; }
-  body.lang-en .about-intro h2{ font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; }
-  .about-intro p{ color:var(--ivory-dim); font-size:15px; margin-bottom:16px; }
-  .about-visual{ display:flex; align-items:center; justify-content:center; }
-  .about-eye{ width:min(340px,80vw); filter:drop-shadow(0 30px 60px rgba(0,0,0,.45)); }
+  /* ---------- checkout ---------- */
+  .co-wrap{ display:grid; grid-template-columns:1fr 380px; gap:34px; padding-block:30px 90px; align-items:start; }
+  @media (max-width:900px){ .co-wrap{ grid-template-columns:1fr; } }
 
-  .values-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
-  @media (max-width:860px){ .values-grid{ grid-template-columns:1fr; } }
-  .value-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:30px 26px; transition:transform .3s ease, border-color .3s ease; }
-  .value-card:hover{ transform:translateY(-6px); border-color:var(--amber); }
-  .value-card .ic{ font-size:30px; margin-bottom:16px; }
-  .value-card h3{ font-size:18px; margin-bottom:10px; }
-  .value-card p{ font-size:14px; color:var(--ivory-dim); }
+  .co-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:26px; margin-bottom:22px; }
+  .co-card h3{ font-size:17px; margin-bottom:4px; display:flex; align-items:center; gap:10px; }
+  .co-card .step-n{ width:26px; height:26px; border-radius:50%; background:var(--amber); color:var(--ink); font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .co-card .hint{ font-size:12.5px; color:var(--ivory-dim); margin:2px 0 20px 36px; }
+  body.lang-en .co-card .hint{ margin:2px 36px 20px 0; }
 
-  .story-band{ background:var(--ink-2); border-block:1px solid var(--line); }
-  .timeline{ max-width:720px; margin:0 auto; }
-  .tl-item{ display:grid; grid-template-columns:auto 1fr; gap:20px; padding-bottom:32px; position:relative; }
-  .tl-item:last-child{ padding-bottom:0; }
-  .tl-dot{ width:44px; height:44px; border-radius:50%; background:var(--ink-3); border:1px solid var(--amber); color:var(--amber-light); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; flex-shrink:0; z-index:2; }
-  .tl-item:not(:last-child)::before{ content:""; position:absolute; inset-inline-start:22px; top:44px; bottom:0; width:1px; background:var(--line); }
-  body[dir="ltr"] .tl-item:not(:last-child)::before{ inset-inline-start:22px; }
-  .tl-body h3{ font-size:16px; margin-bottom:5px; }
-  .tl-body p{ font-size:13.5px; color:var(--ivory-dim); }
+  .field-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:560px){ .field-grid{ grid-template-columns:1fr; } }
+  .field{ display:flex; flex-direction:column; gap:7px; }
+  .field.full{ grid-column:1/-1; }
+  .field label{ font-size:13px; color:var(--ivory-dim); }
+  .field input, .field select{ background:var(--ink); border:1px solid var(--line); border-radius:12px; padding:12px 14px; color:var(--ivory); font-family:inherit; font-size:14px; }
+  .field input:focus, .field select:focus{ outline:2px solid var(--amber); outline-offset:1px; }
 
-  .about-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; padding-block:52px; }
-  @media (max-width:760px){ .about-stats{ grid-template-columns:repeat(2,1fr); } }
+  .pay-methods{ display:flex; flex-direction:column; gap:12px; }
+  .pay-opt{ display:flex; align-items:center; gap:14px; padding:15px 16px; border:1px solid var(--line); border-radius:14px; background:var(--ink); cursor:pointer; transition:border-color .2s ease, background .2s ease; }
+  .pay-opt:hover{ border-color:var(--amber-light); }
+  .pay-opt.active{ border-color:var(--amber); background:rgba(200,138,62,.08); }
+  .pay-opt .radio{ width:20px; height:20px; border-radius:50%; border:2px solid var(--ivory-dim); flex-shrink:0; position:relative; transition:border-color .2s ease; }
+  .pay-opt.active .radio{ border-color:var(--amber); }
+  .pay-opt.active .radio::after{ content:""; position:absolute; inset:3px; border-radius:50%; background:var(--amber); }
+  .pay-opt .ic{ font-size:22px; }
+  .pay-opt .txt b{ display:block; font-size:14.5px; color:var(--ivory); }
+  .pay-opt .txt span{ font-size:12px; color:var(--ivory-dim); }
+  .pay-opt .badge-tag{ margin-inline-start:auto; font-size:11px; font-weight:700; color:var(--jade-light); background:rgba(62,107,85,.18); padding:4px 10px; border-radius:999px; }
+  body.lang-en .pay-opt .badge-tag{ margin-inline-start:auto; }
+  .card-fields{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); display:none; }
+  .card-fields.show{ display:block; }
+  .cod-note{ margin-top:14px; font-size:12.5px; color:var(--amber-light); background:rgba(200,138,62,.08); border:1px solid rgba(200,138,62,.25); border-radius:12px; padding:12px 14px; display:none; }
+  .cod-note.show{ display:block; }
+
+  .co-summary{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:26px; position:sticky; top:96px; }
+  .co-summary h3{ font-size:17px; margin-bottom:18px; }
+  .co-line{ display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+  .co-line .th{ width:52px; height:52px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 50% 42%, var(--c1) 0%, var(--c1) 30%, var(--c2) 72%, var(--ring) 100%); }
+  .co-line .th .pupil{ width:14px; height:14px; border-radius:50%; background:#0b0906; }
+  .co-line .li-name{ flex:1; font-size:13.5px; }
+  .co-line .li-name small{ display:block; color:var(--ivory-dim); font-size:11.5px; }
+  .co-line .li-price{ font-size:13.5px; font-weight:700; }
+  .co-sum-row{ display:flex; justify-content:space-between; font-size:13.5px; color:var(--ivory-dim); margin-bottom:12px; padding-top:12px; }
+  .co-sum-row:first-of-type{ border-top:1px solid var(--line); margin-top:8px; }
+  .co-sum-row b{ color:var(--ivory); }
+  .co-total{ display:flex; justify-content:space-between; font-size:18px; font-weight:800; padding-top:16px; margin-top:4px; border-top:1px solid var(--line); }
+  .place-btn{ width:100%; margin-top:22px; padding:16px; border-radius:999px; background:var(--amber); color:var(--ink); font-size:15.5px; font-weight:800; box-shadow:0 10px 30px -10px rgba(200,138,62,.6); display:flex; align-items:center; justify-content:center; gap:8px; transition:transform .2s ease, background .2s ease; }
+  .place-btn:hover{ transform:translateY(-2px); background:var(--amber-light); }
+  .secure-row{ display:flex; align-items:center; justify-content:center; gap:6px; font-size:11.5px; color:var(--ivory-dim); margin-top:14px; }
 
 </style>
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
@@ -384,86 +406,85 @@
 
 <section class="page-hero">
   <div class="wrap">
-    <div class="crumbs"><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span class="sep">/</span><span><span class="ar">من نحن</span><span class="en">About</span></span></div>
-    <h1><span class="ar">من نحن</span><span class="en">About Us</span></h1>
-    <p class="lead"><span class="ar">قصة LENSES LOVER — عدسات آمنة، ألوان حقيقية، وثقة تبدأ من تفاصيل عينك.</span><span class="en">The LENSES LOVER story — safe lenses, real colors, and trust that starts with your eye.</span></p>
+    <div class="crumbs"><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span class="sep">/</span><a href="lenses-lover-cart.html"><span class="ar">السلة</span><span class="en">Cart</span></a><span class="sep">/</span><span><span class="ar">الدفع</span><span class="en">Checkout</span></span></div>
+    <h1><span class="ar">إتمام الطلب</span><span class="en">Checkout</span></h1>
   </div>
 </section>
 
-<div class="wrap about-intro">
-  <div>
-    <h2><span class="ar">وُلدنا من فكرة بسيطة: العدسة ماتكونش مجرد لون.</span><span class="en">Born from one simple idea: a lens is more than a color.</span></h2>
-    <p><span class="ar">لاحظنا إن أغلب متاجر العدسات في السوق العربي بتبيع اللون وبس، وبتنسى أهم حاجة — صحة عينك. فقررنا نبني مكان مختلف: كل منتج فيه تفاصيله الصحية كاملة (القطر، نسبة الترطيب، مدة الاستخدام)، وكل ريفيو حقيقي من عميلة حقيقية.</span>
-    <span class="en">We noticed most lens stores in the Arab market sell the color and forget the most important thing — your eye's health. So we built something different: every product shows full health details (diameter, water content, wear duration), and every review comes from a real customer.</span></p>
-    <p><span class="ar">اسمنا LENSES LOVER مش صدفة — إحنا فعلًا بنحب العيون، وبنعامل كل طلب كأنه لعينينا إحنا.</span>
-    <span class="en">Our name LENSES LOVER isn't an accident — we truly love eyes, and treat every order as if it were for our own.</span></p>
+<div class="wrap co-wrap">
+  <div class="co-main">
+    <!-- contact -->
+    <div class="co-card">
+      <h3><span class="step-n">1</span><span class="ar">معلومات التواصل</span><span class="en">Contact Info</span></h3>
+      <p class="hint"><span class="ar">هنأكد طلبك على الواتساب — تأكدي من الرقم.</span><span class="en">We confirm your order via WhatsApp — double-check the number.</span></p>
+      <div class="field-grid">
+        <div class="field"><label><span class="ar">الاسم الأول</span><span class="en">First Name</span></label><input type="text"></div>
+        <div class="field"><label><span class="ar">الاسم الأخير</span><span class="en">Last Name</span></label><input type="text"></div>
+        <div class="field full"><label><span class="ar">رقم الواتساب</span><span class="en">WhatsApp Number</span></label><input type="tel" placeholder="+20 1XX XXX XXXX"></div>
+        <div class="field full"><label><span class="ar">البريد الإلكتروني (اختياري)</span><span class="en">Email (optional)</span></label><input type="email"></div>
+      </div>
+    </div>
+
+    <!-- shipping -->
+    <div class="co-card">
+      <h3><span class="step-n">2</span><span class="ar">عنوان الشحن</span><span class="en">Shipping Address</span></h3>
+      <p class="hint"><span class="ar">تتغير بوابة الدفع والعملة تلقائيًا حسب دولتك.</span><span class="en">Payment gateway & currency adjust automatically to your country.</span></p>
+      <div class="field-grid">
+        <div class="field full"><label><span class="ar">الدولة</span><span class="en">Country</span></label>
+          <select id="country" onchange="updateCountry()">
+            <option value="eg" data-cur="EGP" data-gw="Paymob">🇪🇬 مصر / Egypt</option>
+            <option value="sa" data-cur="SAR" data-gw="HyperPay">🇸🇦 السعودية / Saudi Arabia</option>
+            <option value="ae" data-cur="AED" data-gw="Tap">🇦🇪 الإمارات / UAE</option>
+            <option value="kw" data-cur="KWD" data-gw="Tap (KNET)">🇰🇼 الكويت / Kuwait</option>
+          </select>
+        </div>
+        <div class="field"><label><span class="ar">المحافظة / المدينة</span><span class="en">City / Governorate</span></label><input type="text"></div>
+        <div class="field"><label><span class="ar">المنطقة</span><span class="en">Area</span></label><input type="text"></div>
+        <div class="field full"><label><span class="ar">العنوان بالتفصيل</span><span class="en">Full Address</span></label><input type="text"></div>
+      </div>
+    </div>
+
+    <!-- payment -->
+    <div class="co-card">
+      <h3><span class="step-n">3</span><span class="ar">طريقة الدفع</span><span class="en">Payment Method</span></h3>
+      <p class="hint">
+        <span class="ar">البوابة المستخدمة لدولتك: <b id="gw-name" style="color:var(--amber-light)">Paymob</b> — العملة: <b id="cur-name" style="color:var(--amber-light)">EGP</b></span>
+        <span class="en">Gateway for your country: <b id="gw-name-en" style="color:var(--amber-light)">Paymob</b> — Currency: <b id="cur-name-en" style="color:var(--amber-light)">EGP</b></span>
+      </p>
+      <div class="pay-methods" id="pay-methods"></div>
+
+      <div class="card-fields" id="card-fields">
+        <div class="field-grid">
+          <div class="field full"><label><span class="ar">رقم البطاقة</span><span class="en">Card Number</span></label><input type="text" placeholder="0000 0000 0000 0000"></div>
+          <div class="field"><label><span class="ar">تاريخ الانتهاء</span><span class="en">Expiry</span></label><input type="text" placeholder="MM/YY"></div>
+          <div class="field"><label>CVV</label><input type="text" placeholder="123"></div>
+        </div>
+      </div>
+      <div class="cod-note" id="cod-note">
+        <span class="ar">💡 وفّري 5%! ادفعي إلكترونيًا الآن بدل الدفع عند الاستلام واحصلي على خصم فوري.</span>
+        <span class="en">💡 Save 5%! Pay online now instead of cash on delivery and get an instant discount.</span>
+      </div>
+    </div>
   </div>
-  <div class="about-visual">
-    <svg class="about-eye" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="aboutIris" cx="50%" cy="45%" r="60%">
-          <stop offset="0%" stop-color="#e3b368"/>
-          <stop offset="100%" stop-color="#8c5a24"/>
-        </radialGradient>
-      </defs>
-      <ellipse cx="200" cy="130" rx="150" ry="82" fill="#f4ecdf"/>
-      <circle cx="200" cy="130" r="74" fill="url(#aboutIris)"/>
-      <circle cx="200" cy="130" r="74" fill="none" stroke="#5c3a18" stroke-opacity=".4" stroke-width="6"/>
-      <circle cx="200" cy="130" r="30" fill="#0b0906"/>
-      <circle cx="188" cy="118" r="10" fill="rgba(255,255,255,.85)"/>
-      <path d="M50 130 Q200 40 350 130" fill="none" stroke="#15120e" stroke-width="7" stroke-linecap="round"/>
-      <path d="M50 130 Q200 220 350 130" fill="none" stroke="#15120e" stroke-width="5" stroke-linecap="round"/>
-    </svg>
-  </div>
+
+  <!-- order summary -->
+  <aside class="co-summary">
+    <h3><span class="ar">طلبك</span><span class="en">Your Order</span></h3>
+    <div id="co-lines"></div>
+    <div class="co-sum-row"><span class="ar">المجموع الفرعي</span><span class="en">Subtotal</span><b id="co-sub">0</b></div>
+    <div class="co-sum-row"><span class="ar">الشحن</span><span class="en">Shipping</span><b id="co-ship">0</b></div>
+    <div class="co-sum-row" id="co-disc-row" style="display:none;"><span class="ar">خصم الدفع المسبق (5%)</span><span class="en">Prepay discount (5%)</span><b style="color:var(--jade-light)" id="co-disc">0</b></div>
+    <div class="co-total"><span class="ar">الإجمالي</span><span class="en">Total</span><span id="co-total">0</span></div>
+    <button class="place-btn" onclick="placeOrder()">
+      <span class="ar">تأكيد الطلب</span><span class="en">Place Order</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <div class="secure-row">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+      <span class="ar">دفع آمن 100% · PCI-DSS · SSL مشفّر</span><span class="en">100% secure · PCI-DSS · SSL encrypted</span>
+    </div>
+  </aside>
 </div>
-
-<section class="pad">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><span class="tag"><span class="ar">قيمنا</span><span class="en">Our Values</span></span>
-      <h2><span class="ar">إيه اللي بيميّزنا</span><span class="en">What Sets Us Apart</span></h2></div>
-    </div>
-    <div class="values-grid reveal">
-      <div class="value-card"><div class="ic">🛡️</div><h3><span class="ar">الأمان أولًا</span><span class="en">Safety First</span></h3><p><span class="ar">تفاصيل صحية إلزامية في كل منتج، ومحتوى تعليمي عن الاستخدام الصحيح للعدسات.</span><span class="en">Mandatory health details on every product, plus educational content on proper lens care.</span></p></div>
-      <div class="value-card"><div class="ic">💬</div><h3><span class="ar">لغة عربية سليمة</span><span class="en">Real Arabic Experience</span></h3><p><span class="ar">تجربة تسوق عربية 100% بدعم RTL كامل — مش مجرد ترجمة عشوائية.</span><span class="en">A true 100% Arabic experience with full RTL support — not random translation.</span></p></div>
-      <div class="value-card"><div class="ic">⭐</div><h3><span class="ar">ريفيوز حقيقية</span><span class="en">Genuine Reviews</span></h3><p><span class="ar">كل تقييم من عميلة اشترت فعلًا، مع صور حقيقية للألوان على عيون مختلفة.</span><span class="en">Every review from a real buyer, with real photos of colors on different eyes.</span></p></div>
-    </div>
-  </div>
-</section>
-
-<section class="pad story-band">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><span class="tag"><span class="ar">رحلتنا</span><span class="en">Our Journey</span></span>
-      <h2><span class="ar">كيف بدأنا</span><span class="en">How It Started</span></h2></div>
-    </div>
-    <div class="timeline reveal">
-      <div class="tl-item"><div class="tl-dot">01</div><div class="tl-body"><h3><span class="ar">الفكرة</span><span class="en">The Idea</span></h3><p><span class="ar">بدأنا من ملاحظة فجوة حقيقية في سوق العدسات العربي — نقص الثقة والمحتوى الصحي.</span><span class="en">We started from a real gap in the Arab lens market — a lack of trust and health content.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">02</div><div class="tl-body"><h3><span class="ar">اختيار المصادر</span><span class="en">Sourcing</span></h3><p><span class="ar">اخترنا ماركات موثوقة بشهادات جودة، واختبرنا كل لون بنفسنا قبل ما نعرضه.</span><span class="en">We chose certified, trusted brands and tested every color ourselves before listing.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">03</div><div class="tl-body"><h3><span class="ar">بناء المتجر</span><span class="en">Building the Store</span></h3><p><span class="ar">صممنا تجربة سريعة، ثنائية اللغة، وسهلة الدفع تناسب كل دولة عربية.</span><span class="en">We built a fast, bilingual experience with easy payment for every Arab country.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">04</div><div class="tl-body"><h3><span class="ar">وأنتِ هنا</span><span class="en">And You're Here</span></h3><p><span class="ar">النهاردة بنخدم آلاف العميلات في مصر والخليج — وبنكبر معاكم.</span><span class="en">Today we serve thousands of customers across Egypt & the Gulf — and we grow with you.</span></p></div></div>
-    </div>
-  </div>
-</section>
-
-<div class="stats-band">
-  <div class="wrap">
-    <div class="about-stats reveal">
-      <div class="stat"><b>12K+</b><span><span class="ar">عميلة سعيدة</span><span class="en">Happy customers</span></span></div>
-      <div class="stat"><b>4.8★</b><span><span class="ar">متوسط التقييم</span><span class="en">Avg. rating</span></span></div>
-      <div class="stat"><b>50+</b><span><span class="ar">لون وتصميم</span><span class="en">Colors & styles</span></span></div>
-      <div class="stat"><b>4</b><span><span class="ar">دول نخدمها</span><span class="en">Countries served</span></span></div>
-    </div>
-  </div>
-</div>
-
-<section class="pad">
-  <div class="wrap" style="text-align:center;">
-    <h2 style="font-size:26px; font-family:'Reem Kufi',sans-serif; margin-bottom:14px;"><span class="ar">جاهزة تلاقي لونك؟</span><span class="en">Ready to find your color?</span></h2>
-    <p style="color:var(--ivory-dim); margin-bottom:26px;"><span class="ar">تصفّحي مجموعتنا الكاملة واطلبي بثقة.</span><span class="en">Browse the full collection and order with confidence.</span></p>
-    <a href="lenses-lover-shop.html" class="btn btn-primary"><span class="ar">تسوقي الآن</span><span class="en">Shop Now</span></a>
-  </div>
-</section>
 
 
 <footer>
@@ -524,6 +545,202 @@
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); } });
   }, { threshold:0.12 });
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // real cart — shared with cart page & enhance.js (localStorage 'll_cart')
+  function llLoadCart(){
+    try{
+      var v=localStorage.getItem('ll_cart');
+      if(v===null){ v=sessionStorage.getItem('ll_cart'); if(v!==null){ localStorage.setItem('ll_cart', v); sessionStorage.removeItem('ll_cart'); } }
+      return JSON.parse(v||'[]');
+    }catch(e){ return []; }
+  }
+  const items=llLoadCart();
+  if(items.length===0){ location.replace('lenses-lover-cart.html'); }
+  const SHIP=60, FREE=800;
+
+  // payment methods per country (from plan ch.6)
+  const METHODS = {
+    eg:[
+      {id:'cod', icon:'💵', ar:'الدفع عند الاستلام', en:'Cash on Delivery', ar_s:'ادفعي كاش عند وصول الطلب', en_s:'Pay cash when it arrives', tag_ar:'الأشهر', tag_en:'Popular'},
+      {id:'card', icon:'💳', ar:'بطاقة فيزا / ماستركارد', en:'Visa / Mastercard', ar_s:'عبر Paymob الآمنة', en_s:'via secure Paymob'},
+      {id:'vcash', icon:'📱', ar:'فودافون كاش / فوري', en:'Vodafone Cash / Fawry', ar_s:'محافظ إلكترونية محلية', en_s:'Local e-wallets'},
+    ],
+    sa:[
+      {id:'mada', icon:'💳', ar:'مدى (Mada)', en:'Mada', ar_s:'البطاقة المحلية السعودية', en_s:'Saudi local card', tag_ar:'إلزامي', tag_en:'Required'},
+      {id:'applepay', icon:'', ar:'Apple Pay', en:'Apple Pay', ar_s:'دفع سريع بلمسة', en_s:'One-touch pay'},
+      {id:'card', icon:'💳', ar:'فيزا / ماستركارد', en:'Visa / Mastercard', ar_s:'عبر HyperPay', en_s:'via HyperPay'},
+      {id:'stcpay', icon:'📱', ar:'STC Pay', en:'STC Pay', ar_s:'محفظة إلكترونية', en_s:'E-wallet'},
+      {id:'cod', icon:'💵', ar:'الدفع عند الاستلام', en:'Cash on Delivery', ar_s:'متاح داخل المدن', en_s:'Available in cities'},
+    ],
+    ae:[
+      {id:'applepay', icon:'', ar:'Apple Pay', en:'Apple Pay', ar_s:'دفع سريع بلمسة', en_s:'One-touch pay', tag_ar:'مفضّل', tag_en:'Preferred'},
+      {id:'card', icon:'💳', ar:'فيزا / ماستركارد', en:'Visa / Mastercard', ar_s:'عبر Tap Payments', en_s:'via Tap Payments'},
+      {id:'cod', icon:'💵', ar:'الدفع عند الاستلام', en:'Cash on Delivery', ar_s:'داخل الإمارات', en_s:'Within UAE'},
+    ],
+    kw:[
+      {id:'knet', icon:'💳', ar:'KNET', en:'KNET', ar_s:'البطاقة المحلية الكويتية', en_s:'Kuwait local card', tag_ar:'إلزامي', tag_en:'Required'},
+      {id:'applepay', icon:'', ar:'Apple Pay', en:'Apple Pay', ar_s:'دفع سريع بلمسة', en_s:'One-touch pay'},
+      {id:'card', icon:'💳', ar:'فيزا / ماستركارد', en:'Visa / Mastercard', ar_s:'عبر Tap Payments', en_s:'via Tap Payments'},
+      {id:'cod', icon:'💵', ar:'الدفع عند الاستلام', en:'Cash on Delivery', ar_s:'حسب المنطقة', en_s:'By area'},
+    ],
+  };
+
+  let selected=null, currency='EGP';
+
+  function isAr(){ return document.body.classList.contains('lang-ar'); }
+  function money(n){ return n.toLocaleString('en-US')+' '+currency; }
+
+  function renderMethods(cc){
+    const box=document.getElementById('pay-methods'); box.innerHTML='';
+    selected=null;
+    METHODS[cc].forEach((m,i)=>{
+      const el=document.createElement('div'); el.className='pay-opt'; el.dataset.id=m.id;
+      const tag=(m.tag_ar)?`<span class="badge-tag"><span class="ar">${m.tag_ar}</span><span class="en">${m.tag_en}</span></span>`:'';
+      const iconHtml = m.id==='applepay' ? '<span class="ic"></span>' : `<span class="ic">${m.icon}</span>`;
+      el.innerHTML=`<span class="radio"></span>${iconHtml}
+        <span class="txt"><b><span class="ar">${m.ar}</span><span class="en">${m.en}</span></b>
+        <span><span class="ar">${m.ar_s}</span><span class="en">${m.en_s}</span></span></span>${tag}`;
+      el.onclick=()=>selectMethod(el,m);
+      box.appendChild(el);
+      if(i===0){ selectMethod(el,m); }
+    });
+  }
+
+  function selectMethod(el,m){
+    document.querySelectorAll('.pay-opt').forEach(o=>o.classList.remove('active'));
+    el.classList.add('active'); selected=m.id;
+    document.getElementById('card-fields').classList.toggle('show', ['card','mada','knet'].includes(m.id));
+    document.getElementById('cod-note').classList.toggle('show', m.id==='cod');
+    totals();
+  }
+
+  window.updateCountry=function(){
+    const sel=document.getElementById('country');
+    const opt=sel.options[sel.selectedIndex];
+    currency=opt.dataset.cur; const gw=opt.dataset.gw;
+    document.getElementById('gw-name').textContent=gw;
+    document.getElementById('gw-name-en').textContent=gw;
+    document.getElementById('cur-name').textContent=currency;
+    document.getElementById('cur-name-en').textContent=currency;
+    renderMethods(sel.value);
+  };
+
+  function drawLines(){
+    const box=document.getElementById('co-lines'); box.innerHTML='';
+    items.forEach(it=>{
+      const l=document.createElement('div'); l.className='co-line';
+      l.innerHTML=`${it.img
+        ? `<div class="th" style="background:none;overflow:hidden;"><img src="${it.img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></div>`
+        : `<div class="th" style="--c1:${it.c1}; --c2:${it.c2}; --ring:${it.ring}"><div class="pupil"></div></div>`}
+        <div class="li-name">${isAr()?it.ar:it.en}<small>× ${it.qty} · <span class="ar">${it.ar_m}</span><span class="en">${it.en_m}</span></small></div>
+        <div class="li-price">${money(it.price*it.qty)}</div>`;
+      box.appendChild(l);
+    });
+  }
+
+  function totals(){
+    const offD=(window.LL_CATALOG&&window.LL_CATALOG.offerDiscount)?window.LL_CATALOG.offerDiscount(items):0;
+    const sub=items.reduce((s,i)=>s+i.price*i.qty,0)-offD;
+    const ship=sub>=FREE?0:SHIP;
+    const prepay=(selected && selected!=='cod');
+    const disc=prepay?Math.round(sub*0.05):0;
+    document.getElementById('co-sub').textContent=money(sub);
+    document.getElementById('co-ship').textContent=ship===0?(isAr()?'مجاني':'Free'):money(ship);
+    document.getElementById('co-disc-row').style.display=disc>0?'flex':'none';
+    document.getElementById('co-disc').textContent='-'+money(disc);
+    document.getElementById('co-total').textContent=money(sub+ship-disc);
+    document.getElementById('cart-count').textContent=items.reduce((s,i)=>s+i.qty,0);
+    drawLines();
+  }
+
+  // country display + delivery ETA (days) per market
+  const COUNTRY_META={
+    eg:{ar:'مصر',en:'Egypt',eta:[2,4]},
+    sa:{ar:'السعودية',en:'Saudi Arabia',eta:[3,6]},
+    ae:{ar:'الإمارات',en:'UAE',eta:[3,6]},
+    kw:{ar:'الكويت',en:'Kuwait',eta:[3,6]},
+  };
+
+  window.placeOrder=function(){
+    const sel=document.getElementById('country');
+    const cc=sel.value;
+    const meta=COUNTRY_META[cc]||COUNTRY_META.eg;
+
+    // find selected method labels
+    const m=(METHODS[cc]||[]).find(x=>x.id===selected) || (METHODS[cc]||[])[0];
+    const prepaid=(selected && selected!=='cod');
+
+    // recompute totals
+    const offD=(window.LL_CATALOG&&window.LL_CATALOG.offerDiscount)?window.LL_CATALOG.offerDiscount(items):0;
+    const sub=items.reduce((s,i)=>s+i.price*i.qty,0)-offD;
+    const ship=sub>=FREE?0:SHIP;
+    const disc=prepaid?Math.round(sub*0.05):0;
+    const total=sub+ship-disc;
+
+    // build address from the shipping form (best-effort from filled inputs)
+    const inputs=document.querySelectorAll('.co-card input');
+    const vals=[...inputs].map(i=>i.value.trim());
+    // fields order: first,last,whatsapp,email, [country=select], city,area,fulladdr
+    const city=vals[4]||'', area=vals[5]||'', full=vals[6]||'';
+    const name=[vals[0],vals[1]].filter(Boolean).join(' ');
+    const addrParts=[full,area,city].filter(Boolean);
+    const addrLine=addrParts.join('، ');
+    const addr_ar= (name?name+'<br>':'') + (addrLine? addrLine+'<br>':'') + meta.ar;
+    const addr_en= (name?name+'<br>':'') + (addrLine? addrLine+'<br>':'') + meta.en;
+
+    const order={
+      no:'LL-'+Math.floor(100000+Math.random()*900000),
+      currency:currency,
+      country_ar:meta.ar, country_en:meta.en,
+      method_ar:m?m.ar:'', method_en:m?m.en:'', prepaid:prepaid,
+      address_ar: (addrLine||name)? addr_ar : '',
+      address_en: (addrLine||name)? addr_en : '',
+      sub:sub, ship:ship, disc:disc, total:total,
+      eta_min:meta.eta[0], eta_max:meta.eta[1],
+      items:items.map(i=>({ar:i.ar,en:i.en,c1:i.c1,c2:i.c2,ring:i.ring,ar_m:i.ar_m,en_m:i.en_m,price:i.price,qty:i.qty}))
+    };
+
+    try{ sessionStorage.setItem('ll_last_order', JSON.stringify(order)); }catch(e){}
+
+    // ---- send order to store via WhatsApp (formatted message) ----
+    const WA_STORE='201011423093';
+    const cur=currency||'EGP';
+    const lines=items.map(i=>'• '+i.ar+' ('+(i.ar_m||'')+') × '+i.qty+' = '+(i.price*i.qty)+' '+cur);
+    const waTxt=[
+      '🛍️ طلب جديد — LENSES LOVER',
+      'رقم الطلب: '+order.no,
+      '',
+      'المنتجات:',
+      lines.join('\n'),
+      '',
+      (offD>0?('عرض قطعتين بـ 350: خصم -'+offD+' '+cur):''),
+      'الإجمالي الفرعي: '+sub+' '+cur,
+      'الشحن: '+(ship===0?'مجاني':ship+' '+cur),
+      (disc>0?('خصم الدفع المسبق: -'+disc+' '+cur):''),
+      'الإجمالي: '+total+' '+cur,
+      '',
+      'طريقة الدفع: '+(m?m.ar:''),
+      'الدولة: '+meta.ar,
+      (name?('الاسم: '+name):''),
+      (vals[2]?('واتساب العميل: '+vals[2]):''),
+      (addrLine?('العنوان: '+addrLine):'')
+    ].filter(Boolean).join('\n');
+    window.open('https://wa.me/'+WA_STORE+'?text='+encodeURIComponent(waTxt), '_blank');
+
+    // clear the cart — the order has been placed
+    try{ localStorage.removeItem('ll_cart'); sessionStorage.removeItem('ll_cart'); }catch(e){}
+
+    const btn=document.querySelector('.place-btn');
+    btn.innerHTML = isAr() ? '✓ جاري تحويلك...' : '✓ Redirecting...';
+    btn.style.background='var(--jade)'; btn.style.color='var(--ivory)';
+    setTimeout(()=>{ location.href='lenses-lover-order-confirmation.html'; }, 500);
+  };
+
+  // re-render language-sensitive bits on toggle
+  const _setLang=setLang;
+  setLang=function(l){ _setLang(l); totals(); };
+
+  updateCountry();
 
 </script>
 

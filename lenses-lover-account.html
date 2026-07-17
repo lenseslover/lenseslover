@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LENSES LOVER — من نحن / About</title>
+<title>LENSES LOVER — حسابي / Account</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -307,35 +307,59 @@
   .page-hero p.lead{ font-size:15.5px; color:var(--ivory-dim); max-width:560px; }
   @media (max-width:560px){ .page-hero h1{ font-size:32px; } }
 
-  /* ---------- about ---------- */
-  .about-intro{ display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:center; padding-block:30px 70px; }
-  @media (max-width:860px){ .about-intro{ grid-template-columns:1fr; } }
-  .about-intro h2{ font-size:30px; font-family:'Reem Kufi',sans-serif; margin-bottom:18px; line-height:1.35; }
-  body.lang-en .about-intro h2{ font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; }
-  .about-intro p{ color:var(--ivory-dim); font-size:15px; margin-bottom:16px; }
-  .about-visual{ display:flex; align-items:center; justify-content:center; }
-  .about-eye{ width:min(340px,80vw); filter:drop-shadow(0 30px 60px rgba(0,0,0,.45)); }
+  /* ---------- account: auth ---------- */
+  .auth-wrap{ max-width:440px; margin:0 auto; padding-block:20px 90px; }
+  .auth-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:34px 30px; }
+  .auth-tabs{ display:flex; background:var(--ink); border:1px solid var(--line); border-radius:999px; padding:5px; margin-bottom:26px; }
+  .auth-tabs button{ flex:1; padding:11px; border-radius:999px; background:transparent; color:var(--ivory-dim); font-size:14px; font-weight:700; transition:all .2s ease; }
+  .auth-tabs button.active{ background:var(--amber); color:var(--ink); }
+  .field{ display:flex; flex-direction:column; gap:7px; margin-bottom:16px; }
+  .field label{ font-size:13px; color:var(--ivory-dim); }
+  .field input{ background:var(--ink); border:1px solid var(--line); border-radius:12px; padding:12px 14px; color:var(--ivory); font-family:inherit; font-size:14px; }
+  .field input:focus{ outline:2px solid var(--amber); outline-offset:1px; }
+  .auth-submit{ width:100%; padding:14px; border-radius:999px; background:var(--amber); color:var(--ink); font-size:15px; font-weight:800; box-shadow:0 10px 30px -10px rgba(200,138,62,.6); margin-top:6px; transition:transform .2s ease, background .2s ease; }
+  .auth-submit:hover{ transform:translateY(-2px); background:var(--amber-light); }
+  .oauth-divider{ display:flex; align-items:center; gap:14px; margin:22px 0; color:var(--ivory-dim); font-size:12.5px; }
+  .oauth-divider::before, .oauth-divider::after{ content:""; flex:1; height:1px; background:var(--line); }
+  .google-btn{ width:100%; padding:13px; border-radius:12px; background:var(--ink); border:1px solid var(--line); color:var(--ivory); font-size:14px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:10px; transition:border-color .2s ease; }
+  .google-btn:hover{ border-color:var(--ivory-dim); }
+  .auth-hint{ text-align:center; font-size:12.5px; color:var(--ivory-dim); margin-top:18px; }
 
-  .values-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
-  @media (max-width:860px){ .values-grid{ grid-template-columns:1fr; } }
-  .value-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:30px 26px; transition:transform .3s ease, border-color .3s ease; }
-  .value-card:hover{ transform:translateY(-6px); border-color:var(--amber); }
-  .value-card .ic{ font-size:30px; margin-bottom:16px; }
-  .value-card h3{ font-size:18px; margin-bottom:10px; }
-  .value-card p{ font-size:14px; color:var(--ivory-dim); }
+  /* ---------- account: dashboard ---------- */
+  .dash-wrap{ display:grid; grid-template-columns:240px 1fr; gap:30px; padding-block:20px 90px; align-items:start; }
+  @media (max-width:820px){ .dash-wrap{ grid-template-columns:1fr; } }
+  .dash-side{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:22px; position:sticky; top:96px; }
+  @media (max-width:820px){ .dash-side{ position:static; } }
+  .dash-user{ display:flex; align-items:center; gap:12px; padding-bottom:18px; margin-bottom:14px; border-bottom:1px solid var(--line); }
+  .dash-avatar{ width:44px; height:44px; border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--amber-light), var(--amber)); color:var(--ink); font-weight:800; font-size:17px; display:flex; align-items:center; justify-content:center; }
+  .dash-user b{ font-size:14px; display:block; }
+  .dash-user span{ font-size:12px; color:var(--ivory-dim); }
+  .dash-nav button{ width:100%; text-align:start; padding:12px 14px; border-radius:12px; background:transparent; color:var(--ivory-dim); font-size:14px; font-weight:600; display:flex; align-items:center; gap:10px; margin-bottom:4px; transition:all .2s ease; }
+  .dash-nav button:hover{ background:var(--ink-3); color:var(--ivory); }
+  .dash-nav button.active{ background:var(--amber); color:var(--ink); }
+  .dash-nav button.logout{ color:var(--rose); }
 
-  .story-band{ background:var(--ink-2); border-block:1px solid var(--line); }
-  .timeline{ max-width:720px; margin:0 auto; }
-  .tl-item{ display:grid; grid-template-columns:auto 1fr; gap:20px; padding-bottom:32px; position:relative; }
-  .tl-item:last-child{ padding-bottom:0; }
-  .tl-dot{ width:44px; height:44px; border-radius:50%; background:var(--ink-3); border:1px solid var(--amber); color:var(--amber-light); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; flex-shrink:0; z-index:2; }
-  .tl-item:not(:last-child)::before{ content:""; position:absolute; inset-inline-start:22px; top:44px; bottom:0; width:1px; background:var(--line); }
-  body[dir="ltr"] .tl-item:not(:last-child)::before{ inset-inline-start:22px; }
-  .tl-body h3{ font-size:16px; margin-bottom:5px; }
-  .tl-body p{ font-size:13.5px; color:var(--ivory-dim); }
+  .dash-panel{ display:none; }
+  .dash-panel.active{ display:block; }
+  .panel-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:26px; margin-bottom:18px; }
+  .panel-card h3{ font-size:17px; margin-bottom:18px; }
 
-  .about-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; padding-block:52px; }
-  @media (max-width:760px){ .about-stats{ grid-template-columns:repeat(2,1fr); } }
+  .order-item{ display:flex; align-items:center; gap:16px; padding:16px 0; border-bottom:1px solid var(--line); }
+  .order-item:last-child{ border-bottom:none; }
+  .order-thumb{ width:52px; height:52px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 50% 42%, var(--c1) 0%, var(--c2) 72%, var(--ring) 100%); }
+  .order-thumb .pupil{ width:16px; height:16px; border-radius:50%; background:#0b0906; }
+  .order-info{ flex:1; }
+  .order-info b{ font-size:14px; }
+  .order-info span{ display:block; font-size:12px; color:var(--ivory-dim); }
+  .order-status{ font-size:11.5px; font-weight:700; padding:5px 12px; border-radius:999px; }
+  .st-delivered{ color:var(--jade-light); background:rgba(62,107,85,.18); }
+  .st-transit{ color:var(--amber-light); background:rgba(200,138,62,.14); }
+  .order-total{ font-size:14px; font-weight:800; min-width:90px; text-align:end; }
+
+  .points-card{ background:linear-gradient(135deg, var(--ink-3), var(--ink-2)); border:1px solid rgba(200,138,62,.3); border-radius:var(--radius); padding:26px; text-align:center; margin-bottom:18px; }
+  .points-card b{ font-size:40px; color:var(--amber-light); font-family:'Reem Kufi',sans-serif; display:block; }
+  .points-card p{ font-size:13px; color:var(--ivory-dim); }
 
 </style>
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
@@ -384,86 +408,91 @@
 
 <section class="page-hero">
   <div class="wrap">
-    <div class="crumbs"><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span class="sep">/</span><span><span class="ar">من نحن</span><span class="en">About</span></span></div>
-    <h1><span class="ar">من نحن</span><span class="en">About Us</span></h1>
-    <p class="lead"><span class="ar">قصة LENSES LOVER — عدسات آمنة، ألوان حقيقية، وثقة تبدأ من تفاصيل عينك.</span><span class="en">The LENSES LOVER story — safe lenses, real colors, and trust that starts with your eye.</span></p>
+    <div class="crumbs"><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span class="sep">/</span><span><span class="ar">حسابي</span><span class="en">My Account</span></span></div>
+    <h1 id="page-title"><span class="ar">حسابي</span><span class="en">My Account</span></h1>
   </div>
 </section>
 
-<div class="wrap about-intro">
-  <div>
-    <h2><span class="ar">وُلدنا من فكرة بسيطة: العدسة ماتكونش مجرد لون.</span><span class="en">Born from one simple idea: a lens is more than a color.</span></h2>
-    <p><span class="ar">لاحظنا إن أغلب متاجر العدسات في السوق العربي بتبيع اللون وبس، وبتنسى أهم حاجة — صحة عينك. فقررنا نبني مكان مختلف: كل منتج فيه تفاصيله الصحية كاملة (القطر، نسبة الترطيب، مدة الاستخدام)، وكل ريفيو حقيقي من عميلة حقيقية.</span>
-    <span class="en">We noticed most lens stores in the Arab market sell the color and forget the most important thing — your eye's health. So we built something different: every product shows full health details (diameter, water content, wear duration), and every review comes from a real customer.</span></p>
-    <p><span class="ar">اسمنا LENSES LOVER مش صدفة — إحنا فعلًا بنحب العيون، وبنعامل كل طلب كأنه لعينينا إحنا.</span>
-    <span class="en">Our name LENSES LOVER isn't an accident — we truly love eyes, and treat every order as if it were for our own.</span></p>
-  </div>
-  <div class="about-visual">
-    <svg class="about-eye" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="aboutIris" cx="50%" cy="45%" r="60%">
-          <stop offset="0%" stop-color="#e3b368"/>
-          <stop offset="100%" stop-color="#8c5a24"/>
-        </radialGradient>
-      </defs>
-      <ellipse cx="200" cy="130" rx="150" ry="82" fill="#f4ecdf"/>
-      <circle cx="200" cy="130" r="74" fill="url(#aboutIris)"/>
-      <circle cx="200" cy="130" r="74" fill="none" stroke="#5c3a18" stroke-opacity=".4" stroke-width="6"/>
-      <circle cx="200" cy="130" r="30" fill="#0b0906"/>
-      <circle cx="188" cy="118" r="10" fill="rgba(255,255,255,.85)"/>
-      <path d="M50 130 Q200 40 350 130" fill="none" stroke="#15120e" stroke-width="7" stroke-linecap="round"/>
-      <path d="M50 130 Q200 220 350 130" fill="none" stroke="#15120e" stroke-width="5" stroke-linecap="round"/>
-    </svg>
+<!-- ===== AUTH GUARD (redirects to standalone login) ===== -->
+<div class="wrap auth-wrap" id="auth-view" style="display:none;">
+  <div class="auth-card" style="text-align:center;">
+    <div style="width:56px; height:56px; border-radius:16px; margin:0 auto 16px; background:var(--ink-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:26px;">🔒</div>
+    <h2 style="font-size:20px; margin-bottom:10px; font-family:'Reem Kufi',sans-serif;"><span class="ar">محتاجة تسجّلي دخولك</span><span class="en">Please sign in</span></h2>
+    <p style="font-size:13.5px; color:var(--ivory-dim); margin-bottom:22px;"><span class="ar">لازم تكوني مسجّلة دخول عشان تشوفي حسابك.</span><span class="en">You need to be signed in to view your account.</span></p>
+    <a href="lenses-lover-login.html" class="auth-submit" style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none; padding-inline:34px;"><span class="ar">تسجيل الدخول</span><span class="en">Sign In</span></a>
   </div>
 </div>
 
-<section class="pad">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><span class="tag"><span class="ar">قيمنا</span><span class="en">Our Values</span></span>
-      <h2><span class="ar">إيه اللي بيميّزنا</span><span class="en">What Sets Us Apart</span></h2></div>
+<!-- ===== DASHBOARD VIEW ===== -->
+<div class="wrap dash-wrap" id="dash-view" style="display:none;">
+  <aside class="dash-side">
+    <div class="dash-user">
+      <div class="dash-avatar">م</div>
+      <div><b><span class="ar">مريم أحمد</span><span class="en">Mariam Ahmed</span></b><span>mariam@email.com</span></div>
     </div>
-    <div class="values-grid reveal">
-      <div class="value-card"><div class="ic">🛡️</div><h3><span class="ar">الأمان أولًا</span><span class="en">Safety First</span></h3><p><span class="ar">تفاصيل صحية إلزامية في كل منتج، ومحتوى تعليمي عن الاستخدام الصحيح للعدسات.</span><span class="en">Mandatory health details on every product, plus educational content on proper lens care.</span></p></div>
-      <div class="value-card"><div class="ic">💬</div><h3><span class="ar">لغة عربية سليمة</span><span class="en">Real Arabic Experience</span></h3><p><span class="ar">تجربة تسوق عربية 100% بدعم RTL كامل — مش مجرد ترجمة عشوائية.</span><span class="en">A true 100% Arabic experience with full RTL support — not random translation.</span></p></div>
-      <div class="value-card"><div class="ic">⭐</div><h3><span class="ar">ريفيوز حقيقية</span><span class="en">Genuine Reviews</span></h3><p><span class="ar">كل تقييم من عميلة اشترت فعلًا، مع صور حقيقية للألوان على عيون مختلفة.</span><span class="en">Every review from a real buyer, with real photos of colors on different eyes.</span></p></div>
-    </div>
-  </div>
-</section>
+    <nav class="dash-nav">
+      <button class="active" onclick="showPanel('orders',this)">📦 <span class="ar">طلباتي</span><span class="en">My Orders</span></button>
+      <button onclick="showPanel('rewards',this)">🎁 <span class="ar">نقاط الولاء</span><span class="en">Rewards</span></button>
+      <button onclick="showPanel('info',this)">👤 <span class="ar">بياناتي</span><span class="en">Profile</span></button>
+      <button onclick="showPanel('address',this)">📍 <span class="ar">عناويني</span><span class="en">Addresses</span></button>
+      <button class="logout" onclick="doLogout()">↩ <span class="ar">خروج</span><span class="en">Logout</span></button>
+    </nav>
+  </aside>
 
-<section class="pad story-band">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><span class="tag"><span class="ar">رحلتنا</span><span class="en">Our Journey</span></span>
-      <h2><span class="ar">كيف بدأنا</span><span class="en">How It Started</span></h2></div>
+  <main>
+    <!-- orders -->
+    <div class="dash-panel active" id="p-orders">
+      <div class="panel-card">
+        <h3><span class="ar">آخر الطلبات</span><span class="en">Recent Orders</span></h3>
+        <div class="order-item">
+          <div class="order-thumb" style="--c1:#e8b36b;--c2:#8c5a24;--ring:#5c3a18"><div class="pupil"></div></div>
+          <div class="order-info"><b>#LL-2041</b><span><span class="ar">3 منتجات · 12 يوليو</span><span class="en">3 items · Jul 12</span></span></div>
+          <span class="order-status st-delivered"><span class="ar">تم التسليم</span><span class="en">Delivered</span></span>
+          <div class="order-total">1,199 <span class="ar">ج.م</span><span class="en">EGP</span></div>
+        </div>
+        <div class="order-item">
+          <div class="order-thumb" style="--c1:#7fbf9e;--c2:#1f5c42;--ring:#123626"><div class="pupil"></div></div>
+          <div class="order-info"><b>#LL-2088</b><span><span class="ar">1 منتج · 14 يوليو</span><span class="en">1 item · Jul 14</span></span></div>
+          <span class="order-status st-transit"><span class="ar">في الطريق</span><span class="en">In Transit</span></span>
+          <div class="order-total">450 <span class="ar">ج.م</span><span class="en">EGP</span></div>
+        </div>
+      </div>
     </div>
-    <div class="timeline reveal">
-      <div class="tl-item"><div class="tl-dot">01</div><div class="tl-body"><h3><span class="ar">الفكرة</span><span class="en">The Idea</span></h3><p><span class="ar">بدأنا من ملاحظة فجوة حقيقية في سوق العدسات العربي — نقص الثقة والمحتوى الصحي.</span><span class="en">We started from a real gap in the Arab lens market — a lack of trust and health content.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">02</div><div class="tl-body"><h3><span class="ar">اختيار المصادر</span><span class="en">Sourcing</span></h3><p><span class="ar">اخترنا ماركات موثوقة بشهادات جودة، واختبرنا كل لون بنفسنا قبل ما نعرضه.</span><span class="en">We chose certified, trusted brands and tested every color ourselves before listing.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">03</div><div class="tl-body"><h3><span class="ar">بناء المتجر</span><span class="en">Building the Store</span></h3><p><span class="ar">صممنا تجربة سريعة، ثنائية اللغة، وسهلة الدفع تناسب كل دولة عربية.</span><span class="en">We built a fast, bilingual experience with easy payment for every Arab country.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">04</div><div class="tl-body"><h3><span class="ar">وأنتِ هنا</span><span class="en">And You're Here</span></h3><p><span class="ar">النهاردة بنخدم آلاف العميلات في مصر والخليج — وبنكبر معاكم.</span><span class="en">Today we serve thousands of customers across Egypt & the Gulf — and we grow with you.</span></p></div></div>
+    <!-- rewards -->
+    <div class="dash-panel" id="p-rewards">
+      <div class="points-card">
+        <b>340</b>
+        <p><span class="ar">نقطة ولاء — كل 100 نقطة = خصم 25 ج.م على طلبك القادم</span><span class="en">loyalty points — every 100 pts = 25 EGP off your next order</span></p>
+      </div>
+      <div class="panel-card">
+        <h3><span class="ar">كود الإحالة الخاص بكِ</span><span class="en">Your Referral Code</span></h3>
+        <div class="field"><input type="text" value="MARIAM-LOVER" readonly style="text-align:center; font-weight:800; letter-spacing:1px; color:var(--amber-light);"></div>
+        <p style="font-size:13px; color:var(--ivory-dim);"><span class="ar">شاركي الكود واحصلي على 50 نقطة لكل صديقة تشتري لأول مرة.</span><span class="en">Share your code and get 50 points for every friend's first purchase.</span></p>
+      </div>
     </div>
-  </div>
-</section>
-
-<div class="stats-band">
-  <div class="wrap">
-    <div class="about-stats reveal">
-      <div class="stat"><b>12K+</b><span><span class="ar">عميلة سعيدة</span><span class="en">Happy customers</span></span></div>
-      <div class="stat"><b>4.8★</b><span><span class="ar">متوسط التقييم</span><span class="en">Avg. rating</span></span></div>
-      <div class="stat"><b>50+</b><span><span class="ar">لون وتصميم</span><span class="en">Colors & styles</span></span></div>
-      <div class="stat"><b>4</b><span><span class="ar">دول نخدمها</span><span class="en">Countries served</span></span></div>
+    <!-- profile -->
+    <div class="dash-panel" id="p-info">
+      <div class="panel-card">
+        <h3><span class="ar">بياناتي الشخصية</span><span class="en">Personal Info</span></h3>
+        <div class="field"><label><span class="ar">الاسم</span><span class="en">Name</span></label><input type="text" value="مريم أحمد"></div>
+        <div class="field"><label><span class="ar">البريد الإلكتروني</span><span class="en">Email</span></label><input type="email" value="mariam@email.com"></div>
+        <div class="field"><label><span class="ar">رقم الواتساب</span><span class="en">WhatsApp</span></label><input type="tel" value="+20 111 278 0703"></div>
+        <button class="auth-submit" style="max-width:200px;" onclick="this.textContent=document.body.classList.contains('lang-ar')?'✓ تم الحفظ':'✓ Saved';"><span class="ar">حفظ التغييرات</span><span class="en">Save Changes</span></button>
+      </div>
     </div>
-  </div>
+    <!-- addresses -->
+    <div class="dash-panel" id="p-address">
+      <div class="panel-card">
+        <h3><span class="ar">عناوين الشحن</span><span class="en">Shipping Addresses</span></h3>
+        <div class="order-item">
+          <span style="font-size:22px;">🏠</span>
+          <div class="order-info"><b><span class="ar">المنزل</span><span class="en">Home</span></b><span><span class="ar">الجيزة، المهندسين، شارع جامعة الدول</span><span class="en">Giza, Mohandessin, Gameat Al Dewal St.</span></span></div>
+          <span class="order-status st-delivered"><span class="ar">افتراضي</span><span class="en">Default</span></span>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
-
-<section class="pad">
-  <div class="wrap" style="text-align:center;">
-    <h2 style="font-size:26px; font-family:'Reem Kufi',sans-serif; margin-bottom:14px;"><span class="ar">جاهزة تلاقي لونك؟</span><span class="en">Ready to find your color?</span></h2>
-    <p style="color:var(--ivory-dim); margin-bottom:26px;"><span class="ar">تصفّحي مجموعتنا الكاملة واطلبي بثقة.</span><span class="en">Browse the full collection and order with confidence.</span></p>
-    <a href="lenses-lover-shop.html" class="btn btn-primary"><span class="ar">تسوقي الآن</span><span class="en">Shop Now</span></a>
-  </div>
-</section>
 
 
 <footer>
@@ -524,6 +553,33 @@
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); } });
   }, { threshold:0.12 });
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Demo: assume the visitor is logged in so the dashboard is viewable.
+  // In production, replace `isLoggedIn` with a real session/token check;
+  // if false, the guard view prompts them to the standalone login page.
+  const isLoggedIn = true;
+  (function initAccount(){
+    if(isLoggedIn){
+      document.getElementById('dash-view').style.display='grid';
+      document.getElementById('auth-view').style.display='none';
+    } else {
+      document.getElementById('dash-view').style.display='none';
+      document.getElementById('auth-view').style.display='block';
+      // Optional hard redirect instead of guard view:
+      // location.href='lenses-lover-login.html';
+    }
+  })();
+
+  window.doLogout=function(){
+    // clear session here in production, then send to login
+    location.href='lenses-lover-login.html';
+  };
+  window.showPanel=function(id,btn){
+    document.querySelectorAll('.dash-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('p-'+id).classList.add('active');
+    document.querySelectorAll('.dash-nav button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  };
 
 </script>
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LENSES LOVER — من نحن / About</title>
+<title>LENSES LOVER — السياسات / Policies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -307,35 +307,27 @@
   .page-hero p.lead{ font-size:15.5px; color:var(--ivory-dim); max-width:560px; }
   @media (max-width:560px){ .page-hero h1{ font-size:32px; } }
 
-  /* ---------- about ---------- */
-  .about-intro{ display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:center; padding-block:30px 70px; }
-  @media (max-width:860px){ .about-intro{ grid-template-columns:1fr; } }
-  .about-intro h2{ font-size:30px; font-family:'Reem Kufi',sans-serif; margin-bottom:18px; line-height:1.35; }
-  body.lang-en .about-intro h2{ font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; }
-  .about-intro p{ color:var(--ivory-dim); font-size:15px; margin-bottom:16px; }
-  .about-visual{ display:flex; align-items:center; justify-content:center; }
-  .about-eye{ width:min(340px,80vw); filter:drop-shadow(0 30px 60px rgba(0,0,0,.45)); }
+  .pol-wrap{ display:grid; grid-template-columns:230px 1fr; gap:34px; padding-block:20px 90px; align-items:start; }
+  @media (max-width:820px){ .pol-wrap{ grid-template-columns:1fr; } }
+  .pol-nav{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:16px; position:sticky; top:96px; }
+  @media (max-width:820px){ .pol-nav{ position:static; display:flex; gap:8px; overflow-x:auto; } }
+  .pol-nav button{ width:100%; text-align:start; padding:12px 14px; border-radius:12px; background:transparent; color:var(--ivory-dim); font-size:14px; font-weight:600; display:flex; align-items:center; gap:10px; margin-bottom:4px; transition:all .2s ease; white-space:nowrap; }
+  .pol-nav button:hover{ background:var(--ink-3); color:var(--ivory); }
+  .pol-nav button.active{ background:var(--amber); color:var(--ink); }
 
-  .values-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
-  @media (max-width:860px){ .values-grid{ grid-template-columns:1fr; } }
-  .value-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:30px 26px; transition:transform .3s ease, border-color .3s ease; }
-  .value-card:hover{ transform:translateY(-6px); border-color:var(--amber); }
-  .value-card .ic{ font-size:30px; margin-bottom:16px; }
-  .value-card h3{ font-size:18px; margin-bottom:10px; }
-  .value-card p{ font-size:14px; color:var(--ivory-dim); }
-
-  .story-band{ background:var(--ink-2); border-block:1px solid var(--line); }
-  .timeline{ max-width:720px; margin:0 auto; }
-  .tl-item{ display:grid; grid-template-columns:auto 1fr; gap:20px; padding-bottom:32px; position:relative; }
-  .tl-item:last-child{ padding-bottom:0; }
-  .tl-dot{ width:44px; height:44px; border-radius:50%; background:var(--ink-3); border:1px solid var(--amber); color:var(--amber-light); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; flex-shrink:0; z-index:2; }
-  .tl-item:not(:last-child)::before{ content:""; position:absolute; inset-inline-start:22px; top:44px; bottom:0; width:1px; background:var(--line); }
-  body[dir="ltr"] .tl-item:not(:last-child)::before{ inset-inline-start:22px; }
-  .tl-body h3{ font-size:16px; margin-bottom:5px; }
-  .tl-body p{ font-size:13.5px; color:var(--ivory-dim); }
-
-  .about-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; padding-block:52px; }
-  @media (max-width:760px){ .about-stats{ grid-template-columns:repeat(2,1fr); } }
+  .pol-panel{ display:none; }
+  .pol-panel.active{ display:block; }
+  .pol-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:34px; }
+  .pol-card h2{ font-size:24px; font-family:'Reem Kufi',sans-serif; margin-bottom:8px; }
+  body.lang-en .pol-card h2{ font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; }
+  .pol-card .updated{ font-size:12.5px; color:var(--amber-light); margin-bottom:26px; }
+  .pol-card h3{ font-size:16px; margin:26px 0 12px; color:var(--ivory); }
+  .pol-card p{ font-size:14.5px; color:var(--ivory-dim); margin-bottom:14px; line-height:1.75; }
+  .pol-card ul{ margin:0 0 16px; padding-inline-start:22px; }
+  .pol-card li{ font-size:14px; color:var(--ivory-dim); margin-bottom:9px; line-height:1.7; }
+  .pol-card li::marker{ color:var(--amber); }
+  .pol-note{ background:var(--ink-3); border:1px solid var(--line); border-radius:14px; padding:16px 18px; font-size:13.5px; color:var(--ivory-dim); margin:18px 0; }
+  .pol-note b{ color:var(--amber-light); }
 
 </style>
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
@@ -384,86 +376,76 @@
 
 <section class="page-hero">
   <div class="wrap">
-    <div class="crumbs"><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span class="sep">/</span><span><span class="ar">من نحن</span><span class="en">About</span></span></div>
-    <h1><span class="ar">من نحن</span><span class="en">About Us</span></h1>
-    <p class="lead"><span class="ar">قصة LENSES LOVER — عدسات آمنة، ألوان حقيقية، وثقة تبدأ من تفاصيل عينك.</span><span class="en">The LENSES LOVER story — safe lenses, real colors, and trust that starts with your eye.</span></p>
+    <div class="crumbs"><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span class="sep">/</span><span><span class="ar">السياسات</span><span class="en">Policies</span></span></div>
+    <h1><span class="ar">السياسات</span><span class="en">Policies</span></h1>
+    <p class="lead"><span class="ar">كل ما تحتاجين معرفته عن الشحن، الخصوصية، والدفع — بشفافية كاملة.</span><span class="en">Everything you need to know about shipping, privacy, and payment — with full transparency.</span></p>
   </div>
 </section>
 
-<div class="wrap about-intro">
-  <div>
-    <h2><span class="ar">وُلدنا من فكرة بسيطة: العدسة ماتكونش مجرد لون.</span><span class="en">Born from one simple idea: a lens is more than a color.</span></h2>
-    <p><span class="ar">لاحظنا إن أغلب متاجر العدسات في السوق العربي بتبيع اللون وبس، وبتنسى أهم حاجة — صحة عينك. فقررنا نبني مكان مختلف: كل منتج فيه تفاصيله الصحية كاملة (القطر، نسبة الترطيب، مدة الاستخدام)، وكل ريفيو حقيقي من عميلة حقيقية.</span>
-    <span class="en">We noticed most lens stores in the Arab market sell the color and forget the most important thing — your eye's health. So we built something different: every product shows full health details (diameter, water content, wear duration), and every review comes from a real customer.</span></p>
-    <p><span class="ar">اسمنا LENSES LOVER مش صدفة — إحنا فعلًا بنحب العيون، وبنعامل كل طلب كأنه لعينينا إحنا.</span>
-    <span class="en">Our name LENSES LOVER isn't an accident — we truly love eyes, and treat every order as if it were for our own.</span></p>
-  </div>
-  <div class="about-visual">
-    <svg class="about-eye" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="aboutIris" cx="50%" cy="45%" r="60%">
-          <stop offset="0%" stop-color="#e3b368"/>
-          <stop offset="100%" stop-color="#8c5a24"/>
-        </radialGradient>
-      </defs>
-      <ellipse cx="200" cy="130" rx="150" ry="82" fill="#f4ecdf"/>
-      <circle cx="200" cy="130" r="74" fill="url(#aboutIris)"/>
-      <circle cx="200" cy="130" r="74" fill="none" stroke="#5c3a18" stroke-opacity=".4" stroke-width="6"/>
-      <circle cx="200" cy="130" r="30" fill="#0b0906"/>
-      <circle cx="188" cy="118" r="10" fill="rgba(255,255,255,.85)"/>
-      <path d="M50 130 Q200 40 350 130" fill="none" stroke="#15120e" stroke-width="7" stroke-linecap="round"/>
-      <path d="M50 130 Q200 220 350 130" fill="none" stroke="#15120e" stroke-width="5" stroke-linecap="round"/>
-    </svg>
+<div class="wrap pol-wrap">
+  <aside class="pol-nav">
+    <button class="active" data-p="shipping" onclick="showPol('shipping',this)">🚚 <span class="ar">الشحن</span><span class="en">Shipping</span></button>
+    <button data-p="privacy" onclick="showPol('privacy',this)">🔒 <span class="ar">الخصوصية</span><span class="en">Privacy</span></button>
+    <button data-p="payment" onclick="showPol('payment',this)">💳 <span class="ar">الدفع</span><span class="en">Payment</span></button>
+  </aside>
+  <main>
+    <div class="pol-panel" id="pol-shipping">
+  <div class="pol-card">
+    <h2><span class="ar">سياسة الشحن</span><span class="en">Shipping Policy</span></h2>
+    <p class="updated"><span class="ar">آخر تحديث: يوليو 2026</span><span class="en">Last updated: July 2026</span></p>
+    
+  <p><span class="ar">نوصّل لكل محافظات مصر ولدول الخليج الرئيسية، مع تتبع لحظي لكل شحنة عبر رسالة واتساب تلقائية.</span><span class="en">We deliver across all Egyptian governorates and major Gulf countries, with live tracking for every shipment via automatic WhatsApp updates.</span></p>
+  <h3><span class="ar">مدة وتكلفة التوصيل</span><span class="en">Delivery Time & Cost</span></h3>
+  <ul>
+    <li><span class="ar">القاهرة والجيزة: 1 – 2 يوم عمل.</span><span class="en">Cairo & Giza: 1 – 2 business days.</span></li>
+    <li><span class="ar">باقي محافظات مصر: 2 – 4 أيام عمل.</span><span class="en">Other Egyptian governorates: 2 – 4 business days.</span></li>
+    <li><span class="ar">السعودية والخليج: 3 – 6 أيام عمل.</span><span class="en">Saudi Arabia & the Gulf: 3 – 6 business days.</span></li>
+  </ul>
+  <div class="pol-note"><span class="ar"><b>شحن مجاني</b> لكل طلب يتجاوز 800 جنيه (أو ما يعادلها بعملة دولتك).</span><span class="en"><b>Free shipping</b> on every order above 800 EGP (or its equivalent in your local currency).</span></div>
+  <h3><span class="ar">شركاء الشحن</span><span class="en">Shipping Partners</span></h3>
+  <p><span class="ar">نتعامل مع Bosta وMylerz داخل مصر، وAramex وSMSA للخليج، لضمان أسرع وأأمن توصيل.</span><span class="en">We work with Bosta & Mylerz inside Egypt, and Aramex & SMSA for the Gulf, ensuring the fastest, safest delivery.</span></p>
+
+  <div class="pol-note"><span class="ar"><b>ملاحظة هامة:</b> لأسباب صحية تخص سلامة العين، لا يمكن استرجاع أو استبدال العدسات بعد الشراء — إلا في حالة عيب مصنعي، ويتم التعامل معه فورًا عبر الواتساب.</span><span class="en"><b>Important note:</b> For eye-health safety reasons, lenses cannot be returned or exchanged after purchase — except in the case of a manufacturing defect, which is handled promptly via WhatsApp.</span></div>
+
   </div>
 </div>
+    <div class="pol-panel" id="pol-privacy">
+  <div class="pol-card">
+    <h2><span class="ar">سياسة الخصوصية</span><span class="en">Privacy Policy</span></h2>
+    <p class="updated"><span class="ar">آخر تحديث: يوليو 2026</span><span class="en">Last updated: July 2026</span></p>
+    
+  <p><span class="ar">نحن نحترم خصوصيتك ونحمي بياناتك. توضح هذه السياسة كيف نجمع ونستخدم معلوماتك.</span><span class="en">We respect your privacy and protect your data. This policy explains how we collect and use your information.</span></p>
+  <h3><span class="ar">البيانات التي نجمعها</span><span class="en">What We Collect</span></h3>
+  <ul>
+    <li><span class="ar">بيانات الطلب: الاسم، رقم الواتساب، عنوان الشحن.</span><span class="en">Order data: name, WhatsApp number, shipping address.</span></li>
+    <li><span class="ar">بيانات الدفع تُعالَج بالكامل عبر بوابات آمنة (متوافقة مع PCI-DSS) ولا نخزّنها لدينا.</span><span class="en">Payment data is fully handled by secure (PCI-DSS compliant) gateways and is never stored by us.</span></li>
+  </ul>
+  <h3><span class="ar">كيف نستخدم بياناتك</span><span class="en">How We Use It</span></h3>
+  <p><span class="ar">نستخدم بياناتك فقط لتنفيذ طلبك، تحسين تجربتك، وإرسال تحديثات الطلب. لا نبيع بياناتك لأي طرف ثالث.</span><span class="en">We use your data only to fulfill your order, improve your experience, and send order updates. We never sell your data to any third party.</span></p>
+  <div class="pol-note"><span class="ar">يمكنك طلب حذف بياناتك في أي وقت عبر التواصل معنا.</span><span class="en">You can request deletion of your data at any time by contacting us.</span></div>
 
-<section class="pad">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><span class="tag"><span class="ar">قيمنا</span><span class="en">Our Values</span></span>
-      <h2><span class="ar">إيه اللي بيميّزنا</span><span class="en">What Sets Us Apart</span></h2></div>
-    </div>
-    <div class="values-grid reveal">
-      <div class="value-card"><div class="ic">🛡️</div><h3><span class="ar">الأمان أولًا</span><span class="en">Safety First</span></h3><p><span class="ar">تفاصيل صحية إلزامية في كل منتج، ومحتوى تعليمي عن الاستخدام الصحيح للعدسات.</span><span class="en">Mandatory health details on every product, plus educational content on proper lens care.</span></p></div>
-      <div class="value-card"><div class="ic">💬</div><h3><span class="ar">لغة عربية سليمة</span><span class="en">Real Arabic Experience</span></h3><p><span class="ar">تجربة تسوق عربية 100% بدعم RTL كامل — مش مجرد ترجمة عشوائية.</span><span class="en">A true 100% Arabic experience with full RTL support — not random translation.</span></p></div>
-      <div class="value-card"><div class="ic">⭐</div><h3><span class="ar">ريفيوز حقيقية</span><span class="en">Genuine Reviews</span></h3><p><span class="ar">كل تقييم من عميلة اشترت فعلًا، مع صور حقيقية للألوان على عيون مختلفة.</span><span class="en">Every review from a real buyer, with real photos of colors on different eyes.</span></p></div>
-    </div>
-  </div>
-</section>
-
-<section class="pad story-band">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><span class="tag"><span class="ar">رحلتنا</span><span class="en">Our Journey</span></span>
-      <h2><span class="ar">كيف بدأنا</span><span class="en">How It Started</span></h2></div>
-    </div>
-    <div class="timeline reveal">
-      <div class="tl-item"><div class="tl-dot">01</div><div class="tl-body"><h3><span class="ar">الفكرة</span><span class="en">The Idea</span></h3><p><span class="ar">بدأنا من ملاحظة فجوة حقيقية في سوق العدسات العربي — نقص الثقة والمحتوى الصحي.</span><span class="en">We started from a real gap in the Arab lens market — a lack of trust and health content.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">02</div><div class="tl-body"><h3><span class="ar">اختيار المصادر</span><span class="en">Sourcing</span></h3><p><span class="ar">اخترنا ماركات موثوقة بشهادات جودة، واختبرنا كل لون بنفسنا قبل ما نعرضه.</span><span class="en">We chose certified, trusted brands and tested every color ourselves before listing.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">03</div><div class="tl-body"><h3><span class="ar">بناء المتجر</span><span class="en">Building the Store</span></h3><p><span class="ar">صممنا تجربة سريعة، ثنائية اللغة، وسهلة الدفع تناسب كل دولة عربية.</span><span class="en">We built a fast, bilingual experience with easy payment for every Arab country.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">04</div><div class="tl-body"><h3><span class="ar">وأنتِ هنا</span><span class="en">And You're Here</span></h3><p><span class="ar">النهاردة بنخدم آلاف العميلات في مصر والخليج — وبنكبر معاكم.</span><span class="en">Today we serve thousands of customers across Egypt & the Gulf — and we grow with you.</span></p></div></div>
-    </div>
-  </div>
-</section>
-
-<div class="stats-band">
-  <div class="wrap">
-    <div class="about-stats reveal">
-      <div class="stat"><b>12K+</b><span><span class="ar">عميلة سعيدة</span><span class="en">Happy customers</span></span></div>
-      <div class="stat"><b>4.8★</b><span><span class="ar">متوسط التقييم</span><span class="en">Avg. rating</span></span></div>
-      <div class="stat"><b>50+</b><span><span class="ar">لون وتصميم</span><span class="en">Colors & styles</span></span></div>
-      <div class="stat"><b>4</b><span><span class="ar">دول نخدمها</span><span class="en">Countries served</span></span></div>
-    </div>
   </div>
 </div>
+    <div class="pol-panel" id="pol-payment">
+  <div class="pol-card">
+    <h2><span class="ar">سياسة الدفع</span><span class="en">Payment Policy</span></h2>
+    <p class="updated"><span class="ar">آخر تحديث: يوليو 2026</span><span class="en">Last updated: July 2026</span></p>
+    
+  <p><span class="ar">نوفّر كل وسائل الدفع المنتشرة في السوق العربي لضمان تجربة سهلة وآمنة في كل دولة.</span><span class="en">We offer every payment method common in the Arab market to ensure an easy, secure experience in each country.</span></p>
+  <h3><span class="ar">طرق الدفع المتاحة</span><span class="en">Available Methods</span></h3>
+  <ul>
+    <li><span class="ar">الدفع عند الاستلام (مصر والسعودية).</span><span class="en">Cash on Delivery (Egypt & Saudi Arabia).</span></li>
+    <li><span class="ar">فيزا / ماستركارد · Apple Pay · مدى · KNET.</span><span class="en">Visa / Mastercard · Apple Pay · Mada · KNET.</span></li>
+    <li><span class="ar">محافظ محلية: فودافون كاش، فوري، STC Pay.</span><span class="en">Local wallets: Vodafone Cash, Fawry, STC Pay.</span></li>
+  </ul>
+  <div class="pol-note"><span class="ar"><b>خصم 5%</b> عند اختيار الدفع الإلكتروني المسبق بدلًا من الدفع عند الاستلام.</span><span class="en"><b>5% discount</b> when you choose online prepayment instead of cash on delivery.</span></div>
+  <h3><span class="ar">الأمان</span><span class="en">Security</span></h3>
+  <p><span class="ar">كل صفحات الدفع مشفّرة بشهادة SSL ومتوافقة مع معايير PCI-DSS، مع تنبيه فوري بكل عملية دفع.</span><span class="en">All payment pages are SSL-encrypted and PCI-DSS compliant, with an instant alert for every transaction.</span></p>
 
-<section class="pad">
-  <div class="wrap" style="text-align:center;">
-    <h2 style="font-size:26px; font-family:'Reem Kufi',sans-serif; margin-bottom:14px;"><span class="ar">جاهزة تلاقي لونك؟</span><span class="en">Ready to find your color?</span></h2>
-    <p style="color:var(--ivory-dim); margin-bottom:26px;"><span class="ar">تصفّحي مجموعتنا الكاملة واطلبي بثقة.</span><span class="en">Browse the full collection and order with confidence.</span></p>
-    <a href="lenses-lover-shop.html" class="btn btn-primary"><span class="ar">تسوقي الآن</span><span class="en">Shop Now</span></a>
   </div>
-</section>
+</div>
+  </main>
+</div>
 
 
 <footer>
@@ -524,6 +506,22 @@
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); } });
   }, { threshold:0.12 });
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  function showPol(id,btn){
+    document.querySelectorAll('.pol-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('pol-'+id).classList.add('active');
+    document.querySelectorAll('.pol-nav button').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    else { const t=document.querySelector(`.pol-nav button[data-p="${id}"]`); if(t) t.classList.add('active'); }
+    history.replaceState(null,'','#'+id);
+  }
+  window.showPol=showPol;
+  // deep-link via hash
+  const h=location.hash.replace('#','');
+  if(['shipping','privacy','payment'].includes(h)){
+    document.querySelectorAll('.pol-panel,.pol-nav button').forEach(x=>x.classList.remove('active'));
+    showPol(h,null);
+  } else { document.getElementById('pol-shipping').classList.add('active'); }
 
 </script>
 

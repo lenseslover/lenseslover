@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LENSES LOVER — من نحن / About</title>
+<title>LENSES LOVER — المدونة / Blog</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -307,35 +307,41 @@
   .page-hero p.lead{ font-size:15.5px; color:var(--ivory-dim); max-width:560px; }
   @media (max-width:560px){ .page-hero h1{ font-size:32px; } }
 
-  /* ---------- about ---------- */
-  .about-intro{ display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:center; padding-block:30px 70px; }
-  @media (max-width:860px){ .about-intro{ grid-template-columns:1fr; } }
-  .about-intro h2{ font-size:30px; font-family:'Reem Kufi',sans-serif; margin-bottom:18px; line-height:1.35; }
-  body.lang-en .about-intro h2{ font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; }
-  .about-intro p{ color:var(--ivory-dim); font-size:15px; margin-bottom:16px; }
-  .about-visual{ display:flex; align-items:center; justify-content:center; }
-  .about-eye{ width:min(340px,80vw); filter:drop-shadow(0 30px 60px rgba(0,0,0,.45)); }
+  /* ---------- blog ---------- */
+  .blog-cats{ display:flex; gap:10px; flex-wrap:wrap; padding-block:8px 26px; }
+  .blog-cat{ font-size:13px; padding:8px 16px; border-radius:999px; background:var(--ink-2); border:1px solid var(--line); color:var(--ivory-dim); transition:all .2s ease; }
+  .blog-cat:hover{ border-color:var(--amber); color:var(--ivory); }
+  .blog-cat.active{ background:var(--amber); color:var(--ink); font-weight:700; border-color:var(--amber); }
 
-  .values-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
-  @media (max-width:860px){ .values-grid{ grid-template-columns:1fr; } }
-  .value-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:30px 26px; transition:transform .3s ease, border-color .3s ease; }
-  .value-card:hover{ transform:translateY(-6px); border-color:var(--amber); }
-  .value-card .ic{ font-size:30px; margin-bottom:16px; }
-  .value-card h3{ font-size:18px; margin-bottom:10px; }
-  .value-card p{ font-size:14px; color:var(--ivory-dim); }
+  .featured-post{ display:grid; grid-template-columns:1.05fr .95fr; gap:0; background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-bottom:40px; }
+  @media (max-width:820px){ .featured-post{ grid-template-columns:1fr; } }
+  .fp-media{ min-height:300px; position:relative; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 50% 45%, #e8b36b 0%, #b98240 32%, #6b451f 78%, #3a2510 100%); }
+  .fp-media .pupil{ width:70px; height:70px; border-radius:50%; background:#0b0906; box-shadow:0 0 0 14px rgba(0,0,0,.08); position:relative; }
+  .fp-media .pupil::after{ content:""; position:absolute; width:20px; height:20px; background:rgba(255,255,255,.85); border-radius:50%; top:14px; left:16px; }
+  .fp-body{ padding:38px 34px; display:flex; flex-direction:column; justify-content:center; }
+  .fp-body .cat{ font-size:12.5px; color:var(--amber-light); letter-spacing:.4px; margin-bottom:12px; }
+  .fp-body h2{ font-size:26px; font-family:'Reem Kufi',sans-serif; margin-bottom:14px; line-height:1.4; }
+  body.lang-en .fp-body h2{ font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; }
+  .fp-body p{ font-size:14.5px; color:var(--ivory-dim); margin-bottom:20px; }
+  .read-more{ display:inline-flex; align-items:center; gap:7px; font-size:14px; font-weight:700; color:var(--amber-light); }
+  .read-more svg{ transition:transform .2s ease; }
+  .read-more:hover svg{ transform:translateX(4px); }
+  body[dir="rtl"] .read-more:hover svg{ transform:translateX(-4px); }
 
-  .story-band{ background:var(--ink-2); border-block:1px solid var(--line); }
-  .timeline{ max-width:720px; margin:0 auto; }
-  .tl-item{ display:grid; grid-template-columns:auto 1fr; gap:20px; padding-bottom:32px; position:relative; }
-  .tl-item:last-child{ padding-bottom:0; }
-  .tl-dot{ width:44px; height:44px; border-radius:50%; background:var(--ink-3); border:1px solid var(--amber); color:var(--amber-light); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; flex-shrink:0; z-index:2; }
-  .tl-item:not(:last-child)::before{ content:""; position:absolute; inset-inline-start:22px; top:44px; bottom:0; width:1px; background:var(--line); }
-  body[dir="ltr"] .tl-item:not(:last-child)::before{ inset-inline-start:22px; }
-  .tl-body h3{ font-size:16px; margin-bottom:5px; }
-  .tl-body p{ font-size:13.5px; color:var(--ivory-dim); }
-
-  .about-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; padding-block:52px; }
-  @media (max-width:760px){ .about-stats{ grid-template-columns:repeat(2,1fr); } }
+  .post-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; padding-bottom:80px; }
+  @media (max-width:900px){ .post-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:600px){ .post-grid{ grid-template-columns:1fr; } }
+  .post-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; transition:transform .3s ease, box-shadow .3s ease; }
+  .post-card:hover{ transform:translateY(-6px); box-shadow:0 24px 50px -20px rgba(0,0,0,.6); }
+  .post-media{ height:170px; position:relative; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 50% 45%, var(--c1) 0%, var(--c2) 72%, var(--ring) 100%); }
+  .post-media .pupil{ width:36px; height:36px; border-radius:50%; background:#0b0906; box-shadow:0 0 0 8px rgba(0,0,0,.08); }
+  .post-info{ padding:20px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .post-info .cat{ font-size:11.5px; color:var(--amber-light); }
+  .post-info h3{ font-size:16.5px; line-height:1.45; }
+  .post-info .excerpt{ font-size:13px; color:var(--ivory-dim); flex:1; }
+  .post-meta{ display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--ivory-dim); margin-top:6px; }
 
 </style>
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
@@ -384,86 +390,28 @@
 
 <section class="page-hero">
   <div class="wrap">
-    <div class="crumbs"><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span class="sep">/</span><span><span class="ar">من نحن</span><span class="en">About</span></span></div>
-    <h1><span class="ar">من نحن</span><span class="en">About Us</span></h1>
-    <p class="lead"><span class="ar">قصة LENSES LOVER — عدسات آمنة، ألوان حقيقية، وثقة تبدأ من تفاصيل عينك.</span><span class="en">The LENSES LOVER story — safe lenses, real colors, and trust that starts with your eye.</span></p>
+    <div class="crumbs"><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span class="sep">/</span><span><span class="ar">المدونة</span><span class="en">Blog</span></span></div>
+    <h1><span class="ar">مدونة العدسات</span><span class="en">The Lens Blog</span></h1>
+    <p class="lead"><span class="ar">دليلك التعليمي عن العدسات: العناية، الأمان، اختيار اللون المناسب لبشرتك وعينك.</span><span class="en">Your educational guide to lenses: care, safety, and choosing the right color for your skin & eyes.</span></p>
   </div>
 </section>
 
-<div class="wrap about-intro">
-  <div>
-    <h2><span class="ar">وُلدنا من فكرة بسيطة: العدسة ماتكونش مجرد لون.</span><span class="en">Born from one simple idea: a lens is more than a color.</span></h2>
-    <p><span class="ar">لاحظنا إن أغلب متاجر العدسات في السوق العربي بتبيع اللون وبس، وبتنسى أهم حاجة — صحة عينك. فقررنا نبني مكان مختلف: كل منتج فيه تفاصيله الصحية كاملة (القطر، نسبة الترطيب، مدة الاستخدام)، وكل ريفيو حقيقي من عميلة حقيقية.</span>
-    <span class="en">We noticed most lens stores in the Arab market sell the color and forget the most important thing — your eye's health. So we built something different: every product shows full health details (diameter, water content, wear duration), and every review comes from a real customer.</span></p>
-    <p><span class="ar">اسمنا LENSES LOVER مش صدفة — إحنا فعلًا بنحب العيون، وبنعامل كل طلب كأنه لعينينا إحنا.</span>
-    <span class="en">Our name LENSES LOVER isn't an accident — we truly love eyes, and treat every order as if it were for our own.</span></p>
-  </div>
-  <div class="about-visual">
-    <svg class="about-eye" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="aboutIris" cx="50%" cy="45%" r="60%">
-          <stop offset="0%" stop-color="#e3b368"/>
-          <stop offset="100%" stop-color="#8c5a24"/>
-        </radialGradient>
-      </defs>
-      <ellipse cx="200" cy="130" rx="150" ry="82" fill="#f4ecdf"/>
-      <circle cx="200" cy="130" r="74" fill="url(#aboutIris)"/>
-      <circle cx="200" cy="130" r="74" fill="none" stroke="#5c3a18" stroke-opacity=".4" stroke-width="6"/>
-      <circle cx="200" cy="130" r="30" fill="#0b0906"/>
-      <circle cx="188" cy="118" r="10" fill="rgba(255,255,255,.85)"/>
-      <path d="M50 130 Q200 40 350 130" fill="none" stroke="#15120e" stroke-width="7" stroke-linecap="round"/>
-      <path d="M50 130 Q200 220 350 130" fill="none" stroke="#15120e" stroke-width="5" stroke-linecap="round"/>
-    </svg>
-  </div>
+<div class="wrap">
+  <div class="blog-cats" id="cats"></div>
+
+  <article class="featured-post reveal">
+    <div class="fp-media"><div class="pupil"></div></div>
+    <div class="fp-body">
+      <span class="cat"><span class="ar">مقال مميز · العناية</span><span class="en">Featured · Care</span></span>
+      <h2><span class="ar">دليلك الكامل للعناية بالعدسات اللاصقة</span><span class="en">Your Complete Guide to Contact Lens Care</span></h2>
+      <p><span class="ar">من التخزين الصحيح للمحلول المناسب لمدة الاستخدام الآمنة — كل ما تحتاجين معرفته للحفاظ على عينك وعدساتك في أفضل حالة.</span><span class="en">From proper storage to the right solution and safe wear time — everything you need to keep your eyes and lenses in top shape.</span></p>
+      <a href="#" class="read-more"><span class="ar">اقرئي المقال</span><span class="en">Read Article</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </article>
+
+  <div class="post-grid reveal" id="posts"></div>
 </div>
-
-<section class="pad">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><span class="tag"><span class="ar">قيمنا</span><span class="en">Our Values</span></span>
-      <h2><span class="ar">إيه اللي بيميّزنا</span><span class="en">What Sets Us Apart</span></h2></div>
-    </div>
-    <div class="values-grid reveal">
-      <div class="value-card"><div class="ic">🛡️</div><h3><span class="ar">الأمان أولًا</span><span class="en">Safety First</span></h3><p><span class="ar">تفاصيل صحية إلزامية في كل منتج، ومحتوى تعليمي عن الاستخدام الصحيح للعدسات.</span><span class="en">Mandatory health details on every product, plus educational content on proper lens care.</span></p></div>
-      <div class="value-card"><div class="ic">💬</div><h3><span class="ar">لغة عربية سليمة</span><span class="en">Real Arabic Experience</span></h3><p><span class="ar">تجربة تسوق عربية 100% بدعم RTL كامل — مش مجرد ترجمة عشوائية.</span><span class="en">A true 100% Arabic experience with full RTL support — not random translation.</span></p></div>
-      <div class="value-card"><div class="ic">⭐</div><h3><span class="ar">ريفيوز حقيقية</span><span class="en">Genuine Reviews</span></h3><p><span class="ar">كل تقييم من عميلة اشترت فعلًا، مع صور حقيقية للألوان على عيون مختلفة.</span><span class="en">Every review from a real buyer, with real photos of colors on different eyes.</span></p></div>
-    </div>
-  </div>
-</section>
-
-<section class="pad story-band">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><span class="tag"><span class="ar">رحلتنا</span><span class="en">Our Journey</span></span>
-      <h2><span class="ar">كيف بدأنا</span><span class="en">How It Started</span></h2></div>
-    </div>
-    <div class="timeline reveal">
-      <div class="tl-item"><div class="tl-dot">01</div><div class="tl-body"><h3><span class="ar">الفكرة</span><span class="en">The Idea</span></h3><p><span class="ar">بدأنا من ملاحظة فجوة حقيقية في سوق العدسات العربي — نقص الثقة والمحتوى الصحي.</span><span class="en">We started from a real gap in the Arab lens market — a lack of trust and health content.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">02</div><div class="tl-body"><h3><span class="ar">اختيار المصادر</span><span class="en">Sourcing</span></h3><p><span class="ar">اخترنا ماركات موثوقة بشهادات جودة، واختبرنا كل لون بنفسنا قبل ما نعرضه.</span><span class="en">We chose certified, trusted brands and tested every color ourselves before listing.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">03</div><div class="tl-body"><h3><span class="ar">بناء المتجر</span><span class="en">Building the Store</span></h3><p><span class="ar">صممنا تجربة سريعة، ثنائية اللغة، وسهلة الدفع تناسب كل دولة عربية.</span><span class="en">We built a fast, bilingual experience with easy payment for every Arab country.</span></p></div></div>
-      <div class="tl-item"><div class="tl-dot">04</div><div class="tl-body"><h3><span class="ar">وأنتِ هنا</span><span class="en">And You're Here</span></h3><p><span class="ar">النهاردة بنخدم آلاف العميلات في مصر والخليج — وبنكبر معاكم.</span><span class="en">Today we serve thousands of customers across Egypt & the Gulf — and we grow with you.</span></p></div></div>
-    </div>
-  </div>
-</section>
-
-<div class="stats-band">
-  <div class="wrap">
-    <div class="about-stats reveal">
-      <div class="stat"><b>12K+</b><span><span class="ar">عميلة سعيدة</span><span class="en">Happy customers</span></span></div>
-      <div class="stat"><b>4.8★</b><span><span class="ar">متوسط التقييم</span><span class="en">Avg. rating</span></span></div>
-      <div class="stat"><b>50+</b><span><span class="ar">لون وتصميم</span><span class="en">Colors & styles</span></span></div>
-      <div class="stat"><b>4</b><span><span class="ar">دول نخدمها</span><span class="en">Countries served</span></span></div>
-    </div>
-  </div>
-</div>
-
-<section class="pad">
-  <div class="wrap" style="text-align:center;">
-    <h2 style="font-size:26px; font-family:'Reem Kufi',sans-serif; margin-bottom:14px;"><span class="ar">جاهزة تلاقي لونك؟</span><span class="en">Ready to find your color?</span></h2>
-    <p style="color:var(--ivory-dim); margin-bottom:26px;"><span class="ar">تصفّحي مجموعتنا الكاملة واطلبي بثقة.</span><span class="en">Browse the full collection and order with confidence.</span></p>
-    <a href="lenses-lover-shop.html" class="btn btn-primary"><span class="ar">تسوقي الآن</span><span class="en">Shop Now</span></a>
-  </div>
-</section>
 
 
 <footer>
@@ -524,6 +472,59 @@
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); } });
   }, { threshold:0.12 });
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  const CATS=[{k:'all',ar:'الكل',en:'All'},{k:'care',ar:'العناية',en:'Care'},{k:'colors',ar:'الألوان',en:'Colors'},{k:'health',ar:'الصحة',en:'Health'},{k:'trends',ar:'الموضة',en:'Trends'}];
+  const POSTS=[
+    {cat:'colors', c1:'#7fbf9e',c2:'#1f5c42',ring:'#123626', ar_c:'الألوان', en_c:'Colors',
+     ar:'كيف تختارين لون العدسة المناسب للون بشرتك؟', en:'How to Pick the Right Lens Color for Your Skin Tone',
+     ar_e:'دليل عملي لمطابقة الألوان مع درجة بشرتك للحصول على مظهر طبيعي.', en_e:'A practical guide to matching colors with your skin tone for a natural look.',
+     ar_m:'5 دقائق قراءة', en_m:'5 min read'},
+    {cat:'health', c1:'#7fa8c9',c2:'#28516e',ring:'#1a3244', ar_c:'الصحة', en_c:'Health',
+     ar:'5 أخطاء شائعة تضر عينك عند استخدام العدسات', en:'5 Common Mistakes That Harm Your Eyes',
+     ar_e:'تجنّبي هذه العادات الخاطئة للحفاظ على صحة عينك على المدى الطويل.', en_e:'Avoid these bad habits to protect your long-term eye health.',
+     ar_m:'4 دقائق قراءة', en_m:'4 min read'},
+    {cat:'care', c1:'#e8b36b',c2:'#8c5a24',ring:'#5c3a18', ar_c:'العناية', en_c:'Care',
+     ar:'يومي أم شهري أم سنوي؟ اختاري المدة الأنسب لكِ', en:'Daily, Monthly, or Yearly? Choose Your Best Fit',
+     ar_e:'مقارنة بين أنواع العدسات حسب نمط حياتك وميزانيتك.', en_e:'Comparing lens types by your lifestyle and budget.',
+     ar_m:'6 دقائق قراءة', en_m:'6 min read'},
+    {cat:'colors', c1:'#b49ad1',c2:'#5a3f7a',ring:'#3a274f', ar_c:'الألوان', en_c:'Colors',
+     ar:'العيون الداكنة: أفضل الألوان التي تظهر بوضوح', en:'Dark Eyes: The Colors That Show Up Best',
+     ar_e:'نصائح خاصة لأصحاب العيون الداكنة لاختيار ألوان واضحة وطبيعية.', en_e:'Special tips for dark-eyed users to pick clear, natural shades.',
+     ar_m:'4 دقائق قراءة', en_m:'4 min read'},
+    {cat:'trends', c1:'#d99a8f',c2:'#8a4a3e',ring:'#5c2e26', ar_c:'الموضة', en_c:'Trends',
+     ar:'ألوان العدسات الأكثر رواجًا هذا الموسم', en:'The Most Popular Lens Colors This Season',
+     ar_e:'استكشفي الألوان التي تتصدر السوشيال ميديا الآن.', en_e:'Explore the shades trending across social media right now.',
+     ar_m:'3 دقائق قراءة', en_m:'3 min read'},
+    {cat:'health', c1:'#9faf6e',c2:'#4b5a2e',ring:'#333d1e', ar_c:'الصحة', en_c:'Health',
+     ar:'حساسية العين والعدسات: متى تستشيرين الطبيب؟', en:'Eye Sensitivity & Lenses: When to See a Doctor',
+     ar_e:'علامات يجب الانتباه لها لضمان استخدام آمن للعدسات.', en_e:'Signs to watch for to ensure safe lens use.',
+     ar_m:'5 دقائق قراءة', en_m:'5 min read'},
+  ];
+
+  let active='all';
+  const catsEl=document.getElementById('cats'), postsEl=document.getElementById('posts');
+  CATS.forEach((c,i)=>{
+    const b=document.createElement('button'); b.className='blog-cat'+(i===0?' active':'');
+    b.innerHTML=`<span class="ar">${c.ar}</span><span class="en">${c.en}</span>`;
+    b.onclick=()=>{ active=c.k; document.querySelectorAll('.blog-cat').forEach(x=>x.classList.remove('active')); b.classList.add('active'); draw(); };
+    catsEl.appendChild(b);
+  });
+
+  function draw(){
+    postsEl.innerHTML='';
+    POSTS.filter(p=>active==='all'||p.cat===active).forEach(p=>{
+      const a=document.createElement('a'); a.href='#'; a.className='post-card';
+      a.innerHTML=`<div class="post-media" style="--c1:${p.c1};--c2:${p.c2};--ring:${p.ring}"><div class="pupil"></div></div>
+        <div class="post-info">
+          <span class="cat"><span class="ar">${p.ar_c}</span><span class="en">${p.en_c}</span></span>
+          <h3><span class="ar">${p.ar}</span><span class="en">${p.en}</span></h3>
+          <p class="excerpt"><span class="ar">${p.ar_e}</span><span class="en">${p.en_e}</span></p>
+          <div class="post-meta">📖 <span class="ar">${p.ar_m}</span><span class="en">${p.en_m}</span></div>
+        </div>`;
+      postsEl.appendChild(a);
+    });
+  }
+  draw();
 
 </script>
 
