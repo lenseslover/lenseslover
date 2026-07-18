@@ -123,6 +123,10 @@
   .ll-shint{ margin-top:12px; text-align:center; font-size:12px; color:var(--ivory-dim); }
   `;
   var st=document.createElement('style'); st.textContent=css + `
+  /* ---------- lock horizontal scroll globally (mobile stability) ---------- */
+  html, body{ overflow-x:hidden !important; max-width:100% !important; }
+  img, svg, video{ max-width:100%; }
+
   /* ---------- product cards: photo focus + pro mobile layout (global) ---------- */
   .product-media{ padding:0 !important; aspect-ratio:3/3.9 !important; overflow:hidden; position:relative; }
   .product-media::before, .product-media::after{ display:none !important; } /* kill old decorative rays over photos */
