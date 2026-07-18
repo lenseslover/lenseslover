@@ -616,7 +616,7 @@
       card.className='product-card';
       card.innerHTML=`
         <div class="product-media has-photo">
-          <span class="tag-badge"><span class="ar">قطعتين بـ 350</span><span class="en">2 for 350</span></span>
+          ${(function(){var o=window.LL_CATALOG.offerOf(p.brand);return o?`<span class="tag-badge"><span class="ar">${o.ar.replace(' ج.م','')}</span><span class="en">${o.en.replace(' EGP','')}</span></span>`:'';})()}
           <button class="wish-btn" aria-label="wishlist" onclick="event.preventDefault();this.style.color='var(--rose)';">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.4 2 4.8 5.6 4.1c2-.4 3.9.5 5 2.2 1.1-1.7 3-2.6 5-2.2 3.6.7 5.1 4.3 3.6 7.6C19.5 16.4 12 21 12 21z"/></svg>
           </button>

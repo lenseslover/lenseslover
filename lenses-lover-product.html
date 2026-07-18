@@ -384,7 +384,7 @@
 
       <div class="p-price-row">
         <span class="p-price-now"><span id="p-price-val">200</span> <span class="ar">ج.م</span><span class="en">EGP</span></span>
-        <span class="p-save"><span class="ar">قطعتين بـ 350 — الخصم تلقائي في السلة</span><span class="en">2 for 350 — auto-applied in cart</span></span>
+        <span class="p-save"><span class="ar" id="p-offer-ar">الخصم تلقائي في السلة</span><span class="en" id="p-offer-en">Auto-applied in cart</span></span>
       </div>
 
       <p class="p-desc">
@@ -643,19 +643,55 @@
   });
 
   function famAr(k){ const f=CAT.families.find(f=>f.key===k); return f?f.ar:''; }
+
+  /* extra photos of the SELECTED colour (shown under the main image) */
+  function renderPhotoRow(){
+    let row = document.getElementById('p-photo-row');
+    if(!row){
+      const ph = document.getElementById('p-photo');
+      if(!ph || !ph.parentNode) return;
+      row = document.createElement('div');
+      row.id = 'p-photo-row';
+      row.style.cssText = 'display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;';
+      ph.parentNode.appendChild(row);
+    }
+    row.innerHTML = '';
+    if(!P.imgs || P.imgs.length < 2){ row.style.display='none'; return; }
+    row.style.display = 'flex';
+    P.imgs.forEach(function(src, i){
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.style.cssText = 'width:64px;height:64px;border-radius:12px;border:2px solid '+(i===0?'var(--rose,#d98a9a)':'transparent')+';background-image:url(\''+src+'\');background-size:cover;background-position:center 20%;cursor:pointer;padding:0;';
+      b.setAttribute('aria-label', P.en+' '+(i+1));
+      b.onclick = function(){
+        const ph = document.getElementById('p-photo');
+        if(ph) ph.src = src;
+        row.querySelectorAll('button').forEach(function(x){ x.style.borderColor='transparent'; });
+        b.style.borderColor = 'var(--rose,#d98a9a)';
+      };
+      row.appendChild(b);
+    });
+  }
   function selectColor(id){
     P = CAT.byId(id) || P;
     const idx = siblings.indexOf(P);
     const ph = document.getElementById('p-photo');
     if(ph){ ph.src = P.img; ph.alt = P.en+' — '+P.ar; }
+    const pv = document.getElementById('p-price-val');
+    if(pv) pv.textContent = P.price;
+    const off = CAT.offerOfProduct(P);
+    const oAr = document.getElementById('p-offer-ar'), oEn = document.getElementById('p-offer-en');
+    if(oAr) oAr.textContent = off ? (off.ar + ' — الخصم تلقائي في السلة') : 'الخصم تلقائي في السلة';
+    if(oEn) oEn.textContent = off ? (off.en + ' — auto-applied in cart') : 'Auto-applied in cart';
+    renderPhotoRow();
     document.getElementById('iris-label-ar').textContent = P.ar;
     document.getElementById('iris-label-en').textContent = P.en;
     document.getElementById('color-sel-ar').textContent = P.ar;
     document.getElementById('color-sel-en').textContent = P.en;
     document.querySelectorAll('.p-title-ar .ar').forEach(e=>e.textContent=P.ar);
     document.querySelectorAll('.p-title-ar .en').forEach(e=>e.textContent=P.en);
-    document.querySelectorAll('.p-title-en .ar').forEach(e=>e.textContent=P.en+' — عدسة '+famAr(P.family)+' شهرية');
-    document.querySelectorAll('.p-title-en .en').forEach(e=>e.textContent='A '+P.family+' monthly colored lens');
+    document.querySelectorAll('.p-title-en .ar').forEach(e=>e.textContent=P.en+' — عدسة '+famAr(P.family)+' '+CAT.durArAdj(P));
+    document.querySelectorAll('.p-title-en .en').forEach(e=>e.textContent='A '+P.family+' '+CAT.durEn(P).toLowerCase()+' colored lens');
     const crumbAr=document.querySelector('.crumbs .current .ar'), crumbEn=document.querySelector('.crumbs .current .en');
     if(crumbAr) crumbAr.textContent=P.ar; if(crumbEn) crumbEn.textContent=P.en;
     document.title = 'lenseslover — '+P.ar;
@@ -681,7 +717,7 @@
     if(window.LL && window.LL.addToCart){
       for(let k=0;k<qty;k++){
         window.LL.addToCart({ id:P.id, ar:P.ar, en:P.en, img:P.img, offer2:true,
-          ar_m:'شهري · '+BRAND.ar, en_m:'Monthly · '+BRAND.en, price:P.price });
+          ar_m:CAT.durAr(P)+' · '+BRAND.ar, en_m:CAT.durEn(P)+' · '+BRAND.en, price:P.price });
       }
     }
   }
@@ -713,11 +749,11 @@
     card.style.textDecoration='none';
     card.innerHTML = `
       <div class="product-media" style="padding:0;aspect-ratio:3/3.4;overflow:hidden;">
-        <span class="tag-badge"><span class="ar">قطعتين بـ 350</span><span class="en">2 for 350</span></span>
+        ${(function(){var o=CAT.offerOf(pr.brand);return o?`<span class="tag-badge"><span class="ar">${o.ar.replace(' ج.م','')}</span><span class="en">${o.en.replace(' EGP','')}</span></span>`:'';})()}
         <img src="${pr.img}" alt="${pr.en}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
       </div>
       <div class="product-info">
-        <span class="cat"><span class="ar">شهري · ${BRAND.ar}</span><span class="en">Monthly · ${BRAND.en}</span></span>
+        <span class="cat"><span class="ar">${CAT.durAr(pr)} · ${BRAND.ar}</span><span class="en">${CAT.durEn(pr)} · ${BRAND.en}</span></span>
         <h3>${pr.ar}</h3>
         <div class="en-name">${pr.en}</div>
         <div class="stars">★★★★★</div>
@@ -731,7 +767,7 @@
       e.preventDefault();
       if(window.LL && window.LL.addToCart){
         window.LL.addToCart({ id:pr.id, ar:pr.ar, en:pr.en, img:pr.img, offer2:true,
-          ar_m:'شهري · '+BRAND.ar, en_m:'Monthly · '+BRAND.en, price:pr.price });
+          ar_m:CAT.durAr(pr)+' · '+BRAND.ar, en_m:CAT.durEn(pr)+' · '+BRAND.en, price:pr.price });
       }
     };
     productGrid.appendChild(card);
