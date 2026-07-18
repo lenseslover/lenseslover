@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Shop all colored & prescription lenses — filter by color, brand, duration, and price.">
 <meta name="twitter:image" content="https://lenseslover.com/og-image.jpg">
 
-<title>LENSES LOVER — تسوقي / Shop</title>
+<title>lenseslover — تسوقي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -549,11 +549,15 @@
 
   // build color filter
   const colorFilter = document.getElementById('color-filter');
+  const _qs=new URLSearchParams(location.search);
+  const preColor=_qs.get('color');
+  const preBrand=_qs.get('brand');
   COLORS.forEach(c=>{
     const b = document.createElement('div');
     b.className='color-chip'; b.title=c.en;
     b.style.background=`radial-gradient(circle at 35% 30%, ${c.c1}, ${c.c2})`;
     b.onclick=()=>{ toggle(state.colors,c.key); b.classList.toggle('active'); render(); };
+    if(preColor===c.key){ state.colors.add(c.key); b.classList.add('active'); }
     colorFilter.appendChild(b);
   });
   // brand filter
@@ -561,6 +565,8 @@
   BRANDS.forEach(br=>{
     const b=document.createElement('button'); b.className='chip'; b.textContent=br;
     b.onclick=()=>{ toggle(state.brands,br); b.classList.toggle('active'); render(); };
+    const _bk=(window.LL_CATALOG?window.LL_CATALOG.brands:[]).find(x=>x.key===preBrand);
+    if(_bk && _bk.en===br){ state.brands.add(br); b.classList.add('active'); }
     brandFilter.appendChild(b);
   });
   // duration filter

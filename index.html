@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Colored & prescription contact lenses, safely and beautifully. Shipping across Egypt & the Gulf, cash on delivery.">
 <meta name="twitter:image" content="https://lenseslover.com/og-image.jpg">
 
-<title>LENSES LOVER</title>
+<title>lenseslover</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -182,7 +182,15 @@
   .iris-name .label-en{ font-size:19px; font-family:'Instrument Serif', serif; font-style:italic; color:var(--ivory); }
   .iris-name .sub{ font-size:12.5px; color:var(--ivory-dim); letter-spacing:0.5px; margin-top:2px; }
 
+  .hero-model-wrap{
+    width:100%; max-width:420px; margin:0 auto; aspect-ratio:3/3.4; overflow:hidden;
+    border-radius:24px; border:1px solid var(--line);
+    box-shadow:0 30px 60px -25px rgba(0,0,0,0.65);
+  }
+  #hero-model{ width:100%; height:100%; object-fit:cover; object-position:center 12%;
+    display:block; transition:opacity .35s ease; }
   .swatch-row{ display:flex; gap:12px; }
+  .swatch.photo{ background-size:cover !important; background-position:center !important; width:44px; height:44px; }
   .swatch{
     width:34px; height:34px; border-radius:50%; border:2px solid transparent; position:relative;
     box-shadow: inset 0 0 0 1px rgba(0,0,0,0.25);
@@ -195,6 +203,9 @@
   }
 
   /* ---------- marquee ---------- */
+  .mq-item{ color:var(--ivory-dim); text-decoration:none; letter-spacing:2px; font-size:14px; transition:color .25s ease; }
+  .mq-item:hover{ color:var(--amber); }
+  .mq-dot{ color:var(--amber); opacity:.6; margin:0 18px; }
   .marquee-wrap{ border-block:1px solid var(--line); background:var(--ink-2); padding-block:16px; overflow:hidden; }
   .marquee{ display:flex; gap:48px; width:max-content; animation:scrollX 32s linear infinite; }
   .marquee span{ font-family:'Reem Kufi', sans-serif; font-size:15px; letter-spacing:1px; color:var(--ivory-dim); white-space:nowrap; }
@@ -213,7 +224,7 @@
   section.pad{ padding-block:80px; }
 
   /* ---------- shop by color ---------- */
-  .color-grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:18px; }
+  .color-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:18px; }
   @media (max-width:900px){ .color-grid{ grid-template-columns:repeat(3,1fr); } }
   @media (max-width:520px){ .color-grid{ grid-template-columns:repeat(2,1fr); } }
   .color-card{
@@ -222,9 +233,12 @@
   }
   .color-card:hover{ transform:translateY(-6px); border-color:var(--amber); }
   .color-orb{
-    width:56px; height:56px; border-radius:50%; margin:0 auto 14px; position:relative;
-    box-shadow: inset 0 -4px 10px rgba(0,0,0,0.35), 0 6px 18px -6px rgba(0,0,0,0.5);
+    width:72px; height:72px; border-radius:50%; margin:0 auto 14px; position:relative;
+    background-size:cover; background-position:center; border:2px solid var(--line);
+    box-shadow: inset 0 -4px 10px rgba(0,0,0,0.25), 0 6px 18px -6px rgba(0,0,0,0.5);
+    transition:border-color .3s ease;
   }
+  .color-card:hover .color-orb{ border-color:var(--amber); }
   .color-card h3{ font-size:15px; margin-bottom:2px; }
   .color-card .en-name{ font-size:12px; color:var(--ivory-dim); font-family:'Instrument Serif', serif; font-style:italic; }
 
@@ -407,41 +421,9 @@
     </div>
 
     <div class="iris-stage reveal in-view">
-      <svg class="eye-frame" viewBox="0 0 400 260" id="eye-svg">
-        <defs>
-          <radialGradient id="irisGrad" cx="50%" cy="45%" r="60%">
-            <stop id="stopA" offset="0%" stop-color="#e8b36b"/>
-            <stop id="stopB" offset="100%" stop-color="#8c5a24"/>
-          </radialGradient>
-        </defs>
-        <!-- sclera -->
-        <path d="M20 130 C 90 40, 310 40, 380 130 C 310 220, 90 220, 20 130 Z" fill="#f4ecdf"/>
-        <path d="M20 130 C 90 40, 310 40, 380 130 C 310 220, 90 220, 20 130 Z" fill="none" stroke="#cdc3b2" stroke-width="1"/>
-        <!-- iris -->
-        <circle cx="200" cy="130" r="72" fill="url(#irisGrad)" class="iris-fill"/>
-        <circle cx="200" cy="130" r="72" fill="none" stroke="#0b0906" stroke-opacity="0.35" stroke-width="6" id="ring-color"/>
-        <!-- striations -->
-        <g opacity="0.18" stroke="#0b0906" stroke-width="1.4">
-          <line x1="200" y1="60" x2="200" y2="94"/>
-          <line x1="252" y1="78" x2="232" y2="104"/>
-          <line x1="272" y1="130" x2="238" y2="130"/>
-          <line x1="252" y1="182" x2="232" y2="156"/>
-          <line x1="200" y1="200" x2="200" y2="166"/>
-          <line x1="148" y1="182" x2="168" y2="156"/>
-          <line x1="128" y1="130" x2="162" y2="130"/>
-          <line x1="148" y1="78" x2="168" y2="104"/>
-        </g>
-        <!-- pupil -->
-        <circle cx="200" cy="130" r="30" fill="#0b0906"/>
-        <circle cx="190" cy="118" r="9" fill="#ffffff" opacity="0.85"/>
-        <circle cx="212" cy="140" r="4" fill="#ffffff" opacity="0.4"/>
-        <!-- upper lash -->
-        <path d="M18 128 C 90 32, 312 32, 382 128" fill="none" stroke="#15120e" stroke-width="7" stroke-linecap="round"/>
-        <path d="M60 60 C 55 48, 48 42, 40 38" stroke="#15120e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M340 60 C 345 48, 352 42, 360 38" stroke="#15120e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M100 44 C 96 32, 92 26, 86 20" stroke="#15120e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M300 44 C 304 32, 308 26, 314 20" stroke="#15120e" stroke-width="3" fill="none" stroke-linecap="round"/>
-      </svg>
+      <div class="hero-model-wrap">
+        <img id="hero-model" src="" alt="LENSES LOVER" loading="eager">
+      </div>
 
       <div class="iris-name">
         <div>
@@ -460,21 +442,7 @@
 
 <!-- ================= MARQUEE ================= -->
 <div class="marquee-wrap">
-  <div class="marquee" id="marquee">
-    <span><span class="ar">مجموعة العسل</span><span class="en">Honey Collection</span><em>·</em></span>
-    <span><span class="ar">مجموعة الزمرد</span><span class="en">Emerald Collection</span><em>·</em></span>
-    <span><span class="ar">مجموعة الرماد</span><span class="en">Ash Collection</span><em>·</em></span>
-    <span><span class="ar">مجموعة المحيط</span><span class="en">Ocean Collection</span><em>·</em></span>
-    <span><span class="ar">مجموعة الزيتون</span><span class="en">Olive Collection</span><em>·</em></span>
-    <span><span class="ar">مجموعة الفجر</span><span class="en">Dawn Collection</span><em>·</em></span>
-    <!-- duplicate for seamless loop -->
-    <span><span class="ar">مجموعة العسل</span><span class="en">Honey Collection</span><em>·</em></span>
-    <span><span class="ar">مجموعة الزمرد</span><span class="en">Emerald Collection</span><em>·</em></span>
-    <span><span class="ar">مجموعة الرماد</span><span class="en">Ash Collection</span><em>·</em></span>
-    <span><span class="ar">مجموعة المحيط</span><span class="en">Ocean Collection</span><em>·</em></span>
-    <span><span class="ar">مجموعة الزيتون</span><span class="en">Olive Collection</span><em>·</em></span>
-    <span><span class="ar">مجموعة الفجر</span><span class="en">Dawn Collection</span><em>·</em></span>
-  </div>
+  <div class="marquee" id="brand-marquee"></div>
 </div>
 
 <!-- ================= SHOP BY COLOR ================= -->
@@ -653,35 +621,66 @@
   ];
 
   const swatchRow = document.getElementById('swatch-row');
-  irises.forEach((iris, i)=>{
-    const b = document.createElement('button');
-    b.className = 'swatch' + (i===0 ? ' active' : '');
-    b.style.background = `radial-gradient(circle at 35% 30%, ${iris.c1}, ${iris.c2})`;
-    b.setAttribute('aria-label', iris.en);
-    b.onclick = ()=> selectIris(iris.key, b);
+  const PROD_CDN='https://cdn.lenseslover.com/products/';
+  const FAM_CDN2='https://cdn.lenseslover.com/families/';
+  // family -> representative product photo for the hero
+  const HERO_MAP={
+    gray:{img:'breeze-gray.webp'},
+    green:{img:'breeze-green.webp'},
+    blue:{img:'mona-lisa-blue.webp'},
+    hazel:{img:'clepatra-hazel.webp'},
+    brown:{img:'mrmr-brown.webp'}
+  };
+  const FAMS=(window.LL_CATALOG?window.LL_CATALOG.families:[]);
+  FAMS.forEach((f,i)=>{
+    const b=document.createElement('button');
+    b.className='swatch photo'+(i===0?' active':'');
+    b.style.backgroundImage=`url('${FAM_CDN2}${f.key}.webp')`;
+    b.setAttribute('aria-label',f.en);
+    b.onclick=()=>selectIris(f.key,b);
     swatchRow.appendChild(b);
   });
-
   function selectIris(key, el){
-    const iris = irises.find(i=>i.key===key);
-    document.getElementById('stopA').setAttribute('stop-color', iris.c1);
-    document.getElementById('stopB').setAttribute('stop-color', iris.c2);
-    document.getElementById('ring-color').setAttribute('stroke', iris.ring);
-    document.getElementById('iris-label-ar').textContent = iris.ar;
-    document.getElementById('iris-label-en').textContent = iris.en;
+    const f=FAMS.find(x=>x.key===key); if(!f) return;
+    const img=document.getElementById('hero-model');
+    img.style.opacity=0;
+    setTimeout(()=>{ img.src=PROD_CDN+HERO_MAP[key].img; img.onload=()=>{ img.style.opacity=1; }; },180);
+    document.getElementById('iris-label-ar').textContent=f.ar;
+    document.getElementById('iris-label-en').textContent=f.en;
     document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
     el.classList.add('active');
   }
+  // initial
+  (function(){ const img=document.getElementById('hero-model'); img.src=PROD_CDN+HERO_MAP.gray.img;
+    document.getElementById('iris-label-ar').textContent=FAMS[0]?FAMS[0].ar:'رمادي';
+    document.getElementById('iris-label-en').textContent=FAMS[0]?FAMS[0].en:'Gray'; })();
 
-  // ---------- shop by color grid ----------
+  // ---------- brand marquee (clickable) ----------
+  (function(){
+    const mq=document.getElementById('brand-marquee'); if(!mq) return;
+    const brands=[
+      {key:'eqqual-berre', name:'EQQUAL BERRE'},
+      {key:'urban-layer',  name:'URBAN LAYER'},
+      {key:'fresh-lady',   name:'FRESH LADY'},
+      {key:'dahab',        name:'DAHAB'},
+      {key:'mettone',      name:'METTONE'}
+    ];
+    const base=brands.concat(brands).concat(brands); // wide enough for any screen
+    const seq=base.concat(base); // duplicated exactly 2x for seamless -50% loop
+    mq.innerHTML=seq.map(b=>`<a class="mq-item" href="lenses-lover-shop.html?brand=${b.key}">${b.name}</a><span class="mq-dot">✦</span>`).join('');
+  })();
+
+  // ---------- shop by color grid (real lens photos) ----------
   const colorGrid = document.getElementById('color-grid');
-  irises.forEach(iris=>{
+  const FAM_CDN = 'https://cdn.lenseslover.com/families/';
+  (window.LL_CATALOG?window.LL_CATALOG.families:[]).forEach(f=>{
     const card = document.createElement('div');
-    card.className = 'color-card'; card.style.cursor='pointer'; card.addEventListener('click', ()=>location.href='lenses-lover-shop.html');
+    card.className = 'color-card'; card.style.cursor='pointer';
+    card.addEventListener('click', ()=>location.href='lenses-lover-shop.html?color='+f.key);
     card.innerHTML = `
-      <div class="color-orb" style="background:radial-gradient(circle at 35% 30%, ${iris.c1}, ${iris.c2})"></div>
-      <h3>${iris.ar}</h3>
-      <div class="en-name">${iris.en}</div>
+      <div class="color-orb" style="background-image:url('${FAM_CDN}${f.key}.webp')"></div>
+      <h3>${f.ar}</h3>
+      <div class="en-name">${f.en}</div>
     `;
     colorGrid.appendChild(card);
   });

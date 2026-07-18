@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Full product details: colors, diameter, water content, and wear duration — with real reviews.">
 <meta name="twitter:image" content="https://lenseslover.com/og-image.jpg">
 
-<title>LENSES LOVER — عدسات إيكوال بيري / Eqqual Berre Lenses</title>
+<title>lenseslover — عدسات إيكوال بيري</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -630,13 +630,13 @@
   siblings.forEach((c)=>{
     const opt = document.createElement('div');
     opt.className = 'color-opt';
-    opt.innerHTML = `<div class="swatch" style="background-image:url('${c.img}');background-size:cover;background-position:center 30%;"></div><span>${c.ar}</span>`;
+    opt.innerHTML = `<div class="swatch" style="background-image:url('${c.img}');background-size:cover;background-position:center 12%;"></div><span>${c.ar}</span>`;
     opt.querySelector('.swatch').onclick = ()=> selectColor(c.id);
     colorOpts.appendChild(opt);
 
     const th = document.createElement('button');
     th.className = 'thumb';
-    th.style.cssText = `background-image:url('${c.img}');background-size:cover;background-position:center 25%;`;
+    th.style.cssText = `background-image:url('${c.img}');background-size:cover;background-position:center 12%;`;
     th.setAttribute('aria-label', c.en);
     th.onclick = ()=> selectColor(c.id);
     thumbRow.appendChild(th);
@@ -658,7 +658,7 @@
     document.querySelectorAll('.p-title-en .en').forEach(e=>e.textContent='A '+P.family+' monthly colored lens');
     const crumbAr=document.querySelector('.crumbs .current .ar'), crumbEn=document.querySelector('.crumbs .current .en');
     if(crumbAr) crumbAr.textContent=P.ar; if(crumbEn) crumbEn.textContent=P.en;
-    document.title = 'LENSES LOVER — '+P.ar+' / '+P.en;
+    document.title = 'lenseslover — '+P.ar;
     document.querySelectorAll('.color-opt .swatch').forEach(s=>s.classList.remove('active'));
     document.querySelectorAll('.thumb').forEach(s=>s.classList.remove('active'));
     if(idx>-1){

@@ -123,6 +123,28 @@
   .ll-shint{ margin-top:12px; text-align:center; font-size:12px; color:var(--ivory-dim); }
   `;
   var st=document.createElement('style'); st.textContent=css + `
+  /* ---------- product cards: photo focus + pro mobile layout (global) ---------- */
+  .product-media{ padding:0 !important; aspect-ratio:3/3.9 !important; overflow:hidden; position:relative; }
+  .product-media img{
+    width:100% !important; height:100% !important; display:block;
+    object-fit:cover !important; object-position:center 12% !important;
+  }
+  .tag-badge{ z-index:2; }
+  .wish-btn{ z-index:2; }
+  @media (max-width:640px){
+    .product-grid{ grid-template-columns:repeat(2,1fr) !important; gap:12px !important; }
+    .product-media{ aspect-ratio:3/3.6 !important; }
+    .product-info{ padding:12px 12px 14px !important; }
+    .product-info h3{ font-size:15.5px !important; margin:2px 0 !important; }
+    .product-info .en-name{ font-size:10.5px !important; }
+    .product-info .cat{ font-size:10px !important; }
+    .product-info .stars{ font-size:10.5px !important; }
+    .price-now{ font-size:15.5px !important; }
+    .add-btn{ padding:9px 10px !important; font-size:12.5px !important; border-radius:12px !important; }
+    .tag-badge{ font-size:9.5px !important; padding:4px 8px !important; }
+    .wish-btn{ width:28px !important; height:28px !important; }
+  }
+
   /* footer social icons — squircle dark (global, matches reference) */
   .social-row{ display:flex; gap:12px; }
   .social-row .icon-btn{
