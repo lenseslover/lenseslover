@@ -99,6 +99,21 @@
   .ll-dview{ display:block; text-align:center; margin-top:10px; font-size:13px; color:var(--ivory-dim); }
   .ll-dview:hover{ color:var(--amber-light); }
 
+  /* brands drawer */
+  .ll-brands{ position:fixed; top:0; inset-inline-end:0; height:100%; width:300px; max-width:82vw; background:var(--ink); border-inline-start:1px solid var(--line);
+    z-index:160; transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; }
+  [dir="rtl"] .ll-brands{ transform:translateX(-100%); }
+  .ll-brands.show{ transform:translateX(0); }
+  .ll-blist{ flex:1; overflow-y:auto; padding:8px 22px 22px; }
+  .ll-brow{ display:block; padding:15px 0; border-bottom:1px solid var(--line); color:var(--ivory); font-size:15px; text-decoration:none; transition:color .2s ease; }
+  .ll-brow:hover{ color:var(--amber); }
+  .ll-brow.soon{ color:var(--ivory-dim); opacity:.45; pointer-events:none; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .ll-brow.soon i{ font-size:11px; font-style:normal; border:1px solid var(--line); border-radius:6px; padding:2px 7px; white-space:nowrap; }
+  .ll-ball{ display:block; margin-top:18px; padding:13px 0; color:var(--amber); font-size:14px; text-decoration:none; text-align:center; border:1px solid var(--line); border-radius:12px; }
+  .ll-ball:hover{ border-color:var(--amber); }
+  .ll-menu-btn{ width:38px; height:38px; border-radius:50%; background:var(--ink-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ivory); transition:border-color .25s ease; }
+  .ll-menu-btn:hover{ border-color:var(--amber); }
+
   /* search overlay */
   .ll-search-btn{ width:38px; height:38px; border-radius:50%; background:var(--ink-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ivory); transition:border-color .25s ease; }
   .ll-search-btn:hover{ border-color:var(--amber); }
@@ -248,6 +263,12 @@
     sb.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>';
     actions.insertBefore(sb, actions.firstChild);
     sb.onclick=openSearch;
+
+    var mb=document.createElement('button');
+    mb.className='ll-menu-btn'; mb.setAttribute('aria-label','brands');
+    mb.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
+    actions.insertBefore(mb, actions.firstChild);
+    mb.onclick=openBrands;
   }
 
   /* ---------- DOM: floating whatsapp ---------- */
@@ -288,7 +309,7 @@
 
   /* ---------- DOM: backdrop ---------- */
   var backdrop=document.createElement('div'); backdrop.className='ll-backdrop'; document.body.appendChild(backdrop);
-  backdrop.onclick=function(){ closeDrawer(); };
+  backdrop.onclick=function(){ closeDrawer(); if(typeof closeBrands==='function') closeBrands(); };
 
   /* ---------- DOM: cart drawer ---------- */
   var drawer=document.createElement('aside'); drawer.className='ll-drawer';
@@ -377,6 +398,48 @@
   /* Shop & wishlist build cards dynamically with their own handlers; to avoid double-adds
      we only wire buttons that opt-in via data-ll-add, OR expose LL.addToCart for pages to call. */
 
+  /* ---------- brands drawer ---------- */
+  var SOON = [
+    { key:'urban-layer', ar:'أربان لاير',  en:'Urban Layer' },
+    { key:'fresh-lady',  ar:'فريش ليدي',   en:'Fresh Lady'  },
+    { key:'dahab',       ar:'دهب',         en:'Dahab'       },
+    { key:'wonderlook',  ar:'وندرلوك',     en:'Wonderlook'  },
+    { key:'luminous',    ar:'لومينوس',     en:'Luminous'    },
+    { key:'naturel',     ar:'ناتوريل',     en:'Naturel'     },
+    { key:'mylense',     ar:'ماي لينس',    en:'MyLense'     }
+  ];
+
+  var brands=document.createElement('aside'); brands.className='ll-brands';
+  brands.innerHTML=
+    '<div class="ll-dhead">'+
+      '<h3><span class="ar">الماركات</span><span class="en">Brands</span></h3>'+
+      '<button class="close" aria-label="close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>'+
+    '</div>'+
+    '<div class="ll-blist" id="ll-blist"></div>';
+  document.body.appendChild(brands);
+  brands.querySelector('.close').onclick=function(){ closeBrands(); };
+
+  function openBrands(){ renderBrands(); brands.classList.add('show'); backdrop.classList.add('show'); document.body.style.overflow='hidden'; }
+  function closeBrands(){ brands.classList.remove('show'); backdrop.classList.remove('show'); document.body.style.overflow=''; }
+
+  function renderBrands(){
+    var box=brands.querySelector('#ll-blist');
+    var ar=isAr(), html='';
+    var live=(window.LL_CATALOG && window.LL_CATALOG.brands) ? window.LL_CATALOG.brands : [];
+    var liveKeys={};
+    live.forEach(function(b){
+      liveKeys[b.key]=1;
+      html+='<a class="ll-brow" href="lenses-lover-shop.html?brand='+b.key+'">'+(ar?b.ar:b.en)+'</a>';
+    });
+    SOON.forEach(function(b){
+      if(liveKeys[b.key]) return;
+      html+='<span class="ll-brow soon">'+(ar?b.ar:b.en)+
+        '<i>'+(ar?'قريبًا':'Soon')+'</i></span>';
+    });
+    html+='<a class="ll-ball" href="lenses-lover-shop.html">'+(ar?'كل المنتجات':'All products')+'</a>';
+    box.innerHTML=html;
+  }
+
   /* ---------- search overlay ---------- */
   var search=document.createElement('div'); search.className='ll-search';
   search.innerHTML=
@@ -422,14 +485,14 @@
   sInput && sInput.addEventListener('input', function(){ renderSearch(sInput.value); });
   search.addEventListener('click', function(e){ if(e.target===search) closeSearch(); });
   document.addEventListener('keydown', function(e){
-    if(e.key==='Escape'){ closeSearch(); closeDrawer(); }
+    if(e.key==='Escape'){ closeSearch(); closeDrawer(); closeBrands(); }
     if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openSearch(); }
   });
 
   /* ---------- keep language-dependent bits in sync ---------- */
   if(typeof window.setLang==='function'){
     var _sl=window.setLang;
-    window.setLang=function(l){ _sl(l); refreshWa(); if(drawer.classList.contains('show')) renderDrawer(); };
+    window.setLang=function(l){ _sl(l); refreshWa(); if(drawer.classList.contains('show')) renderDrawer(); if(brands.classList.contains('show')) renderBrands(); };
   }
 
   /* ---------- init ---------- */
