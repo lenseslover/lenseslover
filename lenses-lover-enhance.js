@@ -127,6 +127,19 @@
   html, body{ overflow-x:hidden !important; max-width:100% !important; }
   img, svg, video{ max-width:100%; }
 
+  /* hide template credit in footer bottom bar (all pages) */
+  .bottom-bar span:nth-child(2){ display:none !important; }
+
+  /* footer breathing room on mobile */
+  @media (max-width:640px){
+    footer, .foot-grid, .bottom-bar{ padding-inline:16px; box-sizing:border-box; }
+    /* homepage: bestsellers as single large luxury card */
+    .grid-solo-mobile{ grid-template-columns:1fr !important; gap:18px !important; }
+    .grid-solo-mobile .product-media{ aspect-ratio:3/3.2 !important; }
+    /* center a lone last color card */
+    .color-grid > :last-child:nth-child(odd){ grid-column:1 / -1; justify-self:center; width:calc(50% - 6px); }
+  }
+
   /* ---------- product cards: photo focus + pro mobile layout (global) ---------- */
   .product-media{ padding:0 !important; aspect-ratio:3/3.9 !important; overflow:hidden; position:relative; }
   .product-media::before, .product-media::after{ display:none !important; } /* kill old decorative rays over photos */
