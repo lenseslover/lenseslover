@@ -18,7 +18,11 @@ window.LL_CATALOG = {
 
     { key:'meetone', en:'Meetone', ar:'ميتون',
       imgBase:'https://cdn.lenseslover.com/mettone/', numbered:true,
-      offer:{ qty:2, bundle:1100, ar:'قطعتين بـ 1100 ج.م', en:'2 for 1100 EGP' } }
+      offer:{ qty:2, bundle:1100, ar:'قطعتين بـ 1100 ج.م', en:'2 for 1100 EGP' } },
+
+    { key:'urban-layer', en:'Urban Layer', ar:'أربان لاير',
+      imgBase:'https://cdn.lenseslover.com/urbanlayer/', numbered:true,
+      pricing:{ monthly:350, yearly:750 } }
   ],
 
   /* color family keys used by shop filters */
@@ -33,7 +37,8 @@ window.LL_CATALOG = {
   /* duration labels */
   durations: {
     monthly: { ar:'شهري', en:'Monthly', arAdj:'شهرية' },
-    yearly:  { ar:'سنوي', en:'Yearly',  arAdj:'سنوية' }
+    yearly:  { ar:'سنوي', en:'Yearly',  arAdj:'سنوية' },
+    both:    { ar:'شهري أو سنوي', en:'Monthly or Yearly', arAdj:'شهرية أو سنوية' }
   },
 
   products: [
@@ -75,7 +80,28 @@ window.LL_CATALOG = {
 
     { id:'meetone-bobo-brown',        brand:'meetone', ar:'بوبو براون',       en:'BOBO Brown',        family:'brown', dur:'yearly', type:'cosmetic', price:600, slug:'bobo-brown',        n:2 },
     { id:'meetone-yimee-chocolate',   brand:'meetone', ar:'ييمي شوكولاتة',    en:'Yimee Chocolate',   family:'brown', dur:'yearly', type:'cosmetic', price:600, slug:'yimee-chocolate',   n:2 },
-    { id:'meetone-midsummer-brown',   brand:'meetone', ar:'ميدسمر براون',     en:'Midsummer Brown',   family:'brown', dur:'yearly', type:'cosmetic', price:600, slug:'midsummer-brown',   n:2 }
+    { id:'meetone-midsummer-brown',   brand:'meetone', ar:'ميدسمر براون',     en:'Midsummer Brown',   family:'brown', dur:'yearly', type:'cosmetic', price:600, slug:'midsummer-brown',   n:2 },
+
+    /* ---------- Urban Layer — monthly 350 / yearly 750, optical (power -0.50 to -6.00) ---------- */
+    { id:'urban-layer-gogh-n-blue', brand:'urban-layer', ar:'جوخ إن بلو', en:'Gogh N Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'gogh-n-blue', n:2 },
+    { id:'urban-layer-siri-ash-blue', brand:'urban-layer', ar:'سيري آش بلو', en:'Siri Ash Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'siri-ash-blue', n:3 },
+    { id:'urban-layer-angeles-n-violet', brand:'urban-layer', ar:'أنجلوس إن فيوليت', en:'Angeles N Violet', family:'blue', dur:'both', type:'optical', price:350, slug:'angeles-n-violet', n:2 },
+    { id:'urban-layer-melrose-blue', brand:'urban-layer', ar:'ميلروز بلو', en:'Melrose Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'melrose-blue', n:1 },
+    { id:'urban-layer-angeles-n-ice-gray', brand:'urban-layer', ar:'أنجلوس إن آيس جراي', en:'Angeles N Ice Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'angeles-n-ice-gray', n:3 },
+    { id:'urban-layer-angeles-n-gray', brand:'urban-layer', ar:'أنجلوس إن جراي', en:'Angeles N Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'angeles-n-gray', n:2 },
+    { id:'urban-layer-gemini-gray', brand:'urban-layer', ar:'جيميني جراي', en:'Gemini Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'gemini-gray', n:1 },
+    { id:'urban-layer-siri-gray', brand:'urban-layer', ar:'سيري جراي', en:'Siri Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'siri-gray', n:2 },
+    { id:'urban-layer-daddario-gray', brand:'urban-layer', ar:'داداريو جراي', en:'Daddario Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'daddario-gray', n:2 },
+    { id:'urban-layer-olivia-gray', brand:'urban-layer', ar:'أوليفيا جراي', en:'Olivia Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'olivia-gray', n:2 },
+    { id:'urban-layer-nebula-gray', brand:'urban-layer', ar:'نيبولا جراي', en:'Nebula Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'nebula-gray', n:1 },
+    { id:'urban-layer-siri-green', brand:'urban-layer', ar:'سيري جرين', en:'Siri Green', family:'green', dur:'both', type:'optical', price:350, slug:'siri-green', n:3 },
+    { id:'urban-layer-chelsea-n-green', brand:'urban-layer', ar:'تشيلسي إن جرين', en:'Chelsea N Green', family:'green', dur:'both', type:'optical', price:350, slug:'chelsea-n-green', n:1 },
+    { id:'urban-layer-nebula-green', brand:'urban-layer', ar:'نيبولا جرين', en:'Nebula Green', family:'green', dur:'both', type:'optical', price:350, slug:'nebula-green', n:1 },
+    { id:'urban-layer-alexa-green', brand:'urban-layer', ar:'أليكسا جرين', en:'Alexa Green', family:'green', dur:'both', type:'optical', price:350, slug:'alexa-green', n:1 },
+    { id:'urban-layer-new-york-hazel', brand:'urban-layer', ar:'نيويورك هيزل', en:'New York Hazel', family:'hazel', dur:'both', type:'optical', price:350, slug:'new-york-hazel', n:1 },
+    { id:'urban-layer-yukon-r-yellow', brand:'urban-layer', ar:'يوكون آر يلو', en:'Yukon R Yellow', family:'hazel', dur:'both', type:'optical', price:350, slug:'yukon-r-yellow', n:2 },
+    { id:'urban-layer-mercury-brown', brand:'urban-layer', ar:'ميركوري براون', en:'Mercury Brown', family:'brown', dur:'both', type:'optical', price:350, slug:'mercury-brown', n:1 },
+    { id:'urban-layer-dark-night-black', brand:'urban-layer', ar:'دارك نايت بلاك', en:'Dark Night Black', family:'brown', dur:'both', type:'optical', price:350, slug:'dark-night-black', n:2 }
   ]
 };
 
@@ -169,6 +195,12 @@ window.LL_CATALOG = {
   };
 
   /* duration label helpers */
+  /* أسعار المدد لبراند بيبيع نفس اللون بمدتين (زي Urban Layer) */
+  C.pricingOf = function(p){
+    var b = C.brandByKey[p.brand];
+    return (b && b.pricing) ? b.pricing : null;   // {monthly, yearly} أو null
+  };
+
   C.durAr    = function(p){ var d=C.durations[p.dur]; return d?d.ar:''; };
   C.durEn    = function(p){ var d=C.durations[p.dur]; return d?d.en:''; };
   C.durArAdj = function(p){ var d=C.durations[p.dur]; return d?d.arAdj:''; };
