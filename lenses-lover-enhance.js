@@ -133,6 +133,8 @@
   /* footer breathing room on mobile */
   @media (max-width:640px){
     footer, .foot-grid, .bottom-bar{ padding-inline:16px; box-sizing:border-box; }
+    .foot-grid{ grid-template-columns:1fr !important; gap:26px !important; }
+    .foot-grid *, .bottom-bar *{ overflow-wrap:anywhere; }
     /* homepage: bestsellers as single large luxury card */
     .grid-solo-mobile{ grid-template-columns:1fr !important; gap:18px !important; }
     .grid-solo-mobile .product-media{ aspect-ratio:3/3.2 !important; }
