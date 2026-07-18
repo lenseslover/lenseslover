@@ -125,6 +125,7 @@
   var st=document.createElement('style'); st.textContent=css + `
   /* ---------- product cards: photo focus + pro mobile layout (global) ---------- */
   .product-media{ padding:0 !important; aspect-ratio:3/3.9 !important; overflow:hidden; position:relative; }
+  .product-media::before, .product-media::after{ display:none !important; } /* kill old decorative rays over photos */
   .product-media img{
     width:100% !important; height:100% !important; display:block;
     object-fit:cover !important; object-position:center 12% !important;
@@ -132,7 +133,8 @@
   .tag-badge{ z-index:2; }
   .wish-btn{ z-index:2; }
   @media (max-width:640px){
-    .product-grid{ grid-template-columns:repeat(2,1fr) !important; gap:12px !important; }
+    .product-grid{ grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:12px !important; width:100% !important; }
+    .product-grid > *{ min-width:0 !important; max-width:100% !important; }
     .product-media{ aspect-ratio:3/3.6 !important; }
     .product-info{ padding:12px 12px 14px !important; }
     .product-info h3{ font-size:15.5px !important; margin:2px 0 !important; }
