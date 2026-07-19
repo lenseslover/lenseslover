@@ -271,6 +271,27 @@
   .sticky-buy .btn-primary{ padding:12px 22px; font-size:14px; flex:1; }
   @media (max-width:940px){ .sticky-buy{ display:flex; } body{ padding-bottom:74px; } }
 
+  /* اختيار المقاس الطبي */
+  .power-wrap{ display:none; }
+  .power-wrap.on{ display:block; }
+  .power-type{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .power-type button{
+    padding:11px 20px; border-radius:999px; border:1px solid var(--line); background:var(--ink-2);
+    font-size:13.5px; color:var(--ivory-dim); font-weight:600; transition:all .2s ease;
+  }
+  .power-type button:hover{ border-color:var(--ivory-dim); }
+  .power-type button.active{ background:var(--jade); color:var(--ivory); border-color:var(--jade); }
+  .power-eyes{ display:none; gap:14px; flex-wrap:wrap; }
+  .power-eyes.on{ display:flex; }
+  .power-eye{ flex:1; min-width:150px; }
+  .power-eye label{ display:block; font-size:12.5px; color:var(--ivory-dim); margin-bottom:6px; }
+  .power-eye select{
+    width:100%; padding:12px 14px; border-radius:12px; background:var(--ink-2);
+    border:1px solid var(--line); color:var(--ivory); font-family:inherit; font-size:14px; cursor:pointer;
+  }
+  .power-eye select:focus{ outline:none; border-color:var(--amber); }
+  .power-hint{ font-size:12px; color:var(--ivory-dim); margin-top:10px; display:flex; gap:6px; align-items:flex-start; }
+
   ::selection{ background:var(--amber); color:var(--ink); }
 </style>
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
@@ -401,9 +422,35 @@
       </div>
 
       <div class="option-block">
-        <div class="option-label"><span class="ar">مدة الاستخدام:</span><span class="en">Wear Duration:</span></div>
-        <div class="dur-opts" id="dur-opts">
-          <button class="dur-opt active" data-dur="monthly"><span class="ar">شهري</span><span class="en">Monthly</span></button>
+        <div class="option-label">
+          <span class="ar">مدة الاستخدام:</span><span class="en">Wear Duration:</span>
+          <span class="sel-val" id="dur-sel-label"></span>
+        </div>
+        <div class="dur-opts" id="dur-opts"></div>
+      </div>
+
+      <div class="option-block power-wrap" id="power-wrap">
+        <div class="option-label"><span class="ar">النوع:</span><span class="en">Type:</span></div>
+        <div class="power-type" id="power-type">
+          <button class="active" data-power="cosmetic"><span class="ar">تجميلي (بدون نظر)</span><span class="en">Cosmetic (no power)</span></button>
+          <button data-power="optical"><span class="ar">طبي (بمقاس نظر)</span><span class="en">Prescription</span></button>
+        </div>
+        <div class="power-eyes" id="power-eyes">
+          <div class="power-eye">
+            <label><span class="ar">العين اليمنى (OD)</span><span class="en">Right eye (OD)</span></label>
+            <select id="power-od"></select>
+          </div>
+          <div class="power-eye">
+            <label><span class="ar">العين اليسرى (OS)</span><span class="en">Left eye (OS)</span></label>
+            <select id="power-os"></select>
+          </div>
+        </div>
+        <div class="power-hint" id="power-hint" style="display:none;">
+          <span>ℹ️</span>
+          <span>
+            <span class="ar">المقاسات المتاحة من -0.50 حتى -6.00. لو مقاسك مش موجود كلمينا واتساب.</span>
+            <span class="en">Available powers: -0.50 to -6.00. If your power isn't listed, message us on WhatsApp.</span>
+          </span>
         </div>
       </div>
 
@@ -450,7 +497,7 @@
       <div class="spec-card"><div class="ic">🔵</div><div class="k ar">القطر</div><div class="k en">Diameter</div><div class="v">14.2mm</div></div>
       <div class="spec-card"><div class="ic">⭕</div><div class="k ar">منحنى القاعدة</div><div class="k en">Base Curve</div><div class="v">8.6mm</div></div>
       <div class="spec-card"><div class="ic">💧</div><div class="k ar">نسبة الماء</div><div class="k en">Water Content</div><div class="v">55%</div></div>
-      <div class="spec-card"><div class="ic">📅</div><div class="k ar">مدة الاستخدام</div><div class="k en">Wear Duration</div><div class="v"><span class="ar">شهري</span><span class="en">Monthly</span></div></div>
+      <div class="spec-card"><div class="ic">📅</div><div class="k ar">مدة الاستخدام</div><div class="k en">Wear Duration</div><div class="v"><span class="ar" id="spec-dur-ar">شهري</span><span class="en" id="spec-dur-en">Monthly</span></div></div>
     </div>
     <div class="spec-note">
       <span class="ic">ℹ️</span>
@@ -608,6 +655,11 @@
 
   // ---------- catalog-driven product ----------
   const CAT = window.LL_CATALOG;
+
+  /* حالة الاختيارات — لازم تتعرّف قبل selectColor() */
+  var selDur = null;          // 'monthly' | 'yearly' | null
+  var selPowerType = 'cosmetic';
+
   const params = new URLSearchParams(location.search);
   let P = CAT.byId(params.get('id')) || CAT.products[0];
   const BRAND = CAT.brands.find(b=>b.key===P.brand);
@@ -677,8 +729,6 @@
     const idx = siblings.indexOf(P);
     const ph = document.getElementById('p-photo');
     if(ph){ ph.src = P.img; ph.alt = P.en+' — '+P.ar; }
-    const pv = document.getElementById('p-price-val');
-    if(pv) pv.textContent = P.price;
     const off = CAT.offerOfProduct(P);
     const oAr = document.getElementById('p-offer-ar'), oEn = document.getElementById('p-offer-en');
     if(oAr) oAr.textContent = off ? (off.ar + ' — الخصم تلقائي في السلة') : 'الخصم تلقائي في السلة';
@@ -701,9 +751,106 @@
       document.querySelectorAll('.color-opt .swatch')[idx].classList.add('active');
       document.querySelectorAll('.thumb')[idx].classList.add('active');
     }
+    buildDurOpts();
+    buildPowerOpts();
+    const sda=document.getElementById('spec-dur-ar'), sde=document.getElementById('spec-dur-en');
+    if(sda) sda.textContent = CAT.durAr(P);
+    if(sde) sde.textContent = CAT.durEn(P);
     history.replaceState(null,'','?id='+P.id);
   }
   selectColor(P.id);
+
+  // ---------- اختيار المدة (للبراندات اللي بتبيع نفس اللون بمدتين) ----------
+  function currentPrice(){
+    const pr = CAT.pricingOf ? CAT.pricingOf(P) : null;
+    if(pr && selDur && pr[selDur] != null) return pr[selDur];
+    return P.price;
+  }
+
+  function paintPrice(){
+    const val = currentPrice();
+    const pv = document.getElementById('p-price-val');
+    if(pv) pv.textContent = val;
+    const sb = document.querySelector('.sticky-buy .sb-price');
+    if(sb) sb.innerHTML = val + ' <span class="ar">ج.م</span><span class="en">EGP</span>';
+  }
+
+  function buildDurOpts(){
+    const box = document.getElementById('dur-opts');
+    const lbl = document.getElementById('dur-sel-label');
+    if(!box) return;
+    box.innerHTML = '';
+    const pr = CAT.pricingOf ? CAT.pricingOf(P) : null;
+
+    // براند بمدتين → أزرار اختيار
+    if(pr && P.dur === 'both'){
+      const opts = [
+        { k:'monthly', ar:'شهري', en:'Monthly' },
+        { k:'yearly',  ar:'سنوي', en:'Yearly'  }
+      ].filter(o => pr[o.k] != null);
+      if(!selDur || !pr[selDur]) selDur = opts[0].k;
+      opts.forEach(function(o){
+        const b = document.createElement('button');
+        b.className = 'dur-opt' + (o.k===selDur ? ' active' : '');
+        b.dataset.dur = o.k;
+        b.innerHTML = '<span class="ar">'+o.ar+' — '+pr[o.k]+' ج.م</span>'
+                    + '<span class="en">'+o.en+' — '+pr[o.k]+' EGP</span>';
+        b.onclick = function(){
+          selDur = o.k;
+          box.querySelectorAll('.dur-opt').forEach(function(x){ x.classList.remove('active'); });
+          b.classList.add('active');
+          paintPrice();
+        };
+        box.appendChild(b);
+      });
+      if(lbl) lbl.textContent = '';
+    } else {
+      // مدة واحدة → عرض ثابت
+      selDur = null;
+      const b = document.createElement('button');
+      b.className = 'dur-opt active';
+      b.innerHTML = '<span class="ar">'+CAT.durAr(P)+'</span><span class="en">'+CAT.durEn(P)+'</span>';
+      b.onclick = function(e){ e.preventDefault(); };
+      box.appendChild(b);
+      if(lbl) lbl.textContent = '';
+    }
+    paintPrice();
+  }
+
+  // ---------- اختيار المقاس الطبي (للمنتجات optical فقط) ----------
+  function buildPowerOpts(){
+    const wrap = document.getElementById('power-wrap');
+    if(!wrap) return;
+    if(P.type !== 'optical'){ wrap.classList.remove('on'); selPowerType='cosmetic'; return; }
+    wrap.classList.add('on');
+
+    // املأ القوائم مرة واحدة
+    const od = document.getElementById('power-od'), os = document.getElementById('power-os');
+    if(od && !od.options.length){
+      let html = '';
+      for(let v=0.50; v<=6.001; v+=0.25){
+        const t = '-' + v.toFixed(2);
+        html += '<option value="'+t+'">'+t+'</option>';
+      }
+      od.innerHTML = html; os.innerHTML = html;
+    }
+
+    // أزرار تجميلي/طبي
+    document.querySelectorAll('#power-type button').forEach(function(b){
+      b.classList.toggle('active', b.dataset.power === selPowerType);
+      b.onclick = function(){
+        selPowerType = b.dataset.power;
+        document.querySelectorAll('#power-type button').forEach(function(x){ x.classList.remove('active'); });
+        b.classList.add('active');
+        const on = selPowerType === 'optical';
+        document.getElementById('power-eyes').classList.toggle('on', on);
+        document.getElementById('power-hint').style.display = on ? 'flex' : 'none';
+      };
+    });
+    const on = selPowerType === 'optical';
+    document.getElementById('power-eyes').classList.toggle('on', on);
+    document.getElementById('power-hint').style.display = on ? 'flex' : 'none';
+  }
 
   // ---------- quantity stepper ----------
   let qty = 1;
@@ -714,11 +861,36 @@
 
   // ---------- add to cart (uses shared LL cart drawer/toast) ----------
   function addToCart(btn){
-    if(window.LL && window.LL.addToCart){
-      for(let k=0;k<qty;k++){
-        window.LL.addToCart({ id:P.id, ar:P.ar, en:P.en, img:P.img, offer2:true,
-          ar_m:CAT.durAr(P)+' · '+BRAND.ar, en_m:CAT.durEn(P)+' · '+BRAND.en, price:P.price });
-      }
+    if(!(window.LL && window.LL.addToCart)) return;
+
+    const price = currentPrice();
+    const D = CAT.durations || {};
+
+    // وصف المدة المختارة
+    let durAr = CAT.durAr(P), durEn = CAT.durEn(P);
+    if(selDur && D[selDur]){ durAr = D[selDur].ar; durEn = D[selDur].en; }
+
+    // وصف المقاس
+    let powAr = '', powEn = '';
+    if(P.type === 'optical' && selPowerType === 'optical'){
+      const od = document.getElementById('power-od'), os = document.getElementById('power-os');
+      const v1 = od ? od.value : '', v2 = os ? os.value : '';
+      powAr = ' · نظر ' + v1 + '/' + v2;
+      powEn = ' · Rx ' + v1 + '/' + v2;
+    }
+
+    // معرّف فريد للمتغير (عشان المقاسات المختلفة متتجمعش مع بعض في السلة)
+    const variantId = P.id + (selDur ? ':'+selDur : '') + (powAr ? ':'+powAr.replace(/[^0-9.\-\/]/g,'') : '');
+
+    for(let k=0;k<qty;k++){
+      window.LL.addToCart({
+        id: variantId,
+        baseId: P.id,
+        ar: P.ar, en: P.en, img: P.img, offer2: true,
+        ar_m: durAr + ' · ' + BRAND.ar + powAr,
+        en_m: durEn + ' · ' + BRAND.en + powEn,
+        price: price
+      });
     }
   }
   document.getElementById('add-cart-btn').onclick = function(){ addToCart(this); };

@@ -21,7 +21,7 @@ window.LL_CATALOG = {
       offer:{ qty:2, bundle:1100, ar:'قطعتين بـ 1100 ج.م', en:'2 for 1100 EGP' } },
 
     { key:'urban-layer', en:'Urban Layer', ar:'أربان لاير',
-      imgBase:'https://cdn.lenseslover.com/urbanlayer/', numbered:true,
+      imgBase:'https://cdn.lenseslover.com/urban-layer/', numbered:true,
       pricing:{ monthly:350, yearly:750 } }
   ],
 
@@ -146,6 +146,14 @@ window.LL_CATALOG = {
     return C.products.find(function(p){ return p.id===id; }) || null;
   };
 
+  /* السلة ممكن تبعت id مركّب للمتغيرات (مثال: 'urban-layer-siri-gray:yearly:-2.25/-3.00')
+     الدالة دي بترجع المنتج الأصلي سواء جالها id بسيط أو مركّب أو baseId */
+  C.resolve = function(it){
+    if(!it) return null;
+    if(typeof it === 'string') return C.byId(it) || C.byId(String(it).split(':')[0]);
+    return C.byId(it.baseId || it.id) || C.byId(String(it.id||'').split(':')[0]);
+  };
+
   /* brand offer helpers */
   C.offerOf = function(brandKey){
     var b = C.brandByKey[brandKey];
@@ -165,7 +173,7 @@ window.LL_CATALOG = {
     var byBrand = {};
     cart.forEach(function(it){
       if(!it || it.offer2 === false) return;
-      var p = C.byId(it.id);
+      var p = C.resolve(it);
       if(!p) return;
       var o = C.offerOf(p.brand);
       if(!o) return;
@@ -189,7 +197,7 @@ window.LL_CATALOG = {
     var byBrand = {};
     cart.forEach(function(it){
       if(!it || it.offer2 === false) return;
-      var p = C.byId(it.id);
+      var p = C.resolve(it);
       if(!p) return;
       var o = C.offerOf(p.brand);
       if(!o) return;
