@@ -21,7 +21,7 @@ window.LL_CATALOG = {
       offer:{ qty:2, bundle:1100, ar:'قطعتين بـ 1100 ج.م', en:'2 for 1100 EGP' } },
 
     { key:'urban-layer', en:'Urban Layer', ar:'أربان لاير',
-      imgBase:'https://cdn.lenseslover.com/urban-layer/', numbered:true,
+      imgBase:'https://cdn.lenseslover.com/urbanlayer/', numbered:true,
       pricing:{ monthly:350, yearly:750 } }
   ],
 
