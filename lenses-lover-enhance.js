@@ -467,8 +467,8 @@
     try{ return localStorage.getItem(THEME_KEY); }catch(e){ return null; }
   }
   function currentTheme(){
-    /* DEFAULT = dark. To follow the device instead, change 'dark' to sysTheme() */
-    return savedTheme() || 'dark';
+    /* DEFAULT = light. Use 'dark' for dark, or sysTheme() to follow the device. */
+    return savedTheme() || 'light';
   }
   function applyTheme(t){
     document.documentElement.setAttribute('data-theme', t);
