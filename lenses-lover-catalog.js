@@ -21,7 +21,7 @@ window.LL_CATALOG = {
       offer:{ qty:2, bundle:1100, ar:'قطعتين بـ 1100 ج.م', en:'2 for 1100 EGP' } },
 
     { key:'urban-layer', en:'Urban Layer', ar:'أربان لاير',
-      imgBase:'https://cdn.lenseslover.com/urbanlayer/', numbered:true,
+      imgBase:'https://cdn.lenseslover.com/urban-layer/', numbered:true,
       pricing:{ monthly:350, yearly:750 } }
   ],
 
@@ -82,26 +82,42 @@ window.LL_CATALOG = {
     { id:'meetone-yimee-chocolate',   brand:'meetone', ar:'ييمي شوكولاتة',    en:'Yimee Chocolate',   family:'brown', dur:'yearly', type:'cosmetic', price:600, slug:'yimee-chocolate',   n:2 },
     { id:'meetone-midsummer-brown',   brand:'meetone', ar:'ميدسمر براون',     en:'Midsummer Brown',   family:'brown', dur:'yearly', type:'cosmetic', price:600, slug:'midsummer-brown',   n:2 },
 
-    /* ---------- Urban Layer — monthly 350 / yearly 750, optical (power -0.50 to -6.00) ---------- */
-    { id:'urban-layer-gogh-n-blue', brand:'urban-layer', ar:'جوخ إن بلو', en:'Gogh N Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'gogh-n-blue', n:2 },
-    { id:'urban-layer-siri-ash-blue', brand:'urban-layer', ar:'سيري آش بلو', en:'Siri Ash Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'siri-ash-blue', n:3 },
+    /* ---------- Urban Layer — 35 لون، شهري 350 / سنوي 750، optical (مقاسات -0.50 لـ -6.00) ---------- */
+    { id:'urban-layer-al-blue', brand:'urban-layer', ar:'آل بلو', en:'Al Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'al-blue', n:1 },
+    { id:'urban-layer-angeles-n-blue', brand:'urban-layer', ar:'أنجلوس إن بلو', en:'Angeles N Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'angeles-n-blue', n:1 },
     { id:'urban-layer-angeles-n-violet', brand:'urban-layer', ar:'أنجلوس إن فيوليت', en:'Angeles N Violet', family:'blue', dur:'both', type:'optical', price:350, slug:'angeles-n-violet', n:2 },
+    { id:'urban-layer-breeze-light-blue', brand:'urban-layer', ar:'بريز لايت بلو', en:'Breeze Light Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'breeze-light-blue', n:1 },
+    { id:'urban-layer-gemini-light-blue', brand:'urban-layer', ar:'جيميني لايت بلو', en:'Gemini Light Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'gemini-light-blue', n:1 },
+    { id:'urban-layer-gogh-n-blue', brand:'urban-layer', ar:'جوخ إن بلو', en:'Gogh N Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'gogh-n-blue', n:1 },
+    { id:'urban-layer-melrose-ash-blue', brand:'urban-layer', ar:'ميلروز آش بلو', en:'Melrose Ash Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'melrose-ash-blue', n:1 },
     { id:'urban-layer-melrose-blue', brand:'urban-layer', ar:'ميلروز بلو', en:'Melrose Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'melrose-blue', n:1 },
+    { id:'urban-layer-new-york-n-blue', brand:'urban-layer', ar:'نيويورك إن بلو', en:'New York N Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'new-york-n-blue', n:1 },
+    { id:'urban-layer-orlando-n-blue', brand:'urban-layer', ar:'أورلاندو إن بلو', en:'Orlando N Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'orlando-n-blue', n:1 },
+    { id:'urban-layer-siri-ash-blue', brand:'urban-layer', ar:'سيري آش بلو', en:'Siri Ash Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'siri-ash-blue', n:3 },
+    { id:'urban-layer-angeles-n-gray', brand:'urban-layer', ar:'أنجلوس إن جراي', en:'Angeles N Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'angeles-n-gray', n:1 },
     { id:'urban-layer-angeles-n-ice-gray', brand:'urban-layer', ar:'أنجلوس إن آيس جراي', en:'Angeles N Ice Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'angeles-n-ice-gray', n:3 },
-    { id:'urban-layer-angeles-n-gray', brand:'urban-layer', ar:'أنجلوس إن جراي', en:'Angeles N Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'angeles-n-gray', n:2 },
-    { id:'urban-layer-gemini-gray', brand:'urban-layer', ar:'جيميني جراي', en:'Gemini Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'gemini-gray', n:1 },
-    { id:'urban-layer-siri-gray', brand:'urban-layer', ar:'سيري جراي', en:'Siri Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'siri-gray', n:2 },
-    { id:'urban-layer-daddario-gray', brand:'urban-layer', ar:'داداريو جراي', en:'Daddario Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'daddario-gray', n:2 },
-    { id:'urban-layer-olivia-gray', brand:'urban-layer', ar:'أوليفيا جراي', en:'Olivia Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'olivia-gray', n:2 },
+    { id:'urban-layer-brooklyn-fa-gray', brand:'urban-layer', ar:'بروكلين إف إيه جراي', en:'Brooklyn FA Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'brooklyn-fa-gray', n:1 },
+    { id:'urban-layer-daddario-gray', brand:'urban-layer', ar:'داداريو جراي', en:'Daddario Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'daddario-gray', n:1 },
+    { id:'urban-layer-mercury-gray', brand:'urban-layer', ar:'ميركوري جراي', en:'Mercury Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'mercury-gray', n:1 },
     { id:'urban-layer-nebula-gray', brand:'urban-layer', ar:'نيبولا جراي', en:'Nebula Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'nebula-gray', n:1 },
-    { id:'urban-layer-siri-green', brand:'urban-layer', ar:'سيري جرين', en:'Siri Green', family:'green', dur:'both', type:'optical', price:350, slug:'siri-green', n:3 },
-    { id:'urban-layer-chelsea-n-green', brand:'urban-layer', ar:'تشيلسي إن جرين', en:'Chelsea N Green', family:'green', dur:'both', type:'optical', price:350, slug:'chelsea-n-green', n:1 },
-    { id:'urban-layer-nebula-green', brand:'urban-layer', ar:'نيبولا جرين', en:'Nebula Green', family:'green', dur:'both', type:'optical', price:350, slug:'nebula-green', n:1 },
+    { id:'urban-layer-opal-gray', brand:'urban-layer', ar:'أوبال جراي', en:'Opal Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'opal-gray', n:1 },
+    { id:'urban-layer-siri-gray', brand:'urban-layer', ar:'سيري جراي', en:'Siri Gray', family:'gray', dur:'both', type:'optical', price:350, slug:'siri-gray', n:2 },
     { id:'urban-layer-alexa-green', brand:'urban-layer', ar:'أليكسا جرين', en:'Alexa Green', family:'green', dur:'both', type:'optical', price:350, slug:'alexa-green', n:1 },
-    { id:'urban-layer-new-york-hazel', brand:'urban-layer', ar:'نيويورك هيزل', en:'New York Hazel', family:'hazel', dur:'both', type:'optical', price:350, slug:'new-york-hazel', n:1 },
+    { id:'urban-layer-breeze-green', brand:'urban-layer', ar:'بريز جرين', en:'Breeze Green', family:'green', dur:'both', type:'optical', price:350, slug:'breeze-green', n:1 },
+    { id:'urban-layer-chelsea-n-green', brand:'urban-layer', ar:'تشيلسي إن جرين', en:'Chelsea N Green', family:'green', dur:'both', type:'optical', price:350, slug:'chelsea-n-green', n:1 },
+    { id:'urban-layer-cleopatra-lime', brand:'urban-layer', ar:'كليوباترا لايم', en:'Cleopatra Lime', family:'green', dur:'both', type:'optical', price:350, slug:'cleopatra-lime', n:1 },
+    { id:'urban-layer-melrose-green', brand:'urban-layer', ar:'ميلروز جرين', en:'Melrose Green', family:'green', dur:'both', type:'optical', price:350, slug:'melrose-green', n:1 },
+    { id:'urban-layer-nebula-green', brand:'urban-layer', ar:'نيبولا جرين', en:'Nebula Green', family:'green', dur:'both', type:'optical', price:350, slug:'nebula-green', n:1 },
+    { id:'urban-layer-siri-145-green', brand:'urban-layer', ar:'سيري ١٤.٥ جرين', en:'Siri 14.5 Green', family:'green', dur:'both', type:'optical', price:350, slug:'siri-145-green', n:2 },
+    { id:'urban-layer-siri-green', brand:'urban-layer', ar:'سيري جرين', en:'Siri Green', family:'green', dur:'both', type:'optical', price:350, slug:'siri-green', n:2 },
+    { id:'urban-layer-siri-lime', brand:'urban-layer', ar:'سيري لايم', en:'Siri Lime', family:'green', dur:'both', type:'optical', price:350, slug:'siri-lime', n:1 },
+    { id:'urban-layer-new-york-n-hazel', brand:'urban-layer', ar:'نيويورك إن هيزل', en:'New York N Hazel', family:'hazel', dur:'both', type:'optical', price:350, slug:'new-york-n-hazel', n:1 },
     { id:'urban-layer-yukon-r-yellow', brand:'urban-layer', ar:'يوكون آر يلو', en:'Yukon R Yellow', family:'hazel', dur:'both', type:'optical', price:350, slug:'yukon-r-yellow', n:2 },
+    { id:'urban-layer-al-brown', brand:'urban-layer', ar:'آل براون', en:'Al Brown', family:'brown', dur:'both', type:'optical', price:350, slug:'al-brown', n:1 },
+    { id:'urban-layer-angeles-n-brown', brand:'urban-layer', ar:'أنجلوس إن براون', en:'Angeles N Brown', family:'brown', dur:'both', type:'optical', price:350, slug:'angeles-n-brown', n:1 },
+    { id:'urban-layer-dark-night-black', brand:'urban-layer', ar:'دارك نايت بلاك', en:'Dark Night Black', family:'brown', dur:'both', type:'optical', price:350, slug:'dark-night-black', n:2 },
     { id:'urban-layer-mercury-brown', brand:'urban-layer', ar:'ميركوري براون', en:'Mercury Brown', family:'brown', dur:'both', type:'optical', price:350, slug:'mercury-brown', n:1 },
-    { id:'urban-layer-dark-night-black', brand:'urban-layer', ar:'دارك نايت بلاك', en:'Dark Night Black', family:'brown', dur:'both', type:'optical', price:350, slug:'dark-night-black', n:2 }
+    { id:'urban-layer-nebula-brown', brand:'urban-layer', ar:'نيبولا براون', en:'Nebula Brown', family:'brown', dur:'both', type:'optical', price:350, slug:'nebula-brown', n:1 }
   ]
 };
 
