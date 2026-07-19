@@ -153,10 +153,24 @@
     display:flex !important; align-items:center; justify-content:center; color:var(--ivory); flex-shrink:0;
     transition:border-color .25s ease; cursor:pointer; padding:0; }
   .ll-menu-btn:hover{ border-color:var(--amber); }
-  /* header can get cramped on phones — keep the row on one line and let it wrap tight */
+  /* Phones: the header row is wider than the screen, so body{overflow-x:hidden}
+     was clipping the last icons (cart + menu). Shrink everything to fit. */
   @media (max-width:860px){
-    .header-actions{ gap:8px !important; }
-    .ll-menu-btn{ width:36px; height:36px; }
+    .nav-row{ gap:8px !important; padding-block:12px !important; }
+    .wrap{ padding-inline:14px !important; }
+    .header-actions{ gap:6px !important; flex-shrink:0; }
+    .logo{ font-size:17px !important; }
+    .lang-toggle{ padding:3px !important; gap:2px !important; }
+    .lang-toggle button{ padding:5px 8px !important; font-size:11px !important; }
+    .icon-btn{ width:34px !important; height:34px !important; }
+    .ll-menu-btn{ width:34px; height:34px; }
+    .ll-search-btn{ width:34px !important; height:34px !important; }
+  }
+  @media (max-width:400px){
+    .logo{ font-size:15px !important; }
+    .header-actions{ gap:4px !important; }
+    .icon-btn, .ll-menu-btn, .ll-search-btn{ width:31px !important; height:31px !important; }
+    .lang-toggle button{ padding:4px 6px !important; font-size:10px !important; }
   }
 
   /* search overlay */
