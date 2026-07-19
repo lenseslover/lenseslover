@@ -149,8 +149,15 @@
   .ll-brow.soon i{ font-size:11px; font-style:normal; border:1px solid var(--line); border-radius:6px; padding:2px 7px; white-space:nowrap; }
   .ll-ball{ display:block; margin-top:18px; padding:13px 0; color:var(--amber); font-size:14px; text-decoration:none; text-align:center; border:1px solid var(--line); border-radius:12px; }
   .ll-ball:hover{ border-color:var(--amber); }
-  .ll-menu-btn{ width:38px; height:38px; border-radius:50%; background:var(--ink-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ivory); transition:border-color .25s ease; }
+  .ll-menu-btn{ width:38px; height:38px; border-radius:50%; background:var(--ink-2); border:1px solid var(--line);
+    display:flex !important; align-items:center; justify-content:center; color:var(--ivory); flex-shrink:0;
+    transition:border-color .25s ease; cursor:pointer; padding:0; }
   .ll-menu-btn:hover{ border-color:var(--amber); }
+  /* header can get cramped on phones — keep the row on one line and let it wrap tight */
+  @media (max-width:860px){
+    .header-actions{ gap:8px !important; }
+    .ll-menu-btn{ width:36px; height:36px; }
+  }
 
   /* search overlay */
   .ll-search-btn{ width:38px; height:38px; border-radius:50%; background:var(--ink-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ivory); transition:border-color .25s ease; }
