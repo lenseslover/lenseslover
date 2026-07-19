@@ -99,6 +99,44 @@
   .ll-dview{ display:block; text-align:center; margin-top:10px; font-size:13px; color:var(--ivory-dim); }
   .ll-dview:hover{ color:var(--amber-light); }
 
+  /* About + Blog hidden from the top nav only — still live in the footer */
+  nav.links a[href*="about"],
+  nav.links a[href*="blog"]{ display:none !important; }
+
+  /* trust bar hidden temporarily — delete this rule to bring it back */
+  .ll-trust{ display:none !important; }
+
+  /* wishlist icon retired from header (page still exists at lenses-lover-wishlist.html) */
+  .header-actions a[href*="wishlist"]{ display:none !important; }
+
+  /* ===== light theme ===== */
+  html[data-theme="light"]{
+    --ink:#faf7f2; --ink-2:#ffffff; --ink-3:#f0e9dd;
+    --ivory:#221c14; --ivory-dim:#6e6558;
+    --amber:#a8702e; --amber-light:#c88a3e;
+    --line: rgba(21,18,14,0.12);
+    color-scheme: light;
+  }
+  html[data-theme="light"] body{ background:var(--ink); color:var(--ivory); }
+  html[data-theme="light"] .ll-backdrop{ background:rgba(21,18,14,.45); }
+  html[data-theme="light"] .ll-search{ background:rgba(250,247,242,.85); }
+  html[data-theme="light"] img{ filter:none; }
+  /* pages hardcode the dark header/footer/icon colours — override them in light mode */
+  html[data-theme="light"] header{ background:rgba(250,247,242,0.88) !important; }
+  html[data-theme="light"] footer{ background:var(--ink-2) !important; }
+  html[data-theme="light"] .icon-btn,
+  html[data-theme="light"] .lang-toggle{ background:rgba(21,18,14,0.05) !important; }
+  html[data-theme="light"] .hero,
+  html[data-theme="light"] .marquee{ background:var(--ink) !important; }
+
+  /* theme switch */
+  .ll-theme{ margin-top:18px; padding-top:16px; border-top:1px solid var(--line); }
+  .ll-theme-lbl{ font-size:11px; color:var(--ivory-dim); margin-bottom:9px; letter-spacing:.5px; }
+  .ll-seg{ display:inline-flex; background:var(--ink-3); border-radius:10px; padding:3px; gap:2px; width:100%; }
+  .ll-seg button{ flex:1; border:0; background:transparent; border-radius:8px; padding:8px 6px; font:inherit; font-size:12.5px;
+    color:var(--ivory-dim); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all .2s ease; }
+  .ll-seg button.on{ background:var(--ink-2); color:var(--ivory); box-shadow:0 1px 3px rgba(0,0,0,.10); }
+
   /* brands drawer */
   .ll-brands{ position:fixed; top:0; inset-inline-end:0; height:100%; width:300px; max-width:82vw; background:var(--ink); border-inline-start:1px solid var(--line);
     z-index:160; transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; }
@@ -267,7 +305,7 @@
     var mb=document.createElement('button');
     mb.className='ll-menu-btn'; mb.setAttribute('aria-label','brands');
     mb.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
-    actions.insertBefore(mb, actions.firstChild);
+    actions.appendChild(mb);
     mb.onclick=openBrands;
   }
 
@@ -398,6 +436,28 @@
   /* Shop & wishlist build cards dynamically with their own handlers; to avoid double-adds
      we only wire buttons that opt-in via data-ll-add, OR expose LL.addToCart for pages to call. */
 
+  /* ---------- theme ---------- */
+  var THEME_KEY='ll_theme';
+  function sysTheme(){
+    try{ return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'; }
+    catch(e){ return 'dark'; }
+  }
+  function savedTheme(){
+    try{ return localStorage.getItem(THEME_KEY); }catch(e){ return null; }
+  }
+  function currentTheme(){
+    /* DEFAULT = dark. To follow the device instead, change 'dark' to sysTheme() */
+    return savedTheme() || 'dark';
+  }
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    try{ localStorage.setItem(THEME_KEY,t); }catch(e){}
+    var seg=document.querySelector('.ll-seg');
+    if(seg){ seg.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.t===t); }); }
+  }
+  applyTheme(currentTheme());
+  window.LL_setTheme=applyTheme;
+
   /* ---------- brands drawer ---------- */
   var SOON = [
     { key:'urban-layer', ar:'أربان لاير',  en:'Urban Layer' },
@@ -437,7 +497,23 @@
         '<i>'+(ar?'قريبًا':'Soon')+'</i></span>';
     });
     html+='<a class="ll-ball" href="lenses-lover-shop.html">'+(ar?'كل المنتجات':'All products')+'</a>';
+
+    var th=currentTheme();
+    html+='<div class="ll-theme">'+
+      '<div class="ll-theme-lbl">'+(ar?'مظهر الموقع':'Appearance')+'</div>'+
+      '<div class="ll-seg">'+
+        '<button data-t="light" class="'+(th==='light'?'on':'')+'">'+
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>'+
+          (ar?'فاتح':'Light')+'</button>'+
+        '<button data-t="dark" class="'+(th==='dark'?'on':'')+'">'+
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z"/></svg>'+
+          (ar?'غامق':'Dark')+'</button>'+
+      '</div></div>';
+
     box.innerHTML=html;
+    box.querySelectorAll('.ll-seg button').forEach(function(b){
+      b.onclick=function(){ applyTheme(b.dataset.t); };
+    });
   }
 
   /* ---------- search overlay ---------- */
