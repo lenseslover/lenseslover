@@ -537,7 +537,23 @@
   // ---------- catalog data ----------
   const COLORS = window.LL_CATALOG.families;
   const BRANDS = window.LL_CATALOG.brands.map(b=>b.en);
-  const DURS = [{k:'daily',ar:'يومي',en:'Daily'},{k:'monthly',ar:'شهري',en:'Monthly'},{k:'yearly',ar:'سنوي',en:'Yearly'}];
+  /* المدد تتبني من الكتالوج نفسه — أي مدة جديدة (زي both) تظهر تلقائيًا */
+  const DURS = (function(){
+    var D = (window.LL_CATALOG && window.LL_CATALOG.durations) || {};
+    var used = {};
+    ((window.LL_CATALOG && window.LL_CATALOG.products) || []).forEach(function(p){ if(p.dur) used[p.dur]=1; });
+    var order = ['daily','monthly','yearly','both'];
+    var keys = Object.keys(used).sort(function(a,b){
+      var ia=order.indexOf(a), ib=order.indexOf(b);
+      return (ia<0?99:ia) - (ib<0?99:ib);
+    });
+    if(!keys.length) keys = ['monthly','yearly'];
+    return keys.map(function(k){
+      return { k:k, ar:(D[k]&&D[k].ar)||k, en:(D[k]&&D[k].en)||k };
+    });
+  })();
+  /* خريطة سريعة: مفتاح المدة → التسميات */
+  const DURMAP = DURS.reduce(function(m,d){ m[d.k]=d; return m; }, {});
 
   const BRAND_BY_KEY={}; window.LL_CATALOG.brands.forEach(b=>BRAND_BY_KEY[b.key]=b);
   const PRODUCTS = window.LL_CATALOG.products.map(p=>Object.assign({}, p, {
@@ -609,8 +625,8 @@
     grid.innerHTML='';
     empty.style.display=list.length? 'none':'block';
     list.forEach(p=>{
-      const durAr={daily:'يومي',monthly:'شهري',yearly:'سنوي'}[p.dur];
-      const durEn={daily:'Daily',monthly:'Monthly',yearly:'Yearly'}[p.dur];
+      const durAr=(DURMAP[p.dur]&&DURMAP[p.dur].ar)||'';
+      const durEn=(DURMAP[p.dur]&&DURMAP[p.dur].en)||'';
       const card=document.createElement('a');
       card.href='lenses-lover-product.html?id='+p.id;
       card.className='product-card';
@@ -623,7 +639,7 @@
           <img src="${p.img}" alt="${p.en} — ${p.ar}" loading="lazy">
         </div>
         <div class="product-info">
-          <span class="cat"><span class="ar">${durAr} · ${p.brandAr}</span><span class="en">${durEn} · ${p.brandEn}</span></span>
+          <span class="cat"><span class="ar">${durAr?durAr+' · ':''}${p.brandAr}</span><span class="en">${durEn?durEn+' · ':''}${p.brandEn}</span></span>
           <h3>${p.ar}</h3>
           <div class="en-name">${p.en}</div>
           <div class="stars">★★★★★</div>
@@ -638,7 +654,7 @@
         e.preventDefault(); e.stopPropagation();
         if(window.LL && window.LL.addToCart){
           window.LL.addToCart({ id:p.id, ar:p.ar, en:p.en, img:p.img, offer2:true,
-            ar_m:durAr+' · '+p.brandAr, en_m:durEn+' · '+p.brandEn, price:p.price });
+            ar_m:(durAr?durAr+' · ':'')+p.brandAr, en_m:(durEn?durEn+' · ':'')+p.brandEn, price:p.price });
         }
       });
       grid.appendChild(card);
