@@ -897,8 +897,8 @@
     };
   });
 
-  // ---------- related products ----------
-  const relatedList = CAT.products.filter(x=>x.id!==P.id).slice(0,4);
+  // ---------- related products: 8 من نفس براند المنتج المفتوح ----------
+  const relatedList = CAT.products.filter(x=>x.brand===P.brand && x.id!==P.id).slice(0,8);
   const productGrid = document.getElementById('product-grid');
   relatedList.forEach(pr=>{
     const card = document.createElement('a');
