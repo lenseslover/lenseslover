@@ -579,7 +579,14 @@
     const b = document.createElement('div');
     b.className='color-chip'; b.title=c.en;
     b.innerHTML=`<span class="dot" style="background-image:url('https://cdn.lenseslover.com/families/${c.key}.webp');background-size:cover;background-position:center;"></span><span class="ar">${c.ar}</span><span class="en">${c.en}</span>`;
-    b.onclick=()=>{ toggle(state.colors,c.key); b.classList.toggle('active'); render(); };
+    /* اختيار مفرد زي الماركة */
+    b.onclick=()=>{
+      const wasOn = state.colors.has(c.key);
+      state.colors.clear();
+      document.querySelectorAll('#color-filter .color-chip').forEach(x=>x.classList.remove('active'));
+      if(!wasOn){ state.colors.add(c.key); b.classList.add('active'); }
+      render();
+    };
     if(preColor===c.key){ state.colors.add(c.key); b.classList.add('active'); }
     colorFilter.appendChild(b);
   });
@@ -587,7 +594,14 @@
   const brandFilter=document.getElementById('brand-filter');
   BRANDS.forEach(br=>{
     const b=document.createElement('button'); b.className='chip'; b.textContent=br;
-    b.onclick=()=>{ toggle(state.brands,br); b.classList.toggle('active'); render(); };
+    /* اختيار مفرد: الضغط بيفعّل الماركة دي بس ويلغي الباقي — والضغط تاني بيلغيها */
+    b.onclick=()=>{
+      const wasOn = state.brands.has(br);
+      state.brands.clear();
+      document.querySelectorAll('#brand-filter .chip').forEach(x=>x.classList.remove('active'));
+      if(!wasOn){ state.brands.add(br); b.classList.add('active'); }
+      render();
+    };
     const _bk=(window.LL_CATALOG?window.LL_CATALOG.brands:[]).find(x=>x.key===preBrand);
     if(_bk && _bk.en===br){ state.brands.add(br); b.classList.add('active'); }
     brandFilter.appendChild(b);
@@ -597,7 +611,14 @@
   DURS.forEach(d=>{
     const b=document.createElement('button'); b.className='chip';
     b.innerHTML=`<span class="ar">${d.ar}</span><span class="en">${d.en}</span>`;
-    b.onclick=()=>{ toggle(state.durs,d.k); b.classList.toggle('active'); render(); };
+    /* اختيار مفرد زي اللون والماركة */
+    b.onclick=()=>{
+      const wasOn = state.durs.has(d.k);
+      state.durs.clear();
+      document.querySelectorAll('#dur-filter .chip').forEach(x=>x.classList.remove('active'));
+      if(!wasOn){ state.durs.add(d.k); b.classList.add('active'); }
+      render();
+    };
     durFilter.appendChild(b);
   });
   // price
