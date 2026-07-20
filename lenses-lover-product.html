@@ -378,14 +378,13 @@
         </svg>
         <div class="gallery-caption">
           <div><span class="ar label-ar" id="iris-label-ar">همسة الرماد</span><span class="en label-en" id="iris-label-en">Ash Whisper</span></div>
-          <div class="sub"><span class="ar">معاينة حية بلون العدسة على شكل العين</span><span class="en">Live preview of the lens shade on the eye</span></div>
+          <div class="sub"><span class="ar" id="iris-sub-ar"></span><span class="en" id="iris-sub-en"></span></div>
         </div>
-        <div class="thumb-row" id="thumb-row"><!-- filled by JS --></div>
       </div>
       <div class="zoom-hint">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span class="ar">اضغطي على أي لون فوق لمعاينته على العين مباشرة</span>
-        <span class="en">Tap any shade above to preview it on the eye instantly</span>
+        <span class="ar">اضغطي على الصور الصغيرة لتقليب صور نفس اللون</span>
+        <span class="en">Tap the small photos to browse this shade</span>
       </div>
     </div>
 
@@ -409,17 +408,9 @@
       </div>
 
       <p class="p-desc">
-        <span class="ar">عدسة رمادية فاتحة بلمسة طبيعية جدًا، مصممة بنسبة ترطيب عالية ومادة قابلة للتنفس تمنع الجفاف طوال اليوم. مثالية للاستخدام الشهري وتناسب أصحاب العيون الحساسة.</span>
-        <span class="en">A soft light-grey shade with a very natural finish, made with a high water content and breathable material that prevents dryness all day. Perfect for monthly wear and suited to sensitive eyes.</span>
+        <span class="ar" id="p-desc-ar"></span>
+        <span class="en" id="p-desc-en"></span>
       </p>
-
-      <div class="option-block">
-        <div class="option-label">
-          <span class="ar">اللون:</span><span class="en">Color:</span>
-          <span class="sel-val ar" id="color-sel-ar">همسة الرماد</span><span class="sel-val en" id="color-sel-en">Ash Whisper</span>
-        </div>
-        <div class="color-opts" id="color-opts"><!-- filled by JS --></div>
-      </div>
 
       <div class="option-block">
         <div class="option-label">
@@ -677,24 +668,21 @@
     }
   })();
 
-  const colorOpts = document.getElementById('color-opts');
-  const thumbRow = document.getElementById('thumb-row');
-  siblings.forEach((c)=>{
-    const opt = document.createElement('div');
-    opt.className = 'color-opt';
-    opt.innerHTML = `<div class="swatch" style="background-image:url('${c.img}');background-size:cover;background-position:center 12%;"></div><span>${c.ar}</span>`;
-    opt.querySelector('.swatch').onclick = ()=> selectColor(c.id);
-    colorOpts.appendChild(opt);
-
-    const th = document.createElement('button');
-    th.className = 'thumb';
-    th.style.cssText = `background-image:url('${c.img}');background-size:cover;background-position:center 12%;`;
-    th.setAttribute('aria-label', c.en);
-    th.onclick = ()=> selectColor(c.id);
-    thumbRow.appendChild(th);
-  });
-
   function famAr(k){ const f=CAT.families.find(f=>f.key===k); return f?f.ar:''; }
+
+  /* وصف + نوع المنتج — بيتبنوا من بيانات الكتالوج بدل نص ثابت */
+  function renderDesc(){
+    const fam = famAr(P.family);
+    const durAr = CAT.durAr(P);
+    const typeAr = (P.type==='optical') ? 'تجميلي أو طبي بمقاسات نظر' : 'تجميلي';
+    const typeEn = (P.type==='optical') ? 'cosmetic or with optical powers' : 'cosmetic';
+    const dAr = document.getElementById('p-desc-ar'), dEn = document.getElementById('p-desc-en');
+    if(dAr) dAr.textContent = 'عدسة '+fam+' من '+(BRAND?BRAND.ar:'')+' — الاستخدام '+durAr+'، والنوع '+typeAr+'. نسبة ترطيب عالية ومادة قابلة للتنفس تمنع الجفاف طوال اليوم.';
+    if(dEn) dEn.textContent = 'A '+P.family+' lens by '+(BRAND?BRAND.en:'')+' — '+CAT.durEn(P)+' wear, '+typeEn+'. High water content and breathable material for all-day comfort.';
+    const sAr=document.getElementById('iris-sub-ar'), sEn=document.getElementById('iris-sub-en');
+    if(sAr) sAr.textContent = fam+' · '+durAr+' · '+typeAr;
+    if(sEn) sEn.textContent = P.family+' · '+CAT.durEn(P)+' · '+typeEn;
+  }
 
   /* extra photos of the SELECTED colour (shown under the main image) */
   function renderPhotoRow(){
@@ -736,8 +724,7 @@
     renderPhotoRow();
     document.getElementById('iris-label-ar').textContent = P.ar;
     document.getElementById('iris-label-en').textContent = P.en;
-    document.getElementById('color-sel-ar').textContent = P.ar;
-    document.getElementById('color-sel-en').textContent = P.en;
+    renderDesc();
     document.querySelectorAll('.p-title-ar .ar').forEach(e=>e.textContent=P.ar);
     document.querySelectorAll('.p-title-ar .en').forEach(e=>e.textContent=P.en);
     document.querySelectorAll('.p-title-en .ar').forEach(e=>e.textContent=P.en+' — عدسة '+famAr(P.family)+' '+CAT.durArAdj(P));
@@ -745,12 +732,6 @@
     const crumbAr=document.querySelector('.crumbs .current .ar'), crumbEn=document.querySelector('.crumbs .current .en');
     if(crumbAr) crumbAr.textContent=P.ar; if(crumbEn) crumbEn.textContent=P.en;
     document.title = 'lenseslover — '+P.ar;
-    document.querySelectorAll('.color-opt .swatch').forEach(s=>s.classList.remove('active'));
-    document.querySelectorAll('.thumb').forEach(s=>s.classList.remove('active'));
-    if(idx>-1){
-      document.querySelectorAll('.color-opt .swatch')[idx].classList.add('active');
-      document.querySelectorAll('.thumb')[idx].classList.add('active');
-    }
     buildDurOpts();
     buildPowerOpts();
     const sda=document.getElementById('spec-dur-ar'), sde=document.getElementById('spec-dur-en');

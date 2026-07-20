@@ -685,23 +685,39 @@
     colorGrid.appendChild(card);
   });
 
-  // ---------- bestsellers from real catalog ----------
-  const bestsellers = (window.LL_CATALOG?window.LL_CATALOG.products:[]).slice(0,4);
+  // ---------- bestsellers: أفضل 4 من كل براند، مجموعة تحت مجموعة ----------
+  const CATB = window.LL_CATALOG || { products:[], brands:[] };
   const productGrid = document.getElementById('product-grid');
-  bestsellers.forEach(pr=>{
+  productGrid.style.display='block';
+  CATB.brands.forEach(function(b){
+    let picks = CATB.products.filter(p=>p.brand===b.key && p.featured);
+    if(!picks.length) picks = CATB.products.filter(p=>p.brand===b.key).slice(0,4);
+    if(!picks.length) return;
+    const head=document.createElement('h3');
+    head.className='brand-row-title';
+    head.style.cssText='margin:26px 0 12px;font-size:1.15rem;';
+    head.innerHTML='<span class="ar">'+b.ar+'</span><span class="en">'+b.en+'</span>';
+    productGrid.appendChild(head);
+    const grid=document.createElement('div');
+    grid.className='product-grid grid-solo-mobile';
+    productGrid.appendChild(grid);
+    const offer=(CATB.offerOf?CATB.offerOf(b.key):null);
+    const durAr=(picks[0].dur==='both')?'شهري أو سنوي':'شهري';
+    const durEn=(picks[0].dur==='both')?'Monthly / Yearly':'Monthly';
+    picks.forEach(pr=>{
     const card = document.createElement('div');
     card.className = 'product-card'; card.style.cursor='pointer';
     card.addEventListener('click', (ev)=>{ if(!ev.target.closest('.add-btn') && !ev.target.closest('.wish-btn')) location.href='lenses-lover-product.html?id='+pr.id; });
     card.innerHTML = `
       <div class="product-media" style="padding:0;aspect-ratio:3/3.4;overflow:hidden;">
-        <span class="tag-badge"><span class="ar">قطعتين بـ 350</span><span class="en">2 for 350</span></span>
+        ${offer?('<span class="tag-badge"><span class="ar">'+offer.ar+'</span><span class="en">'+(offer.en||offer.ar)+'</span></span>'):''}
         <button class="wish-btn" aria-label="wishlist">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.4 2 4.8 5.6 4.1c2-.4 3.9.5 5 2.2 1.1-1.7 3-2.6 5-2.2 3.6.7 5.1 4.3 3.6 7.6C19.5 16.4 12 21 12 21z"/></svg>
         </button>
         <img src="${pr.img}" alt="${pr.en} — ${pr.ar}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
       </div>
       <div class="product-info">
-        <span class="cat"><span class="ar">شهري · إيكوال بيري</span><span class="en">Monthly · Eqqual Berre</span></span>
+        <span class="cat"><span class="ar">${durAr} · ${b.ar}</span><span class="en">${durEn} · ${b.en}</span></span>
         <h3>${pr.ar}</h3>
         <div class="en-name">${pr.en}</div>
         <div class="stars">★★★★★</div>
@@ -717,10 +733,11 @@
       ev.stopPropagation();
       if(window.LL && window.LL.addToCart){
         window.LL.addToCart({ id:pr.id, ar:pr.ar, en:pr.en, img:pr.img, offer2:true,
-          ar_m:'شهري · إيكوال بيري', en_m:'Monthly · Eqqual Berre', price:pr.price });
+          ar_m:'شهري · '+b.ar, en_m:'Monthly · '+b.en, price:pr.price });
       }
     };
-    productGrid.appendChild(card);
+    grid.appendChild(card);
+    });
   });
 
   // ---------- reveal on scroll ----------

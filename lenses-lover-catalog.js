@@ -55,10 +55,10 @@ window.LL_CATALOG = {
 
   products: [
     /* ---------- Eqqual Berre — monthly, cosmetic only, 200 EGP ---------- */
-    { id:'eqqual-berre-breeze-gray',      brand:'eqqual-berre', ar:'بريز جراي',          en:'Breeze Gray',       family:'gray',  dur:'monthly', type:'cosmetic', price:200, slug:'breeze-gray',       n:1 },
-    { id:'eqqual-berre-clepatra-gray',    brand:'eqqual-berre', ar:'كليوباترا جراي',     en:'Clepatra Gray',     family:'gray',  dur:'monthly', type:'cosmetic', price:200, slug:'clepatra-gray',     n:1 },
-    { id:'eqqual-berre-cat-gray',         brand:'eqqual-berre', ar:'كات جراي',           en:'Cat Gray',          family:'gray',  dur:'monthly', type:'cosmetic', price:200, slug:'cat-gray',          n:1 },
-    { id:'eqqual-berre-mrmr-gray',        brand:'eqqual-berre', ar:'مرمر جراي',          en:'MRMR Gray',         family:'gray',  dur:'monthly', type:'cosmetic', price:200, slug:'mrmr-gray',         n:1 },
+    { id:'eqqual-berre-breeze-gray',      brand:'eqqual-berre', ar:'بريز جراي',          en:'Breeze Gray',       family:'gray',  dur:'monthly', type:'cosmetic', price:200, slug:'breeze-gray',       n:1, featured:true },
+    { id:'eqqual-berre-clepatra-gray',    brand:'eqqual-berre', ar:'كليوباترا جراي',     en:'Clepatra Gray',     family:'gray',  dur:'monthly', type:'cosmetic', price:200, slug:'clepatra-gray',     n:1, featured:true },
+    { id:'eqqual-berre-cat-gray',         brand:'eqqual-berre', ar:'كات جراي',           en:'Cat Gray',          family:'gray',  dur:'monthly', type:'cosmetic', price:200, slug:'cat-gray',          n:1, featured:true },
+    { id:'eqqual-berre-mrmr-gray',        brand:'eqqual-berre', ar:'مرمر جراي',          en:'MRMR Gray',         family:'gray',  dur:'monthly', type:'cosmetic', price:200, slug:'mrmr-gray',         n:1, featured:true },
     { id:'eqqual-berre-breeze-green',     brand:'eqqual-berre', ar:'بريز جرين',          en:'Breeze Green',      family:'green', dur:'monthly', type:'cosmetic', price:200, slug:'breeze-green',      n:1 },
     { id:'eqqual-berre-clepatra-green',   brand:'eqqual-berre', ar:'كليوباترا جرين',     en:'Clepatra Green',    family:'green', dur:'monthly', type:'cosmetic', price:200, slug:'clepatra-green',    n:1 },
     { id:'eqqual-berre-alovera-green',    brand:'eqqual-berre', ar:'ألوفيرا جرين',       en:'Alovera Green',     family:'green', dur:'monthly', type:'cosmetic', price:200, slug:'alovera-green',     n:1 },
@@ -69,7 +69,7 @@ window.LL_CATALOG = {
     { id:'eqqual-berre-mrmr-brown',       brand:'eqqual-berre', ar:'مرمر براون',         en:'MRMR Brown',        family:'brown', dur:'monthly', type:'cosmetic', price:200, slug:'mrmr-brown',        n:1 },
 
     /* ---------- Meetone — yearly, cosmetic only, 600 EGP ---------- */
-    { id:'meetone-breeze-gray',       brand:'meetone', ar:'بريز جراي',        en:'Breeze Gray',       family:'gray',  dur:'yearly', type:'cosmetic', price:600, slug:'breeze-gray',       n:2 },
+    { id:'meetone-breeze-gray',       brand:'meetone', ar:'بريز جراي',        en:'Breeze Gray',       family:'gray',  dur:'yearly', type:'cosmetic', price:600, slug:'breeze-gray',       n:2, featured:true },
     { id:'meetone-cleopatra-gray',    brand:'meetone', ar:'كليوباترا جراي',   en:'Cleopatra Gray',    family:'gray',  dur:'yearly', type:'cosmetic', price:600, slug:'cleopatra-gray',    n:2 },
     { id:'meetone-mexico-gray',       brand:'meetone', ar:'مكسيكو جراي',      en:'Mexico Gray',       family:'gray',  dur:'yearly', type:'cosmetic', price:600, slug:'mexico-gray',       n:2 },
     { id:'meetone-nadine-gray',       brand:'meetone', ar:'نادين جراي',       en:'Nadine Gray',       family:'gray',  dur:'yearly', type:'cosmetic', price:600, slug:'nadine-gray',       n:2 },
@@ -78,7 +78,7 @@ window.LL_CATALOG = {
     { id:'meetone-me14-russian-gray', brand:'meetone', ar:'روشان جراي',       en:'ME14 Russian Gray', family:'gray',  dur:'yearly', type:'cosmetic', price:600, slug:'me14-russian-gray', n:2 },
 
     { id:'meetone-cleopatra-green',   brand:'meetone', ar:'كليوباترا جرين',   en:'Cleopatra Green',   family:'green', dur:'yearly', type:'cosmetic', price:600, slug:'cleopatra-green',   n:2 },
-    { id:'meetone-aurora-green',      brand:'meetone', ar:'أورورا جرين',      en:'Aurora Green',      family:'green', dur:'yearly', type:'cosmetic', price:600, slug:'aurora-green',      n:2 },
+    { id:'meetone-aurora-green',      brand:'meetone', ar:'أورورا جرين',      en:'Aurora Green',      family:'green', dur:'yearly', type:'cosmetic', price:600, slug:'aurora-green',      n:2, featured:true },
     { id:'meetone-aurora-emerald',    brand:'meetone', ar:'أورورا إميرالد',   en:'Aurora Emerald',    family:'green', dur:'yearly', type:'cosmetic', price:600, slug:'aurora-emerald',    n:2 },
     { id:'meetone-aurora-sky-green',  brand:'meetone', ar:'أورورا سكاي جرين', en:'Aurora Sky Green',  family:'green', dur:'yearly', type:'cosmetic', price:600, slug:'aurora-sky-green',  n:1 },
     { id:'meetone-nadine-green',      brand:'meetone', ar:'نادين جرين',       en:'Nadine Green',      family:'green', dur:'yearly', type:'cosmetic', price:600, slug:'nadine-green',      n:2 },
@@ -86,21 +86,21 @@ window.LL_CATALOG = {
     { id:'meetone-oxygen-blue',       brand:'meetone', ar:'أوكسجين بلو',      en:'Oxygen Blue',       family:'blue',  dur:'yearly', type:'cosmetic', price:600, slug:'oxygen-blue',       n:2 },
     { id:'meetone-nadine-blue',       brand:'meetone', ar:'نادين بلو',        en:'Nadine Blue',       family:'blue',  dur:'yearly', type:'cosmetic', price:600, slug:'nadine-blue',       n:2 },
 
-    { id:'meetone-cleopatra-hazel',   brand:'meetone', ar:'كليوباترا هيزل',   en:'Cleopatra Hazel',   family:'hazel', dur:'yearly', type:'cosmetic', price:600, slug:'cleopatra-hazel',   n:2 },
+    { id:'meetone-cleopatra-hazel',   brand:'meetone', ar:'كليوباترا هيزل',   en:'Cleopatra Hazel',   family:'hazel', dur:'yearly', type:'cosmetic', price:600, slug:'cleopatra-hazel',   n:2, featured:true },
     { id:'meetone-feo-avela',         brand:'meetone', ar:'فيو أفيلا',        en:'Feo Avela',         family:'hazel', dur:'yearly', type:'cosmetic', price:600, slug:'feo-avela',         n:2 },
     { id:'meetone-aurora-maize',      brand:'meetone', ar:'أورورا مايز',      en:'Aurora Maize',      family:'hazel', dur:'yearly', type:'cosmetic', price:600, slug:'aurora-maize',      n:2 },
 
-    { id:'meetone-bobo-brown',        brand:'meetone', ar:'بوبو براون',       en:'BOBO Brown',        family:'brown', dur:'yearly', type:'cosmetic', price:600, slug:'bobo-brown',        n:2 },
+    { id:'meetone-bobo-brown',        brand:'meetone', ar:'بوبو براون',       en:'BOBO Brown',        family:'brown', dur:'yearly', type:'cosmetic', price:600, slug:'bobo-brown',        n:2, featured:true },
     { id:'meetone-yimee-chocolate',   brand:'meetone', ar:'ييمي شوكولاتة',    en:'Yimee Chocolate',   family:'brown', dur:'yearly', type:'cosmetic', price:600, slug:'yimee-chocolate',   n:2 },
     { id:'meetone-midsummer-brown',   brand:'meetone', ar:'ميدسمر براون',     en:'Midsummer Brown',   family:'brown', dur:'yearly', type:'cosmetic', price:600, slug:'midsummer-brown',   n:2 },
 
     /* ---------- Urban Layer — 35 لون، شهري 350 / سنوي 750، optical (مقاسات -0.50 لـ -6.00) ---------- */
-    { id:'urban-layer-al-blue', brand:'urban-layer', ar:'آل بلو', en:'Al Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'al-blue', n:1 },
+    { id:'urban-layer-al-blue', brand:'urban-layer', ar:'آل بلو', en:'Al Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'al-blue', n:1, featured:true },
     { id:'urban-layer-angeles-n-blue', brand:'urban-layer', ar:'أنجلوس إن بلو', en:'Angeles N Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'angeles-n-blue', n:1 },
-    { id:'urban-layer-angeles-n-violet', brand:'urban-layer', ar:'أنجلوس إن فيوليت', en:'Angeles N Violet', family:'blue', dur:'both', type:'optical', price:350, slug:'angeles-n-violet', n:2 },
-    { id:'urban-layer-breeze-light-blue', brand:'urban-layer', ar:'بريز لايت بلو', en:'Breeze Light Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'breeze-light-blue', n:1 },
+    { id:'urban-layer-angeles-n-violet', brand:'urban-layer', ar:'أنجلوس إن فيوليت', en:'Angeles N Violet', family:'blue', dur:'both', type:'optical', price:350, slug:'angeles-n-violet', n:2, featured:true },
+    { id:'urban-layer-breeze-light-blue', brand:'urban-layer', ar:'بريز لايت بلو', en:'Breeze Light Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'breeze-light-blue', n:1, featured:true },
     { id:'urban-layer-gemini-light-blue', brand:'urban-layer', ar:'جيميني لايت بلو', en:'Gemini Light Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'gemini-light-blue', n:1 },
-    { id:'urban-layer-gogh-n-blue', brand:'urban-layer', ar:'جوخ إن بلو', en:'Gogh N Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'gogh-n-blue', n:1 },
+    { id:'urban-layer-gogh-n-blue', brand:'urban-layer', ar:'جوخ إن بلو', en:'Gogh N Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'gogh-n-blue', n:1, featured:true },
     { id:'urban-layer-melrose-ash-blue', brand:'urban-layer', ar:'ميلروز آش بلو', en:'Melrose Ash Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'melrose-ash-blue', n:1 },
     { id:'urban-layer-melrose-blue', brand:'urban-layer', ar:'ميلروز بلو', en:'Melrose Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'melrose-blue', n:1 },
     { id:'urban-layer-new-york-n-blue', brand:'urban-layer', ar:'نيويورك إن بلو', en:'New York N Blue', family:'blue', dur:'both', type:'optical', price:350, slug:'new-york-n-blue', n:1 },
@@ -140,11 +140,11 @@ window.LL_CATALOG = {
     { id:'fresh-lady-athena-snowy', brand:'fresh-lady', ar:'أثينا سنووي', en:'Athena Snowy', family:'gray', dur:'monthly', type:'optical', price:200, slug:'athena-snowy', n:1 },
     { id:'fresh-lady-aurora-silver', brand:'fresh-lady', ar:'أورورا سيلفر', en:'Aurora Silver', family:'gray', dur:'monthly', type:'optical', price:200, slug:'aurora-silver', n:1 },
     { id:'fresh-lady-ballet-gaze-giselle-grey', brand:'fresh-lady', ar:'باليه جيز جيزيل جراي', en:'Ballet Gaze Giselle Grey', family:'gray', dur:'monthly', type:'optical', price:200, slug:'ballet-gaze-giselle-grey', n:2 },
-    { id:'fresh-lady-cleopatra-gray', brand:'fresh-lady', ar:'كليوباترا جراي', en:'Cleopatra Gray', family:'gray', dur:'monthly', type:'optical', price:200, slug:'cleopatra-gray', n:2 },
+    { id:'fresh-lady-cleopatra-gray', brand:'fresh-lady', ar:'كليوباترا جراي', en:'Cleopatra Gray', family:'gray', dur:'monthly', type:'optical', price:200, slug:'cleopatra-gray', n:2, featured:true },
     { id:'fresh-lady-cocktail-vodka-lime-blue-gray', brand:'fresh-lady', ar:'كوكتيل فودكا لايم بلو جراي', en:'Cocktail Vodka Lime Blue Gray', family:'gray', dur:'monthly', type:'optical', price:200, slug:'cocktail-vodka-lime-blue-gray', n:2 },
     { id:'fresh-lady-dark-gray-w6', brand:'fresh-lady', ar:'دارك جراي W6', en:'Dark Gray W6', family:'gray', dur:'monthly', type:'optical', price:200, slug:'dark-gray-w6', n:2 },
     { id:'fresh-lady-diamond-grey', brand:'fresh-lady', ar:'دايموند جراي', en:'Diamond Grey', family:'gray', dur:'monthly', type:'optical', price:200, slug:'diamond-grey', n:1 },
-    { id:'fresh-lady-dubai-gray', brand:'fresh-lady', ar:'دبي تو تون', en:'Dubai Gray', family:'gray', dur:'monthly', type:'optical', price:200, slug:'dubai-gray', n:2 },  /* family:auto */
+    { id:'fresh-lady-dubai-gray', brand:'fresh-lady', ar:'دبي جراي', en:'Dubai Gray', family:'gray', dur:'monthly', type:'optical', price:200, slug:'dubai-gray', n:2, featured:true },
     { id:'fresh-lady-glitter-gray', brand:'fresh-lady', ar:'جليتر جراي', en:'Glitter Gray', family:'gray', dur:'monthly', type:'optical', price:200, slug:'glitter-gray', n:1 },
     { id:'fresh-lady-hidro-hd-grafite', brand:'fresh-lady', ar:'هيدرو إتش دي جرافيت', en:'Hidro HD Grafite', family:'gray', dur:'monthly', type:'optical', price:200, slug:'hidro-hd-grafite', n:1 },
     { id:'fresh-lady-hidro-hd-ice', brand:'fresh-lady', ar:'هيدرو إتش دي آيس', en:'Hidro HD Ice', family:'gray', dur:'monthly', type:'optical', price:200, slug:'hidro-hd-ice', n:1 },
@@ -185,7 +185,7 @@ window.LL_CATALOG = {
     { id:'fresh-lady-starshine-a-gris', brand:'fresh-lady', ar:'ستارشاين إيه جري', en:'Starshine A.Gris', family:'gray', dur:'monthly', type:'optical', price:200, slug:'starshine-a-gris', n:1 },
     { id:'fresh-lady-starshine-ad-gray', brand:'fresh-lady', ar:'ستارشاين إيه دي جراي', en:'Starshine Ad.Gray', family:'gray', dur:'monthly', type:'optical', price:200, slug:'starshine-ad-gray', n:1 },
     { id:'fresh-lady-starshine-whale', brand:'fresh-lady', ar:'ستارشاين ويل', en:'Starshine Whale', family:'gray', dur:'monthly', type:'optical', price:200, slug:'starshine-whale', n:1 },
-    { id:'fresh-lady-stunna-girl-romona-grey', brand:'fresh-lady', ar:'ستونا جيرل رومونا جراي', en:'Stunna Girl Romona Grey', family:'gray', dur:'monthly', type:'optical', price:200, slug:'stunna-girl-romona-grey', n:2 },
+    { id:'fresh-lady-stunna-girl-romona-grey', brand:'fresh-lady', ar:'ستونا جيرل رومونا جراي', en:'Stunna Girl Romona Grey', family:'gray', dur:'monthly', type:'optical', price:200, slug:'stunna-girl-romona-grey', n:2, featured:true },
     { id:'fresh-lady-three-tone-crystal-grey', brand:'fresh-lady', ar:'ثري تون كريستال جراي', en:'Three Tone Crystal Grey', family:'gray', dur:'monthly', type:'optical', price:200, slug:'three-tone-crystal-grey', n:1 },
     { id:'fresh-lady-three-tone-grey', brand:'fresh-lady', ar:'ثري تون جراي', en:'Three Tone Grey', family:'gray', dur:'monthly', type:'optical', price:200, slug:'three-tone-grey', n:1 },
     { id:'fresh-lady-vika-tricolor-grey', brand:'fresh-lady', ar:'فيكا تراي كولور جراي', en:'Vika Tricolor Grey', family:'gray', dur:'monthly', type:'optical', price:200, slug:'vika-tricolor-grey', n:1 },
@@ -245,7 +245,7 @@ window.LL_CATALOG = {
     { id:'fresh-lady-athena-caramel', brand:'fresh-lady', ar:'أثينا كراميل', en:'Athena Caramel', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'athena-caramel', n:1 },
     { id:'fresh-lady-athena-honey', brand:'fresh-lady', ar:'أثينا هني', en:'Athena Honey', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'athena-honey', n:1 },
     { id:'fresh-lady-aurora-gold', brand:'fresh-lady', ar:'أورورا جولد', en:'Aurora Gold', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'aurora-gold', n:1 },
-    { id:'fresh-lady-cleopatra-hazel', brand:'fresh-lady', ar:'كليوباترا تو تون', en:'Cleopatra Hazel', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'cleopatra-hazel', n:2 },  /* family:auto */
+    { id:'fresh-lady-cleopatra-hazel', brand:'fresh-lady', ar:'كليوباترا هيزل', en:'Cleopatra Hazel', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'cleopatra-hazel', n:2 },
     { id:'fresh-lady-diva-butter-ns16', brand:'fresh-lady', ar:'ديفا بتر NS16', en:'DIVA BUTTER NS16', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'diva-butter-ns16', n:1 },
     { id:'fresh-lady-diamond-ember-k36', brand:'fresh-lady', ar:'دايموند إمبر K36', en:'Diamond Ember K36', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'diamond-ember-k36', n:2 },
     { id:'fresh-lady-fantasy-desert', brand:'fresh-lady', ar:'فانتازي ديزرت', en:'Fantasy Desert', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'fantasy-desert', n:1 },
@@ -256,7 +256,7 @@ window.LL_CATALOG = {
     { id:'fresh-lady-hidro-hd-mel', brand:'fresh-lady', ar:'هيدرو إتش دي ميل', en:'Hidro HD Mel', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'hidro-hd-mel', n:1 },
     { id:'fresh-lady-hidro-hd-ocre', brand:'fresh-lady', ar:'هيدرو إتش دي أوكر', en:'Hidro HD Ocre', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'hidro-hd-ocre', n:1 },
     { id:'fresh-lady-hidrocor-avela', brand:'fresh-lady', ar:'هيدروكور أفيلا', en:'Hidrocor Avela', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'hidrocor-avela', n:2 },
-    { id:'fresh-lady-hidrocor-mel', brand:'fresh-lady', ar:'هيدروكور ميل', en:'Hidrocor Mel', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'hidrocor-mel', n:1 },
+    { id:'fresh-lady-hidrocor-mel', brand:'fresh-lady', ar:'هيدروكور ميل', en:'Hidrocor Mel', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'hidrocor-mel', n:1, featured:true },
     { id:'fresh-lady-hidrocor-ocre', brand:'fresh-lady', ar:'هيدروكور أوكر', en:'Hidrocor Ocre', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'hidrocor-ocre', n:2 },
     { id:'fresh-lady-honey-f01-three-tones', brand:'fresh-lady', ar:'هني F01 ثري Tones', en:'Honey F01 Three Tones', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'honey-f01-three-tones', n:1 },
     { id:'fresh-lady-honey-mo-05', brand:'fresh-lady', ar:'هني Mo 05', en:'Honey Mo-05', family:'hazel', dur:'monthly', type:'optical', price:200, slug:'honey-mo-05', n:2 },
@@ -332,7 +332,7 @@ window.LL_CATALOG = {
     { id:'dahab-diamond', brand:'dahab', ar:'دايموند', en:'Diamond', family:'gray', dur:'both', type:'optical', price:300, slug:'diamond', n:4 },
     { id:'dahab-grayish', brand:'dahab', ar:'جرايش', en:'Grayish', family:'gray', dur:'both', type:'optical', price:300, slug:'grayish', n:4 },
     { id:'dahab-ice', brand:'dahab', ar:'آيس', en:'Ice', family:'gray', dur:'both', type:'optical', price:300, slug:'ice', n:4 },
-    { id:'dahab-lumirere-gray', brand:'dahab', ar:'لوميرير جراي', en:'Lumirere Gray', family:'gray', dur:'both', type:'optical', price:300, slug:'lumirere-gray', n:4 },
+    { id:'dahab-lumirere-gray', brand:'dahab', ar:'لوميرير جراي', en:'Lumirere Gray', family:'gray', dur:'both', type:'optical', price:300, slug:'lumirere-gray', n:4, featured:true },
     { id:'dahab-marbel', brand:'dahab', ar:'ماربل', en:'Marbel', family:'gray', dur:'both', type:'optical', price:300, slug:'marbel', n:2 },
     { id:'dahab-natural-gray', brand:'dahab', ar:'ناتشورال جراي', en:'Natural Gray', family:'gray', dur:'both', type:'optical', price:300, slug:'natural-gray', n:4 },
     { id:'dahab-perle', brand:'dahab', ar:'بيرل', en:'Perle', family:'gray', dur:'both', type:'optical', price:300, slug:'perle', n:4 },
@@ -342,7 +342,7 @@ window.LL_CATALOG = {
     { id:'dahab-swarovski', brand:'dahab', ar:'سواروفسكي', en:'Swarovski', family:'gray', dur:'both', type:'optical', price:300, slug:'swarovski', n:4 },
     { id:'dahab-khaki', brand:'dahab', ar:'كاكي', en:'Khaki', family:'green', dur:'both', type:'optical', price:300, slug:'khaki', n:4 },
     { id:'dahab-lumirere-green', brand:'dahab', ar:'لوميرير جرين', en:'Lumirere Green', family:'green', dur:'both', type:'optical', price:300, slug:'lumirere-green', n:4 },
-    { id:'dahab-mentha', brand:'dahab', ar:'منتا', en:'Mentha', family:'green', dur:'both', type:'optical', price:300, slug:'mentha', n:4 },
+    { id:'dahab-mentha', brand:'dahab', ar:'منتا', en:'Mentha', family:'green', dur:'both', type:'optical', price:300, slug:'mentha', n:3 },
     { id:'dahab-natural-green', brand:'dahab', ar:'ناتشورال جرين', en:'Natural Green', family:'green', dur:'both', type:'optical', price:300, slug:'natural-green', n:4 },
     { id:'dahab-olive', brand:'dahab', ar:'أوليف', en:'Olive', family:'green', dur:'both', type:'optical', price:300, slug:'olive', n:4 },
     { id:'dahab-sabrin-gray-green', brand:'dahab', ar:'صابرين جراي جرين', en:'Sabrin Gray Green', family:'green', dur:'both', type:'optical', price:300, slug:'sabrin-gray-green', n:4 },
@@ -359,17 +359,17 @@ window.LL_CATALOG = {
     { id:'dahab-gold', brand:'dahab', ar:'جولد', en:'Gold', family:'hazel', dur:'both', type:'optical', price:300, slug:'gold', n:1 },
     { id:'dahab-hawaii', brand:'dahab', ar:'هاواي', en:'Hawaii', family:'hazel', dur:'both', type:'optical', price:300, slug:'hawaii', n:3 },  /* family:auto — راجعه */
     { id:'dahab-hind', brand:'dahab', ar:'هند', en:'Hind', family:'hazel', dur:'both', type:'optical', price:300, slug:'hind', n:4 },  /* family:auto — راجعه */
-    { id:'dahab-honey', brand:'dahab', ar:'هني', en:'Honey', family:'hazel', dur:'both', type:'optical', price:300, slug:'honey', n:4 },
+    { id:'dahab-honey', brand:'dahab', ar:'هني', en:'Honey', family:'hazel', dur:'both', type:'optical', price:300, slug:'honey', n:4, featured:true },
     { id:'dahab-kaf', brand:'dahab', ar:'كاف', en:'Kaf', family:'hazel', dur:'both', type:'optical', price:300, slug:'kaf', n:2 },  /* family:auto — راجعه */
     { id:'dahab-lumirere-hazel', brand:'dahab', ar:'لوميرير هيزل', en:'Lumirere Hazel', family:'hazel', dur:'both', type:'optical', price:300, slug:'lumirere-hazel', n:4 },
     { id:'dahab-mix', brand:'dahab', ar:'ميكس', en:'Mix', family:'hazel', dur:'both', type:'optical', price:300, slug:'mix', n:2 },  /* family:auto — راجعه */
-    { id:'dahab-natural-hazel', brand:'dahab', ar:'ناتشورال هيزل', en:'Natural Hazel', family:'hazel', dur:'both', type:'optical', price:300, slug:'natural-hazel', n:4 },
+    { id:'dahab-natural-hazel', brand:'dahab', ar:'ناتشورال هيزل', en:'Natural Hazel', family:'hazel', dur:'both', type:'optical', price:300, slug:'natural-hazel', n:4, featured:true },
     { id:'dahab-rain', brand:'dahab', ar:'رين', en:'Rain', family:'hazel', dur:'both', type:'optical', price:300, slug:'rain', n:4 },  /* family:auto — راجعه */
     { id:'dahab-sun-kiss', brand:'dahab', ar:'صن كيس', en:'Sun Kiss', family:'hazel', dur:'both', type:'optical', price:300, slug:'sun-kiss', n:4 },
     { id:'dahab-argan', brand:'dahab', ar:'أرجان', en:'Argan', family:'brown', dur:'both', type:'optical', price:300, slug:'argan', n:3 },
     { id:'dahab-brown', brand:'dahab', ar:'براون', en:'Brown', family:'brown', dur:'both', type:'optical', price:300, slug:'brown', n:2 },
     { id:'dahab-brownish', brand:'dahab', ar:'براونش', en:'Brownish', family:'brown', dur:'both', type:'optical', price:300, slug:'brownish', n:2 },
-    { id:'dahab-cappuccino', brand:'dahab', ar:'كابتشينو', en:'Cappuccino', family:'brown', dur:'both', type:'optical', price:300, slug:'cappuccino', n:4 },
+    { id:'dahab-cappuccino', brand:'dahab', ar:'كابتشينو', en:'Cappuccino', family:'brown', dur:'both', type:'optical', price:300, slug:'cappuccino', n:4, featured:true },
     { id:'dahab-lumirere-brown', brand:'dahab', ar:'لوميرير براون', en:'Lumirere Brown', family:'brown', dur:'both', type:'optical', price:300, slug:'lumirere-brown', n:4 },
     { id:'dahab-marron', brand:'dahab', ar:'مارون', en:'Marron', family:'brown', dur:'both', type:'optical', price:300, slug:'marron', n:2 },
     { id:'dahab-medusa', brand:'dahab', ar:'ميدوزا', en:'Medusa', family:'brown', dur:'both', type:'optical', price:300, slug:'medusa', n:4 },  /* family:auto — راجعه */
