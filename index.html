@@ -224,7 +224,7 @@
   section.pad{ padding-block:80px; }
 
   /* ---------- shop by color ---------- */
-  .color-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:18px; }
+  .color-grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:18px; }
   @media (max-width:900px){ .color-grid{ grid-template-columns:repeat(3,1fr); } }
   @media (max-width:520px){ .color-grid{ grid-template-columns:repeat(2,1fr); } }
   .color-card{
@@ -673,7 +673,7 @@
   // ---------- shop by color grid (real lens photos) ----------
   const colorGrid = document.getElementById('color-grid');
   const FAM_CDN = 'https://cdn.lenseslover.com/families/';
-  (window.LL_CATALOG?window.LL_CATALOG.families:[]).forEach(f=>{
+  (window.LL_CATALOG?window.LL_CATALOG.families:[]).filter(f=>f.key!=='purple').forEach(f=>{
     const card = document.createElement('div');
     card.className = 'color-card'; card.style.cursor='pointer';
     card.addEventListener('click', ()=>location.href='lenses-lover-shop.html?color='+f.key);
