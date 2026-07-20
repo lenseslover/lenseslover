@@ -25,6 +25,18 @@
   }
   @keyframes llmarq{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
+  /* back to top — زرار عائم بيظهر مع النزول ويختفي فوق */
+  .ll-top{ position:fixed; inset-inline-end:22px; bottom:96px; z-index:119;
+    width:46px; height:46px; border-radius:50%; border:1px solid var(--line);
+    background:var(--ink-2); color:var(--amber-light,var(--amber)); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 24px rgba(0,0,0,.28);
+    opacity:0; visibility:hidden; transform:translateY(10px);
+    transition:opacity .25s ease, transform .25s ease, visibility .25s; }
+  .ll-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
+  .ll-top:hover{ border-color:var(--amber); }
+  @media (max-width:560px){ .ll-top{ bottom:90px; width:42px; height:42px; } }
+
   /* floating whatsapp — clean circular FAB that expands on hover */
   .ll-wa{ position:fixed; inset-inline-end:22px; bottom:22px; z-index:120; }
   .ll-wa a{ display:flex; align-items:center; gap:0; height:60px; width:60px; border-radius:999px;
@@ -591,6 +603,20 @@
     var _sl=window.setLang;
     window.setLang=function(l){ _sl(l); refreshWa(); if(drawer.classList.contains('show')) renderDrawer(); if(brands.classList.contains('show')) renderBrands(); };
   }
+
+  /* ---------- back to top ---------- */
+  var topBtn=document.createElement('button');
+  topBtn.className='ll-top';
+  topBtn.setAttribute('aria-label','العودة لأعلى الصفحة');
+  topBtn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+  document.body.appendChild(topBtn);
+  topBtn.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+  var _topTick=false;
+  function _topCheck(){ topBtn.classList.toggle('show', window.scrollY > window.innerHeight*0.9); _topTick=false; }
+  window.addEventListener('scroll', function(){
+    if(!_topTick){ _topTick=true; requestAnimationFrame(_topCheck); }
+  }, { passive:true });
+  _topCheck();
 
   /* ---------- init ---------- */
   syncBadges();
