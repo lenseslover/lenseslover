@@ -26,15 +26,15 @@
   @keyframes llmarq{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
   /* back to top — زرار عائم بيظهر مع النزول ويختفي فوق */
-  .ll-top{ position:fixed; inset-inline-end:22px; bottom:22px; z-index:119;
-    width:46px; height:46px; border-radius:50%; border:1px solid var(--line);
-    background:var(--ink-2); color:var(--amber-light,var(--amber)); cursor:pointer;
+  .ll-top{ position:fixed; right:22px; bottom:22px; z-index:119;
+    width:46px; height:46px; border-radius:50%; border:none;
+    background:var(--amber); color:#fff; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
-    box-shadow:0 8px 24px rgba(0,0,0,.28);
+    box-shadow:0 8px 24px rgba(0,0,0,.35);
     opacity:0; visibility:hidden; transform:translateY(10px);
     transition:opacity .25s ease, transform .25s ease, visibility .25s; }
   .ll-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
-  .ll-top:hover{ border-color:var(--amber); }
+  .ll-top:hover{ filter:brightness(1.1); }
   @media (max-width:560px){ .ll-top{ bottom:18px; width:42px; height:42px; } }
 
   /* floating whatsapp — clean circular FAB that expands on hover */
