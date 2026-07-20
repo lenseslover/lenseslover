@@ -26,7 +26,7 @@
   @keyframes llmarq{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
   /* back to top — زرار عائم بيظهر مع النزول ويختفي فوق */
-  .ll-top{ position:fixed; inset-inline-end:22px; bottom:96px; z-index:119;
+  .ll-top{ position:fixed; inset-inline-end:22px; bottom:22px; z-index:119;
     width:46px; height:46px; border-radius:50%; border:1px solid var(--line);
     background:var(--ink-2); color:var(--amber-light,var(--amber)); cursor:pointer;
     display:flex; align-items:center; justify-content:center;
@@ -35,10 +35,11 @@
     transition:opacity .25s ease, transform .25s ease, visibility .25s; }
   .ll-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
   .ll-top:hover{ border-color:var(--amber); }
-  @media (max-width:560px){ .ll-top{ bottom:90px; width:42px; height:42px; } }
+  @media (max-width:560px){ .ll-top{ bottom:18px; width:42px; height:42px; } }
 
   /* floating whatsapp — clean circular FAB that expands on hover */
   .ll-wa{ position:fixed; inset-inline-end:22px; bottom:22px; z-index:120; }
+  .ll-wa{ display:none !important; }  /* مخفي بطلب هامدي — امسح السطر ده لو عايز ترجّعه */
   .ll-wa a{ display:flex; align-items:center; gap:0; height:60px; width:60px; border-radius:999px;
     background:#25D366; color:#fff; text-decoration:none; overflow:hidden; white-space:nowrap;
     box-shadow:0 10px 30px -6px rgba(37,211,102,.55), 0 4px 10px rgba(0,0,0,.25);
