@@ -763,8 +763,12 @@
   // ---------- اختيار المدة (للبراندات اللي بتبيع نفس اللون بمدتين) ----------
   function currentPrice(){
     const pr = CAT.pricingOf ? CAT.pricingOf(P) : null;
-    if(pr && selDur && pr[selDur] != null) return pr[selDur];
-    return P.price;
+    let base = (pr && selDur && pr[selDur] != null) ? pr[selDur] : P.price;
+    /* زيادة النظر (فريش ليدي/دهب): تتضاف لما العميل يختار "طبي" */
+    if(P.type === 'optical' && selPowerType === 'optical' && CAT.opticalPlusOf){
+      base += CAT.opticalPlusOf(P);
+    }
+    return base;
   }
 
   function paintPrice(){
@@ -845,6 +849,7 @@
         const on = selPowerType === 'optical';
         document.getElementById('power-eyes').classList.toggle('on', on);
         document.getElementById('power-hint').style.display = on ? 'flex' : 'none';
+        paintPrice();   /* السعر بيتغير مع نوع العدسة */
       };
     });
     const on = selPowerType === 'optical';
