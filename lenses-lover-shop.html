@@ -333,27 +333,35 @@
   @media (max-width:560px){ .page-hero h1{ font-size:32px; } }
 
   /* ---------- shop layout ---------- */
-  .shop-wrap{ display:grid; grid-template-columns:262px 1fr; gap:34px; padding-block:34px 90px; }
-  @media (max-width:900px){ .shop-wrap{ grid-template-columns:1fr; } }
+  .shop-wrap{ display:block; padding-block:34px 90px; }
 
-  .filters{ position:sticky; top:96px; align-self:start; background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:24px 22px; }
-  @media (max-width:900px){ .filters{ position:static; } }
-  .filter-block{ padding-block:16px; border-bottom:1px solid var(--line); }
-  .filter-block:first-child{ padding-top:0; }
-  .filter-block:last-child{ border-bottom:none; padding-bottom:0; }
-  .filter-block h4{ font-size:14px; margin-bottom:14px; color:var(--ivory); }
+  /* شريط الفلاتر الأفقي فوق المنتجات */
+  .filters{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:14px 18px; margin-bottom:20px; display:flex; flex-direction:column; gap:12px; }
+  .filter-block{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .filter-block h4{ font-size:12.5px; color:var(--ivory-dim); min-width:52px; margin:0; }
+  @media (max-width:900px){
+    .filter-block{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px; }
+    .filter-block h4{ min-width:auto; white-space:nowrap; }
+    .chip-row, .color-chip-row{ flex-wrap:nowrap !important; }
+    .chip, .color-chip{ white-space:nowrap; flex-shrink:0; }
+  }
+  /* صف "المختار حاليًا" */
+  .active-row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .active-chip{ display:inline-flex; align-items:center; gap:6px; background:var(--ink-3); border:1px solid var(--amber); border-radius:999px; padding:5px 12px; font-size:12.5px; color:var(--amber-light,var(--amber)); }
+  .active-chip b{ cursor:pointer; font-weight:700; }
   .chip-row{ display:flex; flex-wrap:wrap; gap:9px; }
   .chip{ font-size:12.5px; padding:7px 13px; border-radius:999px; background:var(--ink-3); border:1px solid var(--line); color:var(--ivory-dim); transition:all .2s ease; }
   .chip:hover{ border-color:var(--amber); color:var(--ivory); }
   .chip.active{ background:var(--amber); color:var(--ink); border-color:var(--amber); font-weight:700; }
-  .color-chip-row{ display:flex; flex-wrap:wrap; gap:11px; }
-  .color-chip{ width:32px; height:32px; border-radius:50%; border:2px solid transparent; cursor:pointer; box-shadow:inset 0 0 0 1px rgba(0,0,0,.25); transition:transform .18s ease, border-color .18s ease; }
-  .color-chip:hover{ transform:translateY(-2px); }
-  .color-chip.active{ border-color:var(--ivory); }
+  .color-chip-row{ display:flex; flex-wrap:wrap; gap:9px; }
+  .color-chip{ display:inline-flex; align-items:center; gap:7px; font-size:12.5px; padding:7px 13px; border-radius:999px; background:var(--ink-3); border:1px solid var(--line); color:var(--ivory-dim); cursor:pointer; transition:all .2s ease; }
+  .color-chip .dot{ width:20px; height:20px; border-radius:50%; box-shadow:inset 0 0 0 1px rgba(0,0,0,.18); background-color:#fff; }
+  .color-chip:hover{ border-color:var(--amber); color:var(--ivory); }
+  .color-chip.active{ background:var(--amber); color:var(--ink); border-color:var(--amber); font-weight:700; }
   .price-row-filter{ display:flex; align-items:center; gap:10px; }
-  .price-row-filter input[type=range]{ flex:1; accent-color:var(--amber); }
+  .price-row-filter input[type=range]{ width:150px; accent-color:var(--amber); }
   .price-val{ font-size:13px; color:var(--amber-light); font-weight:700; min-width:74px; text-align:center; }
-  .clear-btn{ margin-top:20px; width:100%; padding:11px; border-radius:12px; background:transparent; border:1px solid var(--line); color:var(--ivory-dim); font-size:13px; font-weight:600; transition:all .2s ease; }
+  .clear-btn{ margin-inline-start:auto; padding:8px 16px; border-radius:999px; background:transparent; border:1px solid var(--line); color:var(--ivory-dim); font-size:13px; font-weight:600; transition:all .2s ease; }
   .clear-btn:hover{ border-color:var(--rose); color:var(--rose); }
 
   .shop-main .toolbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; gap:14px; flex-wrap:wrap; }
@@ -436,19 +444,18 @@
       <div class="chip-row" id="brand-filter"></div>
     </div>
     <div class="filter-block">
-      <h4><span class="ar">مدة الاستخدام</span><span class="en">Duration</span></h4>
+      <h4><span class="ar">المدة</span><span class="en">Duration</span></h4>
       <div class="chip-row" id="dur-filter"></div>
-    </div>
-    <div class="filter-block">
-      <h4><span class="ar">السعر الأقصى</span><span class="en">Max Price</span></h4>
       <div class="price-row-filter">
+        <h4 style="min-width:auto;"><span class="ar">السعر الأقصى</span><span class="en">Max Price</span></h4>
         <input type="range" id="price-range" min="200" max="1000" step="50" value="1000">
         <span class="price-val" id="price-val">1000 <span class="ar">ج.م</span><span class="en">EGP</span></span>
       </div>
+      <button class="clear-btn" id="clear-filters">
+        <span class="ar">مسح الفلاتر</span><span class="en">Clear Filters</span>
+      </button>
     </div>
-    <button class="clear-btn" id="clear-filters">
-      <span class="ar">مسح الفلاتر</span><span class="en">Clear Filters</span>
-    </button>
+    <div class="active-row" id="active-filters"></div>
   </aside>
 
   <main class="shop-main">
@@ -568,10 +575,10 @@
   const _qs=new URLSearchParams(location.search);
   const preColor=_qs.get('color');
   const preBrand=_qs.get('brand');
-  COLORS.forEach(c=>{
+  COLORS.filter(c=>c.key!=='purple').forEach(c=>{
     const b = document.createElement('div');
     b.className='color-chip'; b.title=c.en;
-    b.style.background=`radial-gradient(circle at 35% 30%, ${c.c1}, ${c.c2})`;
+    b.innerHTML=`<span class="dot" style="background-image:url('https://cdn.lenseslover.com/families/${c.key}.webp');background-size:cover;background-position:center;"></span><span class="ar">${c.ar}</span><span class="en">${c.en}</span>`;
     b.onclick=()=>{ toggle(state.colors,c.key); b.classList.toggle('active'); render(); };
     if(preColor===c.key){ state.colors.add(c.key); b.classList.add('active'); }
     colorFilter.appendChild(b);
@@ -612,7 +619,31 @@
   const grid=document.getElementById('grid'), empty=document.getElementById('empty'), countEl=document.getElementById('count');
   let cartCount=0;
 
+  function renderActive(){
+    const box=document.getElementById('active-filters');
+    if(!box) return;
+    box.innerHTML='';
+    const mk=(label,fn)=>{
+      const c=document.createElement('span'); c.className='active-chip';
+      c.innerHTML=label+' <b>×</b>';
+      c.querySelector('b').onclick=fn;
+      box.appendChild(c);
+    };
+    state.colors.forEach(k=>{ const c=colorMap[k]; mk('<span class="ar">'+c.ar+'</span><span class="en">'+c.en+'</span>', ()=>{ state.colors.delete(k); syncChips(); render(); }); });
+    state.brands.forEach(br=>{ mk(br, ()=>{ state.brands.delete(br); syncChips(); render(); }); });
+    state.durs.forEach(k=>{ const d=DURMAP[k]; mk('<span class="ar">'+d.ar+'</span><span class="en">'+d.en+'</span>', ()=>{ state.durs.delete(k); syncChips(); render(); }); });
+    if(state.maxPrice<1000) mk('<span class="ar">لحد '+state.maxPrice+' ج.م</span><span class="en">Up to '+state.maxPrice+' EGP</span>', ()=>{ state.maxPrice=1000; priceRange.value=1000; priceVal.firstChild.textContent='1000 '; render(); });
+  }
+  /* مزامنة تظليل الشيبس مع الحالة بعد الشيل من صف المختار */
+  function syncChips(){
+    const visCols = COLORS.filter(c=>c.key!=='purple');
+    document.querySelectorAll('#color-filter .color-chip').forEach((el,i)=>el.classList.toggle('active', state.colors.has(visCols[i].key)));
+    document.querySelectorAll('#brand-filter .chip').forEach((el)=>el.classList.toggle('active', state.brands.has(el.textContent)));
+    document.querySelectorAll('#dur-filter .chip').forEach((el,i)=>el.classList.toggle('active', state.durs.has(DURS[i].k)));
+  }
+
   function render(){
+    renderActive();
     let list=PRODUCTS.filter(p=>
       (state.colors.size===0||state.colors.has(p.color)) &&
       (state.brands.size===0||state.brands.has(p.brandEn)) &&
