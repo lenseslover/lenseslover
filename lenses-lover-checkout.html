@@ -901,26 +901,38 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     // ---- send order to store via WhatsApp (formatted message) ----
     const WA_STORE='201065463003';
     const cur=currency||'EGP';
-    const lines=items.map(i=>'• '+i.ar+' ('+(i.ar_m||'')+') × '+i.qty+' = '+(i.price*i.qty)+' '+cur);
+    /* العملة بالعربي في رسالة الواتساب */
+    const curAr = (cur==='EGP') ? 'ج.م' : cur;
+    const SEP = '━━━━━━━━━━━━━━━';
+    const lines=items.map(function(i){
+      return '• '+i.ar+(i.ar_m?(' — '+i.ar_m):'')+'\n'+
+             '   '+i.qty+' × '+i.price+' = '+(i.price*i.qty)+' '+curAr;
+    });
     const waTxt=[
-      'طلب جديد — LENSES LOVER',
-      'رقم الطلب: '+order.no,
-      '',
-      'المنتجات:',
+      '🛍 طلب جديد — LENSES LOVER',
+      SEP,
+      '📋 رقم الطلب: '+order.no,
+      ' ',
+      '🛒 المنتجات',
       lines.join('\n'),
-      '',
-      (offD>0?('عروض القطعتين: خصم -'+offD+' '+cur):''),
-      'الإجمالي الفرعي: '+sub+' '+cur,
-      'الشحن: '+(ship===0?'مجاني':ship+' '+cur),
-      (disc>0?('خصم الدفع المسبق: -'+disc+' '+cur):''),
-      'الإجمالي: '+total+' '+cur,
-      '',
-      'طريقة الدفع: '+(m?m.ar:''),
-      'الدولة: '+meta.ar,
+      ' ',
+      '💰 الفاتورة',
+      (offD>0?('عروض القطعتين: -'+offD+' '+curAr):''),
+      'الإجمالي الفرعي: '+sub+' '+curAr,
+      'الشحن: '+(ship===0?'مجاني':ship+' '+curAr),
+      (disc>0?('خصم الدفع المسبق: -'+disc+' '+curAr):''),
+      'الإجمالي: '+total+' '+curAr,
+      'الدفع: '+(m?m.ar:''),
+      ' ',
+      '👤 بيانات العميل',
       (name?('الاسم: '+name):''),
-      (gv('f-wa')?('واتساب العميل: '+gv('f-wa')):''),
-      (addrLine?('العنوان: '+addrLine):'')
-    ].filter(Boolean).join('\n');
+      (gv('f-wa')?('واتساب: '+gv('f-wa')):''),
+      (full?('العنوان: '+full):''),
+      (area?('المنطقة: '+area):''),
+      (city?('المحافظة: '+city):''),
+      (meta&&meta.ar?('الدولة: '+meta.ar):''),
+      SEP
+    ].filter(function(x){ return x !== '' && x != null; }).join('\n');
     /* ---- تسجيل الطلب في قاعدة البيانات (D1) ---- */
     (function saveOrder(){
       try{
