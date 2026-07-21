@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>lenseslover — تتبع الطلب</title>
+<title>lenseslover — لوحة الطلبات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -386,167 +386,195 @@
 </head>
 <body class="lang-ar">
 
-<div class="wrap" style="max-width:640px; padding-block:70px 90px;">
+<div class="wrap" style="max-width:900px; padding-block:40px 80px;">
 
-  <h1 style="font-size:2rem; margin-bottom:8px; text-align:center;">
-    <span class="ar">تتبّعي طلبك</span><span class="en">Track Your Order</span>
-  </h1>
-  <p style="color:var(--ivory-dim); font-size:14.5px; text-align:center; margin-bottom:34px;">
-    <span class="ar">اكتبي رقم الطلب ورقم الواتساب اللي طلبتي بيه.</span>
-    <span class="en">Enter your order number and the WhatsApp number you used.</span>
-  </p>
-
-  <div style="background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius,18px); padding:26px 24px;">
-    <div style="margin-bottom:16px;">
-      <label style="display:block; font-size:13px; color:var(--ivory-dim); margin-bottom:8px;">
-        <span class="ar">رقم الطلب</span><span class="en">Order Number</span>
-      </label>
-      <input id="t-no" type="text" placeholder="LL-123456" autocomplete="off"
-        style="width:100%; padding:14px 16px; border-radius:12px; border:1px solid var(--line); background:var(--ink); color:var(--ivory); font-size:15px;">
-    </div>
-    <div style="margin-bottom:20px;">
-      <label style="display:block; font-size:13px; color:var(--ivory-dim); margin-bottom:8px;">
-        <span class="ar">رقم الواتساب</span><span class="en">WhatsApp Number</span>
-      </label>
-      <input id="t-wa" type="tel" inputmode="tel" placeholder="01XXXXXXXXX" autocomplete="off"
-        style="width:100%; padding:14px 16px; border-radius:12px; border:1px solid var(--line); background:var(--ink); color:var(--ivory); font-size:15px;">
-    </div>
-    <button id="t-btn"
-      style="width:100%; padding:15px; border-radius:999px; border:none; background:var(--amber); color:#fff; font-weight:800; font-size:15px; cursor:pointer;">
-      <span class="ar">تتبّعي الطلب</span><span class="en">Track Order</span>
-    </button>
-    <p id="t-msg" style="display:none; margin-top:14px; font-size:13.5px; text-align:center;"></p>
+  <!-- شاشة الدخول -->
+  <div id="gate" style="max-width:420px; margin:60px auto;">
+    <h1 style="font-size:1.6rem; text-align:center; margin-bottom:8px;">لوحة الطلبات</h1>
+    <p style="color:var(--ivory-dim); font-size:13.5px; text-align:center; margin-bottom:26px;">اكتب كلمة السر للدخول</p>
+    <input id="key" type="password" placeholder="كلمة السر" autocomplete="current-password"
+      style="width:100%; padding:14px 16px; border-radius:12px; border:1px solid var(--line); background:var(--ink-2); color:var(--ivory); font-size:15px; margin-bottom:12px;">
+    <button id="login" style="width:100%; padding:14px; border-radius:999px; border:none; background:var(--amber); color:#fff; font-weight:800; font-size:15px; cursor:pointer;">دخول</button>
+    <p id="gate-msg" style="display:none; margin-top:12px; font-size:13px; color:#d9534f; text-align:center;"></p>
   </div>
 
-  <!-- النتيجة -->
-  <div id="t-result" style="display:none; margin-top:26px;">
-    <div style="background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius,18px); padding:26px 24px;">
+  <!-- اللوحة -->
+  <div id="panel" style="display:none;">
 
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:22px;">
-        <b id="r-no" style="font-size:1.15rem; color:var(--amber-light,var(--amber));"></b>
-        <span id="r-date" style="font-size:12.5px; color:var(--ivory-dim);"></span>
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
+      <h1 style="font-size:1.5rem; margin:0;">الطلبات</h1>
+      <div style="display:flex; gap:8px;">
+        <button id="refresh" style="padding:9px 18px; border-radius:999px; border:1px solid var(--line); background:transparent; color:var(--ivory-dim); font-size:13px; cursor:pointer;">تحديث</button>
+        <button id="logout" style="padding:9px 18px; border-radius:999px; border:1px solid var(--line); background:transparent; color:var(--ivory-dim); font-size:13px; cursor:pointer;">خروج</button>
       </div>
-
-      <!-- شريط المراحل -->
-      <div id="r-steps" style="display:flex; align-items:flex-start; margin-bottom:26px;"></div>
-
-      <div id="r-items" style="border-top:1px solid var(--line); padding-top:18px;"></div>
-
-      <div style="display:flex; justify-content:space-between; margin-top:16px; padding-top:16px; border-top:1px solid var(--line); font-weight:800; font-size:1.05rem;">
-        <span><span class="ar">الإجمالي</span><span class="en">Total</span></span>
-        <span id="r-total"></span>
-      </div>
-
-      <a id="r-wa" href="#" target="_blank" rel="noopener"
-        style="display:block; text-align:center; margin-top:20px; padding:13px; border-radius:999px; border:1px solid var(--line); color:var(--ivory-dim); text-decoration:none; font-size:14px;">
-        <span class="ar">استفسار على الواتساب</span><span class="en">Ask on WhatsApp</span>
-      </a>
     </div>
+
+    <!-- فلاتر الحالة -->
+    <div id="tabs" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;"></div>
+
+    <input id="search" type="search" placeholder="بحث برقم الطلب أو رقم الواتساب أو الاسم"
+      style="width:100%; padding:12px 16px; border-radius:12px; border:1px solid var(--line); background:var(--ink-2); color:var(--ivory); font-size:14px; margin-bottom:18px;">
+
+    <p id="list-msg" style="color:var(--ivory-dim); font-size:14px; text-align:center; padding:30px 0;">جاري التحميل...</p>
+    <div id="list"></div>
   </div>
 
 </div>
 
 <script>
 (function(){
-  var API='https://lenseslover-orders.skymoonsport.workers.dev/track';
-  var WA='201065463003';
-  function isAr(){ return document.body.classList.contains('lang-ar'); }
-  var msg=document.getElementById('t-msg');
-
-  function say(text, color){
-    msg.textContent=text; msg.style.color=color||'#d9534f'; msg.style.display='block';
-  }
-
-  var STEPS=[
-    {k:'new',       ar:'تم الطلب',  en:'Placed'},
-    {k:'confirmed', ar:'التأكيد',   en:'Confirmed'},
-    {k:'packing',   ar:'التجهيز',   en:'Packing'},
-    {k:'shipped',   ar:'الشحن',     en:'Shipped'},
-    {k:'delivered', ar:'التوصيل',   en:'Delivered'}
+  var API='https://lenseslover-orders.skymoonsport.workers.dev';
+  var KEY='';
+  var STATUS=[
+    {k:'',          ar:'الكل'},
+    {k:'new',       ar:'جديد'},
+    {k:'confirmed', ar:'مؤكد'},
+    {k:'packing',   ar:'بيتجهز'},
+    {k:'shipped',   ar:'اتشحن'},
+    {k:'delivered', ar:'اتسلم'},
+    {k:'cancelled', ar:'ملغي'}
   ];
+  var COLORS={ new:'#c88a3e', confirmed:'#3e8fc8', packing:'#8a6fc8', shipped:'#3ec8a0', delivered:'#4caf50', cancelled:'#d9534f' };
+  var cur='';
 
-  function renderSteps(status){
-    var box=document.getElementById('r-steps');
-    var idx=STEPS.findIndex(function(s){ return s.k===status; });
-    if(idx<0) idx=0;
-    box.innerHTML='';
-    if(status==='cancelled'){
-      box.innerHTML='<div style="width:100%; text-align:center; color:#d9534f; font-weight:700;">'
-        +(isAr()?'الطلب ملغي':'Order cancelled')+'</div>';
-      return;
-    }
-    STEPS.forEach(function(s,i){
-      var done=i<=idx;
-      var col=document.createElement('div');
-      col.style.cssText='flex:1; text-align:center; position:relative;';
-      col.innerHTML=
-        (i>0? '<div style="position:absolute; top:13px; '+(isAr()?'right':'left')+':50%; width:100%; height:2px; background:'+(done?'var(--amber)':'var(--line)')+';"></div>' : '')+
-        '<div style="position:relative; z-index:2; width:28px; height:28px; margin:0 auto 8px; border-radius:50%;'+
-        'background:'+(done?'var(--amber)':'var(--ink)')+'; border:2px solid '+(done?'var(--amber)':'var(--line)')+';'+
-        'color:#fff; font-size:13px; line-height:24px;">'+(done?'✓':'')+'</div>'+
-        '<div style="font-size:11.5px; color:'+(done?'var(--ivory)':'var(--ivory-dim)')+';">'+(isAr()?s.ar:s.en)+'</div>';
-      box.appendChild(col);
+  var $=function(id){ return document.getElementById(id); };
+
+  function esc(t){ var d=document.createElement('div'); d.textContent=t==null?'':String(t); return d.innerHTML; }
+
+  function api(path, opts){
+    opts=opts||{};
+    opts.headers=Object.assign({'Content-Type':'application/json','X-Admin-Key':KEY}, opts.headers||{});
+    return fetch(API+path, opts).then(function(r){ return r.json(); });
+  }
+
+  /* ---------- الدخول ---------- */
+  function tryLogin(k){
+    KEY=k;
+    return api('/admin/orders?limit=1').then(function(j){
+      if(j && j.ok){
+        try{ localStorage.setItem('ll_admin_key', k); }catch(e){}
+        $('gate').style.display='none'; $('panel').style.display='block';
+        renderTabs(); load();
+        return true;
+      }
+      return false;
+    }).catch(function(){ return false; });
+  }
+
+  $('login').onclick=function(){
+    var k=$('key').value.trim();
+    if(!k) return;
+    $('gate-msg').style.display='none';
+    tryLogin(k).then(function(ok){
+      if(!ok){ $('gate-msg').textContent='كلمة السر غلط'; $('gate-msg').style.display='block'; }
+    });
+  };
+  $('key').addEventListener('keydown', function(e){ if(e.key==='Enter') $('login').click(); });
+
+  $('logout').onclick=function(){
+    try{ localStorage.removeItem('ll_admin_key'); }catch(e){}
+    location.reload();
+  };
+
+  /* ---------- الفلاتر ---------- */
+  function renderTabs(counts){
+    var box=$('tabs'); box.innerHTML='';
+    STATUS.forEach(function(s){
+      var n='';
+      if(counts){
+        if(s.k===''){ n=counts.reduce(function(a,c){ return a+c.n; },0); }
+        else { var f=counts.find(function(c){ return c.status===s.k; }); n=f?f.n:0; }
+        n=' ('+n+')';
+      }
+      var b=document.createElement('button');
+      b.textContent=s.ar+n;
+      b.style.cssText='padding:8px 15px; border-radius:999px; font-size:13px; cursor:pointer; border:1px solid '+
+        (cur===s.k?'var(--amber)':'var(--line)')+'; background:'+(cur===s.k?'var(--amber)':'transparent')+
+        '; color:'+(cur===s.k?'#fff':'var(--ivory-dim)')+';';
+      b.onclick=function(){ cur=s.k; load(); };
+      box.appendChild(b);
     });
   }
 
-  function render(o){
-    document.getElementById('r-no').textContent='#'+o.order_no;
+  /* ---------- القائمة ---------- */
+  function statusSelect(o){
+    var sel=document.createElement('select');
+    sel.style.cssText='padding:7px 12px; border-radius:999px; border:1px solid var(--line); background:var(--ink); color:var(--ivory); font-size:12.5px; cursor:pointer;';
+    STATUS.filter(function(s){ return s.k; }).forEach(function(s){
+      var op=document.createElement('option');
+      op.value=s.k; op.textContent=s.ar; op.selected=(o.status===s.k);
+      sel.appendChild(op);
+    });
+    sel.onchange=function(){
+      var v=sel.value; sel.disabled=true;
+      api('/admin/status',{ method:'POST', body:JSON.stringify({ order_no:o.order_no, status:v }) })
+        .then(function(j){
+          sel.disabled=false;
+          if(j && j.ok){ o.status=v; load(); }
+          else alert('فشل التحديث');
+        }).catch(function(){ sel.disabled=false; alert('مشكلة في الاتصال'); });
+    };
+    return sel;
+  }
+
+  function card(o){
     var d=new Date(o.created_at);
-    document.getElementById('r-date').textContent=
-      isNaN(d)? '' : d.toLocaleDateString(isAr()?'ar-EG':'en-GB',{day:'numeric',month:'long',year:'numeric'});
+    var when=isNaN(d)?'':d.toLocaleString('ar-EG',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+    var el=document.createElement('div');
+    el.style.cssText='background:var(--ink-2); border:1px solid var(--line); border-inline-start:3px solid '+
+      (COLORS[o.status]||'var(--line)')+'; border-radius:14px; padding:16px 18px; margin-bottom:12px;';
 
-    renderSteps(o.status);
+    var items=(o.items||[]).map(function(i){
+      return '<div style="font-size:13px; color:var(--ivory-dim); padding:2px 0;">• '+esc(i.ar||i.en)+' × '+(i.qty||1)+'</div>';
+    }).join('');
 
-    var box=document.getElementById('r-items');
-    box.innerHTML='';
-    (o.items||[]).forEach(function(it){
-      var row=document.createElement('div');
-      row.style.cssText='display:flex; justify-content:space-between; gap:12px; font-size:14px; padding:7px 0; color:var(--ivory);';
-      row.innerHTML='<span>'+(isAr()? (it.ar||it.en) : (it.en||it.ar))+' × '+(it.qty||1)+'</span>'
-                   +'<span style="color:var(--ivory-dim);">'+((it.price||0)*(it.qty||1))+' '+(o.currency||'EGP')+'</span>';
-      box.appendChild(row);
-    });
+    el.innerHTML=
+      '<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">'+
+        '<b style="color:var(--amber-light,var(--amber)); font-size:15px;">#'+esc(o.order_no)+'</b>'+
+        '<span style="font-size:12px; color:var(--ivory-dim);">'+esc(when)+'</span>'+
+      '</div>'+
+      '<div style="font-size:14px; margin-bottom:4px;">'+esc(o.name)+
+        ' — <a href="https://wa.me/'+esc(String(o.whatsapp).replace(/[^0-9]/g,''))+'" target="_blank" style="color:var(--jade-light,#3ec8a0); text-decoration:none;">'+esc(o.whatsapp)+'</a></div>'+
+      '<div style="font-size:13px; color:var(--ivory-dim); margin-bottom:10px;">'+
+        esc([o.governorate,o.area,o.address].filter(Boolean).join(' — '))+'</div>'+
+      items+
+      '<div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:12px; border-top:1px solid var(--line);">'+
+        '<b style="font-size:15px;">'+(o.total||0)+' '+esc(o.currency||'EGP')+'</b>'+
+        '<span class="slot"></span>'+
+      '</div>';
 
-    document.getElementById('r-total').textContent=(o.total||0)+' '+(o.currency||'EGP');
-    document.getElementById('r-wa').href='https://wa.me/'+WA+'?text='+
-      encodeURIComponent((isAr()?'استفسار عن الطلب رقم ':'Question about order ')+o.order_no);
-    document.getElementById('t-result').style.display='block';
+    el.querySelector('.slot').appendChild(statusSelect(o));
+    return el;
   }
 
-  function track(){
-    var no=document.getElementById('t-no').value.trim();
-    var wa=document.getElementById('t-wa').value.trim();
-    document.getElementById('t-result').style.display='none';
-    if(!no || !wa){ say(isAr()?'اكتبي رقم الطلب ورقم الواتساب':'Enter both fields'); return; }
-    say(isAr()?'جاري البحث...':'Searching...', 'var(--ivory-dim)');
-    fetch(API+'?no='+encodeURIComponent(no)+'&wa='+encodeURIComponent(wa))
-      .then(function(r){ return r.json(); })
+  var timer=null;
+  function load(){
+    $('list-msg').textContent='جاري التحميل...'; $('list-msg').style.display='block';
+    var q=$('search').value.trim();
+    api('/admin/orders?limit=100'+(cur?'&status='+cur:'')+(q?'&q='+encodeURIComponent(q):''))
       .then(function(j){
-        if(j && j.ok && j.order){ msg.style.display='none'; render(j.order); }
-        else if(j && j.error==='not_found'){
-          say(isAr()?'مفيش طلب بالبيانات دي — راجعي رقم الطلب والواتساب.':'No order found — check your details.');
-        } else {
-          say(isAr()?'حصلت مشكلة، جربي تاني بعد شوية.':'Something went wrong, try again.');
-        }
+        if(!j || !j.ok){ $('list-msg').textContent='حصلت مشكلة في التحميل'; return; }
+        renderTabs(j.counts);
+        var box=$('list'); box.innerHTML='';
+        if(!j.orders.length){ $('list-msg').textContent='مفيش طلبات'; return; }
+        $('list-msg').style.display='none';
+        j.orders.forEach(function(o){ box.appendChild(card(o)); });
       })
-      .catch(function(){ say(isAr()?'مشكلة في الاتصال، جربي تاني.':'Connection problem, try again.'); });
+      .catch(function(){ $('list-msg').textContent='مشكلة في الاتصال'; });
   }
 
-  document.getElementById('t-btn').addEventListener('click', track);
-  ['t-no','t-wa'].forEach(function(id){
-    document.getElementById(id).addEventListener('keydown', function(e){ if(e.key==='Enter') track(); });
+  $('refresh').onclick=load;
+  $('search').addEventListener('input', function(){
+    clearTimeout(timer); timer=setTimeout(load, 400);
   });
 
-  /* لو جت من صفحة التأكيد، نملا رقم الطلب تلقائي */
+  /* دخول تلقائي لو الباسورد محفوظ */
   try{
-    var last=JSON.parse(sessionStorage.getItem('ll_last_order')||'null');
-    var q=new URLSearchParams(location.search).get('no');
-    if(q) document.getElementById('t-no').value=q;
-    else if(last && last.no) document.getElementById('t-no').value=last.no;
+    var saved=localStorage.getItem('ll_admin_key');
+    if(saved) tryLogin(saved);
   }catch(e){}
 })();
 </script>
 
-<script src="lenses-lover-enhance.js"></script>
 </body>
 </html>
