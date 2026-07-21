@@ -311,6 +311,9 @@
   .gov-list.open{ display:block; }
   .gov-list .gov-item{ padding:10px 14px; font-size:14px; cursor:pointer; color:var(--ivory); }
   .gov-list .gov-item:hover, .gov-list .gov-item.hl{ background:rgba(200,138,62,.16); color:var(--amber-light,var(--amber)); }
+  #country option:disabled{ color:#9a8f80; }
+  .pay-opt.soon{ opacity:.5; cursor:not-allowed; pointer-events:none; }
+  .pay-opt.soon .radio{ opacity:.4; }
   .field.invalid input{ border-color:#d9534f !important; box-shadow:0 0 0 3px rgba(217,83,79,.12); }
   .err-msg{ display:none; font-size:12px; color:#d9534f; margin-top:6px; }
   .field.invalid .err-msg{ display:block; }
@@ -446,9 +449,9 @@
         <div class="field full"><label><span class="ar">الدولة</span><span class="en">Country</span></label>
           <select id="country" onchange="updateCountry()">
             <option value="eg" data-cur="EGP" data-gw="Paymob">🇪🇬 مصر / Egypt</option>
-            <option value="sa" data-cur="SAR" data-gw="HyperPay">🇸🇦 السعودية / Saudi Arabia</option>
-            <option value="ae" data-cur="AED" data-gw="Tap">🇦🇪 الإمارات / UAE</option>
-            <option value="kw" data-cur="KWD" data-gw="Tap (KNET)">🇰🇼 الكويت / Kuwait</option>
+            <option value="sa" data-cur="SAR" data-gw="HyperPay" disabled>🇸🇦 السعودية / Saudi Arabia — قريبًا</option>
+            <option value="ae" data-cur="AED" data-gw="Tap" disabled>🇦🇪 الإمارات / UAE — قريبًا</option>
+            <option value="kw" data-cur="KWD" data-gw="Tap (KNET)" disabled>🇰🇼 الكويت / Kuwait — قريبًا</option>
           </select>
         </div>
         <div class="field gov-field"><label><span class="ar">المحافظة</span><span class="en">Governorate</span></label>
@@ -476,10 +479,6 @@
           <div class="field"><label><span class="ar">تاريخ الانتهاء</span><span class="en">Expiry</span></label><input type="text" placeholder="MM/YY"></div>
           <div class="field"><label>CVV</label><input type="text" placeholder="123"></div>
         </div>
-      </div>
-      <div class="cod-note" id="cod-note">
-        <span class="ar">💡 وفّري 5%! ادفعي إلكترونيًا الآن بدل الدفع عند الاستلام واحصلي على خصم فوري.</span>
-        <span class="en">💡 Save 5%! Pay online now instead of cash on delivery and get an instant discount.</span>
       </div>
     </div>
   </div>
@@ -579,7 +578,7 @@
   const METHODS = {
     eg:[
       {id:'cod', icon:'💵', ar:'الدفع عند الاستلام', en:'Cash on Delivery', ar_s:'ادفعي كاش عند وصول الطلب', en_s:'Pay cash when it arrives', tag_ar:'الأشهر', tag_en:'Popular'},
-      {id:'card', icon:'💳', ar:'بطاقة فيزا / ماستركارد', en:'Visa / Mastercard', ar_s:'عبر Paymob الآمنة', en_s:'via secure Paymob'},
+      {id:'card', icon:'💳', ar:'بطاقة فيزا / ماستركارد', en:'Visa / Mastercard', ar_s:'قريبًا', en_s:'Coming soon', soon:true},
       {id:'vcash', icon:'📱', ar:'فودافون كاش / فوري', en:'Vodafone Cash / Fawry', ar_s:'محافظ إلكترونية محلية', en_s:'Local e-wallets'},
     ],
     sa:[
@@ -610,6 +609,7 @@
   function renderMethods(cc){
     const box=document.getElementById('pay-methods'); box.innerHTML='';
     selected=null;
+    var firstPicked=false;
     METHODS[cc].forEach((m,i)=>{
       const el=document.createElement('div'); el.className='pay-opt'; el.dataset.id=m.id;
       const tag=(m.tag_ar)?`<span class="badge-tag"><span class="ar">${m.tag_ar}</span><span class="en">${m.tag_en}</span></span>`:'';
@@ -617,9 +617,15 @@
       el.innerHTML=`<span class="radio"></span>${iconHtml}
         <span class="txt"><b><span class="ar">${m.ar}</span><span class="en">${m.en}</span></b>
         <span><span class="ar">${m.ar_s}</span><span class="en">${m.en_s}</span></span></span>${tag}`;
-      el.onclick=()=>selectMethod(el,m);
+      if(m.soon){
+        el.classList.add('soon');
+        el.innerHTML += `<span class="badge-tag soon-tag"><span class="ar">قريبًا</span><span class="en">Soon</span></span>`;
+        el.onclick=null;
+      } else {
+        el.onclick=()=>selectMethod(el,m);
+      }
       box.appendChild(el);
-      if(i===0){ selectMethod(el,m); }
+      if(!firstPicked && !m.soon){ firstPicked=true; selectMethod(el,m); }
     });
   }
 
@@ -627,7 +633,7 @@
     document.querySelectorAll('.pay-opt').forEach(o=>o.classList.remove('active'));
     el.classList.add('active'); selected=m.id;
     document.getElementById('card-fields').classList.toggle('show', ['card','mada','knet'].includes(m.id));
-    document.getElementById('cod-note').classList.toggle('show', m.id==='cod');
+    var cn=document.getElementById('cod-note'); if(cn) cn.classList.toggle('show', m.id==='cod');
     totals();
   }
 
