@@ -428,7 +428,7 @@
       </div>
 
       <!-- شريط المراحل -->
-      <div id="r-steps" style="display:flex; align-items:flex-start; margin-bottom:26px;"></div>
+      <div id="r-steps" style="display:flex; align-items:flex-start; margin-bottom:26px; overflow:hidden;"></div>
 
       <div id="r-items" style="border-top:1px solid var(--line); padding-top:18px;"></div>
 
@@ -475,16 +475,24 @@
         +(isAr()?'الطلب ملغي':'Order cancelled')+'</div>';
       return;
     }
+    var BLUE='#3e8fc8';
     STEPS.forEach(function(s,i){
       var done=i<=idx;
+      var last=(i===STEPS.length-1);           /* التوصيل — لون مميز */
       var col=document.createElement('div');
       col.style.cssText='flex:1; text-align:center; position:relative;';
-      col.innerHTML=
-        (i>0? '<div style="position:absolute; top:13px; '+(isAr()?'right':'left')+':50%; width:100%; height:2px; background:'+(done?'var(--amber)':'var(--line)')+';"></div>' : '')+
+      var dotBg  = done ? (last?BLUE:'var(--amber)') : 'var(--ink)';
+      var dotBrd = done ? (last?BLUE:'var(--amber)') : (last?BLUE:'var(--line)');
+      /* الخط بيوصل بين الدواير بس — نصف المسافة من كل ناحية عشان ما يخرجش برة */
+      var line = (i>0)
+        ? '<div style="position:absolute; top:13px; '+(isAr()?'right':'left')+':50%; width:100%; height:2px;'+
+          ' background:'+(done?(last?BLUE:'var(--amber)'):'var(--line)')+'; z-index:1;"></div>'
+        : '';
+      col.innerHTML= line+
         '<div style="position:relative; z-index:2; width:28px; height:28px; margin:0 auto 8px; border-radius:50%;'+
-        'background:'+(done?'var(--amber)':'var(--ink)')+'; border:2px solid '+(done?'var(--amber)':'var(--line)')+';'+
+        'background:'+dotBg+'; border:2px solid '+dotBrd+';'+
         'color:#fff; font-size:13px; line-height:24px;">'+(done?'✓':'')+'</div>'+
-        '<div style="font-size:11.5px; color:'+(done?'var(--ivory)':'var(--ivory-dim)')+';">'+(isAr()?s.ar:s.en)+'</div>';
+        '<div style="font-size:11.5px; color:'+(done? (last?BLUE:'var(--ivory)') :'var(--ivory-dim)')+';">'+(isAr()?s.ar:s.en)+'</div>';
       box.appendChild(col);
     });
   }
