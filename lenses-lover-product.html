@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="تفاصيل المنتج الكاملة: الألوان، القطر، نسبة الترطيب، ومدة الاستخدام — مع مراجعات حقيقية.">
+<meta name="description" content="عدسات لاصقة ملونة أصلية — تفاصيل اللون والمقاس ومدة الاستخدام. شحن لكل محافظات مصر والدفع عند الاستلام.">
 <meta name="keywords" content="عدسات لاصقة, عدسات ملونة, عدسات طبية, contact lenses, colored lenses, LENSES LOVER, مصر, الخليج">
 <meta name="author" content="LENSES LOVER">
 <meta name="theme-color" content="#15120e">
@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Full product details: colors, diameter, water content, and wear duration — with real reviews.">
 <meta name="twitter:image" content="https://lenseslover.com/og-image.jpg">
 
-<title>lenseslover — عدسات إيكوال بيري</title>
+<title>عدسات لاصقة ملونة وطبية | LENSES LOVER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -731,7 +731,80 @@
     document.querySelectorAll('.p-title-en .en').forEach(e=>e.textContent='A '+P.family+' '+CAT.durEn(P).toLowerCase()+' colored lens');
     const crumbAr=document.querySelector('.crumbs .current .ar'), crumbEn=document.querySelector('.crumbs .current .en');
     if(crumbAr) crumbAr.textContent=P.ar; if(crumbEn) crumbEn.textContent=P.en;
-    document.title = 'lenseslover — '+P.ar;
+    document.title = P.ar + ' — عدسات ' + (famAr(P.family)||'') + ' | LENSES LOVER';
+
+    /* ---------- SEO ديناميكي لكل منتج ---------- */
+    (function seo(){
+      var url = 'https://lenseslover.com/lenses-lover-product?id=' + encodeURIComponent(P.id);
+      var famA = famAr(P.family) || '';
+      var typeA = (P.type==='optical') ? 'تجميلي أو طبي بمقاسات نظر' : 'تجميلي';
+      var price = (CAT.pricingOf && CAT.pricingOf(P)) ? (CAT.pricingOf(P).monthly || P.price) : P.price;
+      var desc = 'عدسات ' + P.ar + ' — لون ' + famA + '، ' + typeA + '، من ' + (BRAND?BRAND.ar:'') +
+                 '. السعر ' + price + ' ج.م. شحن لكل محافظات مصر والدفع عند الاستلام.';
+
+      function setMeta(sel, attr, val){
+        var el=document.head.querySelector(sel);
+        if(!el){ el=document.createElement('meta'); 
+          var p=sel.match(/\[(name|property)="(.+?)"\]/);
+          if(p) el.setAttribute(p[1], p[2]);
+          document.head.appendChild(el); }
+        el.setAttribute(attr, val);
+      }
+      setMeta('meta[name="description"]','content',desc);
+      setMeta('meta[property="og:title"]','content',document.title);
+      setMeta('meta[property="og:description"]','content',desc);
+      setMeta('meta[property="og:url"]','content',url);
+      setMeta('meta[property="og:type"]','content','product');
+      if(P.imgs && P.imgs[0]) setMeta('meta[property="og:image"]','content',P.imgs[0]);
+
+      /* canonical لكل منتج بدل رابط ثابت للكل */
+      var can=document.head.querySelector('link[rel="canonical"]');
+      if(!can){ can=document.createElement('link'); can.rel='canonical'; document.head.appendChild(can); }
+      can.href=url;
+
+      /* بيانات منظمة: المنتج + مسار التنقل */
+      var ld={
+        "@context":"https://schema.org",
+        "@type":"Product",
+        "name":P.ar,
+        "alternateName":P.en,
+        "description":desc,
+        "image":(P.imgs||[]),
+        "sku":P.id,
+        "color":famA,
+        "brand":{"@type":"Brand","name":(BRAND?BRAND.en:'LENSES LOVER')},
+        "category":"عدسات لاصقة ملونة",
+        "offers":{
+          "@type":"Offer",
+          "url":url,
+          "priceCurrency":"EGP",
+          "price":String(price),
+          "availability":"https://schema.org/InStock",
+          "itemCondition":"https://schema.org/NewCondition",
+          "seller":{"@type":"Organization","name":"LENSES LOVER"},
+          "shippingDetails":{
+            "@type":"OfferShippingDetails",
+            "shippingRate":{"@type":"MonetaryAmount","value":"60","currency":"EGP"},
+            "shippingDestination":{"@type":"DefinedRegion","addressCountry":"EG"}
+          }
+        }
+      };
+      var bc={
+        "@context":"https://schema.org",
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://lenseslover.com/"},
+          {"@type":"ListItem","position":2,"name":"المتجر","item":"https://lenseslover.com/lenses-lover-shop"},
+          {"@type":"ListItem","position":3,"name":(BRAND?BRAND.ar:''),"item":"https://lenseslover.com/lenses-lover-shop?brand="+P.brand},
+          {"@type":"ListItem","position":4,"name":P.ar,"item":url}
+        ]
+      };
+      [['ld-product',ld],['ld-breadcrumb',bc]].forEach(function(pair){
+        var el=document.getElementById(pair[0]);
+        if(!el){ el=document.createElement('script'); el.type='application/ld+json'; el.id=pair[0]; document.head.appendChild(el); }
+        el.textContent=JSON.stringify(pair[1]);
+      });
+    })();
     buildDurOpts();
     buildPowerOpts();
     const sda=document.getElementById('spec-dur-ar'), sde=document.getElementById('spec-dur-en');

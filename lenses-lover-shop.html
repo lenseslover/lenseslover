@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="تسوقي كل العدسات الملونة والطبية — فلترة باللون والماركة والمدة والسعر.">
+<meta name="description" content="تسوقي عدسات لاصقة ملونة: عسلي، رمادي، أخضر، كحلي، بني. عدسات يومية وشهرية وسنوية، وطبية بمقاسات النظر. أكتر من 300 لون من إيكوال بيري وميتون وأربان لاير وفريش ليدي ودهب. شحن لكل محافظات مصر.">
 <meta name="keywords" content="عدسات لاصقة, عدسات ملونة, عدسات طبية, contact lenses, colored lenses, LENSES LOVER, مصر, الخليج">
 <meta name="author" content="LENSES LOVER">
 <meta name="theme-color" content="#15120e">
-<link rel="canonical" href="https://lenseslover.com/lenses-lover-shop.html">
+<link rel="canonical" href="https://lenseslover.com/lenses-lover-shop">
 <meta name="robots" content="index, follow">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Shop all colored & prescription lenses — filter by color, brand, duration, and price.">
 <meta name="twitter:image" content="https://lenseslover.com/og-image.jpg">
 
-<title>lenseslover — تسوقي</title>
+<title>عدسات لاصقة ملونة وطبية | كل الألوان والماركات — LENSES LOVER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -663,8 +663,32 @@
     document.querySelectorAll('#dur-filter .chip').forEach((el,i)=>el.classList.toggle('active', state.durs.has(DURS[i].k)));
   }
 
+  /* عنوان الصفحة بيتغير مع الفلتر — كل لون/ماركة له عنوان مستقل في البحث */
+  function seoTitle(){
+    try{
+      var parts=[];
+      state.colors.forEach(function(k){ var c=colorMap[k]; if(c) parts.push('عدسات '+c.ar); });
+      state.brands.forEach(function(b){ parts.push(b); });
+      var t = parts.length ? (parts.join(' — ')+' | LENSES LOVER')
+                           : 'عدسات لاصقة ملونة وطبية | كل الألوان والماركات — LENSES LOVER';
+      document.title=t;
+      var can=document.head.querySelector('link[rel="canonical"]');
+      if(can){
+        var u='https://lenseslover.com/lenses-lover-shop';
+        var qs=[];
+        state.colors.forEach(function(k){ qs.push('color='+k); });
+        state.brands.forEach(function(b){
+          var bk=(CAT.brands.find(function(x){ return x.ar===b||x.en===b; })||{}).key;
+          if(bk) qs.push('brand='+bk);
+        });
+        can.href = u + (qs.length? '?'+qs[0] : '');
+      }
+    }catch(e){}
+  }
+
   function render(){
     renderActive();
+    seoTitle();
     let list=PRODUCTS.filter(p=>
       (state.colors.size===0||state.colors.has(p.color)) &&
       (state.brands.size===0||state.brands.has(p.brandEn)) &&
