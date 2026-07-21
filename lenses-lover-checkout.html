@@ -882,6 +882,29 @@
 
     try{ sessionStorage.setItem('ll_last_order', JSON.stringify(order)); }catch(e){}
 
+    // ---- send order to store via WhatsApp (formatted message) ----
+    const WA_STORE='201011423093';
+    const cur=currency||'EGP';
+    const lines=items.map(i=>'• '+i.ar+' ('+(i.ar_m||'')+') × '+i.qty+' = '+(i.price*i.qty)+' '+cur);
+    const waTxt=[
+      '🛍️ طلب جديد — LENSES LOVER',
+      'رقم الطلب: '+order.no,
+      '',
+      'المنتجات:',
+      lines.join('\n'),
+      '',
+      (offD>0?('عروض القطعتين: خصم -'+offD+' '+cur):''),
+      'الإجمالي الفرعي: '+sub+' '+cur,
+      'الشحن: '+(ship===0?'مجاني':ship+' '+cur),
+      (disc>0?('خصم الدفع المسبق: -'+disc+' '+cur):''),
+      'الإجمالي: '+total+' '+cur,
+      '',
+      'طريقة الدفع: '+(m?m.ar:''),
+      'الدولة: '+meta.ar,
+      (name?('الاسم: '+name):''),
+      (gv('f-wa')?('واتساب العميل: '+gv('f-wa')):''),
+      (addrLine?('العنوان: '+addrLine):'')
+    ].filter(Boolean).join('\n');
     /* ---- تسجيل الطلب في قاعدة البيانات (D1) ---- */
     (function saveOrder(){
       try{
@@ -906,32 +929,9 @@
           .then(function(r){ return r.json(); })
           .then(function(j){ console.log('[LL] رد السيرفر:', j); })
           .catch(function(e){ console.warn('[LL] فشل التخزين:', e); });
-      }catch(e){ console.warn('[LL] خطأ:', e); }
+      }catch(e){ console.error('[LL] خطأ في تجهيز الطلب:', e); }
     })();
 
-    // ---- send order to store via WhatsApp (formatted message) ----
-    const WA_STORE='201011423093';
-    const cur=currency||'EGP';
-    const lines=items.map(i=>'• '+i.ar+' ('+(i.ar_m||'')+') × '+i.qty+' = '+(i.price*i.qty)+' '+cur);
-    const waTxt=[
-      '🛍️ طلب جديد — LENSES LOVER',
-      'رقم الطلب: '+order.no,
-      '',
-      'المنتجات:',
-      lines.join('\n'),
-      '',
-      (offD>0?('عروض القطعتين: خصم -'+offD+' '+cur):''),
-      'الإجمالي الفرعي: '+sub+' '+cur,
-      'الشحن: '+(ship===0?'مجاني':ship+' '+cur),
-      (disc>0?('خصم الدفع المسبق: -'+disc+' '+cur):''),
-      'الإجمالي: '+total+' '+cur,
-      '',
-      'طريقة الدفع: '+(m?m.ar:''),
-      'الدولة: '+meta.ar,
-      (name?('الاسم: '+name):''),
-      (gv('f-wa')?('واتساب العميل: '+gv('f-wa')):''),
-      (addrLine?('العنوان: '+addrLine):'')
-    ].filter(Boolean).join('\n');
     window.open('https://wa.me/'+WA_STORE+'?text='+encodeURIComponent(waTxt), '_blank');
 
     /* السلة بتتمسح بس لما نتأكد إن العميلة راحت للواتساب فعلًا —
