@@ -760,16 +760,13 @@
     if(wa){
       clearErr(wa);
       var raw=wa.value.replace(/[\s\-().]/g,'');
-      if(!raw){ setErr(wa,'اكتبي رقم الواتساب','WhatsApp number is required'); bad.push(wa); }
+      if(!raw || raw==='+20'){ setErr(wa,'اكتبي رقم الواتساب','WhatsApp number is required'); bad.push(wa); }
       else if(cc==='eg'){
-        /* يقبل 01xxxxxxxxx و +2001xxxxxxxxx و 201xxxxxxxxx و 00201xxxxxxxxx */
-        var d=raw.replace(/^\+/,'').replace(/^00/,'');
-        if(/^20/.test(d)) d=d.slice(2);
-        if(!/^0/.test(d)) d='0'+d;
-        if(!/^01[0125][0-9]{8}$/.test(d)){
-          setErr(wa,'رقم غير صحيح — لازم 11 رقم يبدأ بـ 010 أو 011 أو 012 أو 015','Invalid Egyptian mobile number');
+        var intl=window.egIntl(wa.value);
+        if(!intl){
+          setErr(wa,'رقم غير صحيح — 11 رقم يبدأ بـ 010 أو 011 أو 012 أو 015','Invalid Egyptian mobile number');
           bad.push(wa);
-        }
+        } else { wa.value=intl; }     /* بيتحول للصيغة الدولية قبل الإرسال */
       } else if(raw.replace(/\D/g,'').length < 8){
         setErr(wa,'رقم غير صحيح','Invalid phone number'); bad.push(wa);
       }
@@ -808,6 +805,31 @@
     var el=document.getElementById(id);
     if(el) el.addEventListener('input', function(){ clearErr(el); });
   });
+
+  /* رقم الواتساب: +20 بتتكتب تلقائي، والرقم بيتظبط على الصيغة الدولية */
+  (function(){
+    var wa=document.getElementById('f-wa');
+    if(!wa) return;
+    function isEg(){ var c=document.getElementById('country'); return !c || c.value==='eg'; }
+    /* بيرجع الصيغة الدولية +20 1XXXXXXXXX لو الرقم مصري صالح، وإلا null */
+    window.egIntl=function(v){
+      var raw=(v||'').replace(/[\s\-().]/g,'');
+      if(!raw) return null;
+      var d=raw.replace(/^\+/,'').replace(/^00/,'');
+      if(/^20/.test(d)) d=d.slice(2);
+      if(!/^0/.test(d)) d='0'+d;
+      return /^01[0125][0-9]{8}$/.test(d) ? ('+20 '+d.slice(1)) : null;
+    };
+    wa.addEventListener('focus', function(){
+      if(isEg() && !wa.value.trim()) wa.value='+20 ';
+    });
+    wa.addEventListener('blur', function(){
+      if(!isEg()) return;
+      if(wa.value.trim()==='+20'||wa.value.trim()==='+20 '){ wa.value=''; return; }
+      var f=window.egIntl(wa.value);
+      if(f) wa.value=f;               /* 01012345678 → +20 1012345678 */
+    });
+  })();
 
   window.placeOrder=function(){
     if(!validateCheckout()) return;
