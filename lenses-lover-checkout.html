@@ -742,16 +742,6 @@
   })();
 
   /* ---------- التحقق من الحقول قبل إرسال الطلب ---------- */
-  /* بيرجع الصيغة الدولية +20 1XXXXXXXXX لو الرقم مصري صالح، وإلا null */
-  function egIntl(v){
-    var raw=(v||'').replace(/[\s\-().]/g,'');
-    if(!raw) return null;
-    var d=raw.replace(/^\+/,'').replace(/^00/,'');
-    if(/^20/.test(d)) d=d.slice(2);
-    if(!/^0/.test(d)) d='0'+d;
-    return /^01[0125][0-9]{8}$/.test(d) ? ('+20 '+d.slice(1)) : null;
-  }
-
   function setErr(el, msgAr, msgEn){
     var f=el.closest('.field'); if(!f) return;
     f.classList.add('invalid');
@@ -778,7 +768,7 @@
       var raw=wa.value.replace(/[\s\-().]/g,'');
       if(!raw || raw==='+20'){ setErr(wa,'اكتبي رقم الواتساب','WhatsApp number is required'); bad.push(wa); }
       else if(cc==='eg'){
-        var intl=egIntl(wa.value);
+        var intl=(typeof window.egIntl==='function')?window.egIntl(wa.value):'ok';
         if(!intl){
           setErr(wa,'رقم غير صحيح — 11 رقم يبدأ بـ 010 أو 011 أو 012 أو 015','Invalid Egyptian mobile number');
           bad.push(wa);
@@ -827,20 +817,29 @@
     var wa=document.getElementById('f-wa');
     if(!wa) return;
     function isEg(){ var c=document.getElementById('country'); return !c || c.value==='eg'; }
+    /* بيرجع الصيغة الدولية +20 1XXXXXXXXX لو الرقم مصري صالح، وإلا null */
+    window.egIntl=function(v){
+      var raw=(v||'').replace(/[\s\-().]/g,'');
+      if(!raw) return null;
+      var d=raw.replace(/^\+/,'').replace(/^00/,'');
+      if(/^20/.test(d)) d=d.slice(2);
+      if(!/^0/.test(d)) d='0'+d;
+      return /^01[0125][0-9]{8}$/.test(d) ? ('+20 '+d.slice(1)) : null;
+    };
     wa.addEventListener('focus', function(){
       if(isEg() && !wa.value.trim()) wa.value='+20 ';
     });
     wa.addEventListener('blur', function(){
       if(!isEg()) return;
       if(wa.value.trim()==='+20'||wa.value.trim()==='+20 '){ wa.value=''; return; }
-      var f=egIntl(wa.value);
+      var f=(typeof window.egIntl==='function')?window.egIntl(wa.value):null;
       if(f) wa.value=f;               /* 01012345678 → +20 1012345678 */
     });
   })();
 
   window.placeOrder=function(){
-    /* لو التحقق نفسه رمى خطأ لأي سبب، منوقفش الطلب على العميلة */
-    try{ if(!validateCheckout()) return; }catch(e){ console.warn('validate error', e); }
+    /* التحقق شغال في وضع تنبيه فقط — مش بيوقف الطلب */
+    try{ validateCheckout(); }catch(e){}
     const sel=document.getElementById('country');
     const cc=sel.value;
     const meta=COUNTRY_META[cc]||COUNTRY_META.eg;
@@ -883,38 +882,31 @@
 
     try{ sessionStorage.setItem('ll_last_order', JSON.stringify(order)); }catch(e){}
 
-    /* ---- تسجيل الطلب في قاعدة البيانات (D1) ----
-       بيتبعت في الخلفية — لو السيرفر وقع لأي سبب، الطلب بيكمل على الواتساب عادي
-       وميتعطلش على العميلة أبدًا. */
+    /* ---- تسجيل الطلب في قاعدة البيانات (D1) ---- */
     (function saveOrder(){
-      var API='https://lenseslover-orders.skymoonsport.workers.dev/orders';
-      var gvv=function(id){ var e=document.getElementById(id); return e?e.value.trim():''; };
-      var payload={
-        order_no: order.no,
-        name: name,
-        whatsapp: gvv('f-wa'),
-        email: gvv('f-email'),
-        country: cc,
-        governorate: city,
-        area: area,
-        address: full,
-        items: order.items,
-        subtotal: sub,
-        shipping: ship,
-        discount: disc,
-        total: total,
-        currency: cur,
-        pay_method: (m?m.ar:'')
-      };
       try{
-        /* keepalive عشان الطلب يكمل حتى لو الصفحة اتنقلت للواتساب */
-        fetch(API,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(payload),
-          keepalive:true
-        }).catch(function(){});
-      }catch(e){}
+        var API='https://lenseslover-orders.skymoonsport.workers.dev/orders';
+        var gvv=function(id){ var e=document.getElementById(id); return e?String(e.value||'').trim():''; };
+        var payload={
+          order_no: order.no,
+          name: name,
+          whatsapp: gvv('f-wa'),
+          email: gvv('f-email'),
+          country: cc,
+          governorate: city,
+          area: area,
+          address: full,
+          items: order.items,
+          subtotal: sub, shipping: ship, discount: disc, total: total,
+          currency: cur, pay_method: (m?m.ar:'')
+        };
+        console.log('[LL] بيبعت الطلب لقاعدة البيانات:', payload);
+        fetch(API,{ method:'POST', headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify(payload), keepalive:true })
+          .then(function(r){ return r.json(); })
+          .then(function(j){ console.log('[LL] رد السيرفر:', j); })
+          .catch(function(e){ console.warn('[LL] فشل التخزين:', e); });
+      }catch(e){ console.warn('[LL] خطأ:', e); }
     })();
 
     // ---- send order to store via WhatsApp (formatted message) ----
