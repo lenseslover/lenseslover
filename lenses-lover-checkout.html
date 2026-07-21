@@ -311,6 +311,9 @@
   .gov-list.open{ display:block; }
   .gov-list .gov-item{ padding:10px 14px; font-size:14px; cursor:pointer; color:var(--ivory); }
   .gov-list .gov-item:hover, .gov-list .gov-item.hl{ background:rgba(200,138,62,.16); color:var(--amber-light,var(--amber)); }
+  .field.invalid input{ border-color:#d9534f !important; box-shadow:0 0 0 3px rgba(217,83,79,.12); }
+  .err-msg{ display:none; font-size:12px; color:#d9534f; margin-top:6px; }
+  .field.invalid .err-msg{ display:block; }
   .gov-list .gov-empty{ padding:12px 14px; font-size:13px; color:var(--ivory-dim); }
   .page-hero h1{ font-size:42px; font-family:'Reem Kufi', sans-serif; color:var(--ivory); margin-bottom:12px; }
   body.lang-en .page-hero h1{ font-family:'Instrument Serif', serif; font-style:italic; font-weight:400; }
@@ -428,9 +431,9 @@
       <h3><span class="step-n">1</span><span class="ar">معلومات التواصل</span><span class="en">Contact Info</span></h3>
       <p class="hint"><span class="ar">هنأكد طلبك على الواتساب — تأكدي من الرقم.</span><span class="en">We confirm your order via WhatsApp — double-check the number.</span></p>
       <div class="field-grid">
-        <div class="field"><label><span class="ar">الاسم الأول</span><span class="en">First Name</span></label><input type="text"></div>
-        <div class="field"><label><span class="ar">الاسم الأخير</span><span class="en">Last Name</span></label><input type="text"></div>
-        <div class="field full"><label><span class="ar">رقم الواتساب</span><span class="en">WhatsApp Number</span></label><input type="tel" placeholder="+20 1XX XXX XXXX"></div>
+        <div class="field"><label><span class="ar">الاسم الأول</span><span class="en">First Name</span></label><input type="text" id="f-first"><span class="err-msg"></span></div>
+        <div class="field"><label><span class="ar">الاسم الأخير</span><span class="en">Last Name</span></label><input type="text" id="f-last"><span class="err-msg"></span></div>
+        <div class="field full"><label><span class="ar">رقم الواتساب</span><span class="en">WhatsApp Number</span></label><input type="tel" id="f-wa" inputmode="tel" placeholder="+20 1XX XXX XXXX"><span class="err-msg"></span></div>
         <div class="field full"><label><span class="ar">البريد الإلكتروني (اختياري)</span><span class="en">Email (optional)</span></label><input type="email"></div>
       </div>
     </div>
@@ -451,9 +454,10 @@
         <div class="field gov-field"><label><span class="ar">المحافظة</span><span class="en">Governorate</span></label>
           <input type="text" id="gov-input" autocomplete="off" placeholder="ابحثي أو اختاري المحافظة">
           <div class="gov-list" id="gov-list"></div>
+          <span class="err-msg"></span>
         </div>
-        <div class="field"><label><span class="ar">المنطقة</span><span class="en">Area</span></label><input type="text"></div>
-        <div class="field full"><label><span class="ar">العنوان بالتفصيل</span><span class="en">Full Address</span></label><input type="text"></div>
+        <div class="field"><label><span class="ar">المنطقة</span><span class="en">Area</span></label><input type="text" id="f-area"></div>
+        <div class="field full"><label><span class="ar">العنوان بالتفصيل</span><span class="en">Full Address</span></label><input type="text" id="f-addr"><span class="err-msg"></span></div>
       </div>
     </div>
 
@@ -731,7 +735,82 @@
     inp.addEventListener('focus', function(){ if(csel && csel.value!=='eg') list.classList.remove('open'); });
   })();
 
+  /* ---------- التحقق من الحقول قبل إرسال الطلب ---------- */
+  function setErr(el, msgAr, msgEn){
+    var f=el.closest('.field'); if(!f) return;
+    f.classList.add('invalid');
+    var m=f.querySelector('.err-msg'); if(m) m.textContent = isAr()? msgAr : msgEn;
+  }
+  function clearErr(el){ var f=el.closest('.field'); if(f) f.classList.remove('invalid'); }
+
+  function validateCheckout(){
+    var bad=[];
+    var cc=(document.getElementById('country')||{}).value||'eg';
+    function need(id, msgAr, msgEn){
+      var el=document.getElementById(id); if(!el) return null;
+      clearErr(el);
+      if(!el.value.trim()){ setErr(el,msgAr,msgEn); bad.push(el); return null; }
+      return el;
+    }
+    need('f-first','اكتبي الاسم الأول','First name is required');
+    need('f-last','اكتبي الاسم الأخير','Last name is required');
+
+    /* الواتساب: مطلوب + صيغة مصرية لو الدولة مصر */
+    var wa=document.getElementById('f-wa');
+    if(wa){
+      clearErr(wa);
+      var raw=wa.value.replace(/[\s\-().]/g,'');
+      if(!raw){ setErr(wa,'اكتبي رقم الواتساب','WhatsApp number is required'); bad.push(wa); }
+      else if(cc==='eg'){
+        /* يقبل 01xxxxxxxxx و +2001xxxxxxxxx و 201xxxxxxxxx و 00201xxxxxxxxx */
+        var d=raw.replace(/^\+/,'').replace(/^00/,'');
+        if(/^20/.test(d)) d=d.slice(2);
+        if(!/^0/.test(d)) d='0'+d;
+        if(!/^01[0125][0-9]{8}$/.test(d)){
+          setErr(wa,'رقم غير صحيح — لازم 11 رقم يبدأ بـ 010 أو 011 أو 012 أو 015','Invalid Egyptian mobile number');
+          bad.push(wa);
+        }
+      } else if(raw.replace(/\D/g,'').length < 8){
+        setErr(wa,'رقم غير صحيح','Invalid phone number'); bad.push(wa);
+      }
+    }
+
+    /* المحافظة: مطلوبة، ولمصر لازم تكون من القائمة */
+    var gov=document.getElementById('gov-input');
+    if(gov){
+      clearErr(gov);
+      var gv=gov.value.trim();
+      if(!gv){ setErr(gov, cc==='eg'?'اختاري المحافظة':'City is required','This field is required'); bad.push(gov); }
+      else if(cc==='eg'){
+        var ok=EG_GOVS.some(function(g){ return g.ar===gv || g.en.toLowerCase()===gv.toLowerCase(); });
+        if(!ok){ setErr(gov,'اختاري محافظة من القائمة','Pick a governorate from the list'); bad.push(gov); }
+      }
+    }
+
+    var addr=document.getElementById('f-addr');
+    if(addr){
+      clearErr(addr);
+      if(addr.value.trim().length < 8){
+        setErr(addr,'اكتبي العنوان بالتفصيل (الشارع ورقم العقار)','Please enter a detailed address');
+        bad.push(addr);
+      }
+    }
+
+    if(bad.length){
+      bad[0].scrollIntoView({ behavior:'smooth', block:'center' });
+      setTimeout(function(){ try{ bad[0].focus({preventScroll:true}); }catch(e){ bad[0].focus(); } }, 320);
+      return false;
+    }
+    return true;
+  }
+  /* الخطأ يختفي أول ما تصححي */
+  ['f-first','f-last','f-wa','f-addr','gov-input'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.addEventListener('input', function(){ clearErr(el); });
+  });
+
   window.placeOrder=function(){
+    if(!validateCheckout()) return;
     const sel=document.getElementById('country');
     const cc=sel.value;
     const meta=COUNTRY_META[cc]||COUNTRY_META.eg;
@@ -750,11 +829,11 @@
     // build address from the shipping form (best-effort from filled inputs)
     const inputs=document.querySelectorAll('.co-card input');
     const vals=[...inputs].map(i=>i.value.trim());
+    const gv=function(id){ var e=document.getElementById(id); return e?e.value.trim():''; };
     // fields order: first,last,whatsapp,email, [country=select], city,area,fulladdr
-    /* المحافظة بتتقري بالـ id عشان ما تتأثرش لو اتضاف حقل جديد */
-    const govEl=document.getElementById('gov-input');
-    const city=(govEl?govEl.value.trim():'')||vals[4]||'', area=vals[5]||'', full=vals[6]||'';
-    const name=[vals[0],vals[1]].filter(Boolean).join(' ');
+    /* الحقول بتتقري بالـ id عشان ما تتأثرش لو اتضاف حقل جديد */
+    const city=gv('gov-input'), area=gv('f-area'), full=gv('f-addr');
+    const name=[gv('f-first'),gv('f-last')].filter(Boolean).join(' ');
     const addrParts=[full,area,city].filter(Boolean);
     const addrLine=addrParts.join('، ');
     const addr_ar= (name?name+'<br>':'') + (addrLine? addrLine+'<br>':'') + meta.ar;
@@ -794,18 +873,34 @@
       'طريقة الدفع: '+(m?m.ar:''),
       'الدولة: '+meta.ar,
       (name?('الاسم: '+name):''),
-      (vals[2]?('واتساب العميل: '+vals[2]):''),
+      (gv('f-wa')?('واتساب العميل: '+gv('f-wa')):''),
       (addrLine?('العنوان: '+addrLine):'')
     ].filter(Boolean).join('\n');
     window.open('https://wa.me/'+WA_STORE+'?text='+encodeURIComponent(waTxt), '_blank');
 
-    // clear the cart — the order has been placed
-    try{ localStorage.removeItem('ll_cart'); sessionStorage.removeItem('ll_cart'); }catch(e){}
+    /* السلة بتتمسح بس لما نتأكد إن العميلة راحت للواتساب فعلًا —
+       لو التبويب اتقفل من غير إرسال، السلة بتفضل موجودة وتقدر تعيد المحاولة */
+    var sent=false;
+    function finalize(){
+      if(sent) return; sent=true;
+      try{ localStorage.removeItem('ll_cart'); sessionStorage.removeItem('ll_cart'); }catch(e){}
+      location.href='lenses-lover-order-confirmation.html';
+    }
+    window.addEventListener('blur', function onBlur(){
+      window.removeEventListener('blur', onBlur);
+      setTimeout(finalize, 800);   /* الواتساب فتح فعلًا */
+    }, { once:true });
+    document.addEventListener('visibilitychange', function onVis(){
+      if(document.hidden){ document.removeEventListener('visibilitychange', onVis); setTimeout(finalize, 800); }
+    });
 
     const btn=document.querySelector('.place-btn');
-    btn.innerHTML = isAr() ? '✓ جاري تحويلك...' : '✓ Redirecting...';
+    btn.innerHTML = isAr() ? '✓ افتحي الواتساب لإرسال الطلب' : '✓ Send on WhatsApp';
     btn.style.background='var(--jade)'; btn.style.color='var(--ivory)';
-    setTimeout(()=>{ location.href='lenses-lover-order-confirmation.html'; }, 500);
+    /* شبكة الأمان: لو مفيش أي إشارة إن الواتساب فتح خلال 12 ثانية، نكمل من غير مسح السلة */
+    setTimeout(function(){
+      if(!sent){ sent=true; location.href='lenses-lover-order-confirmation.html'; }
+    }, 12000);
   };
 
   // re-render language-sensitive bits on toggle
