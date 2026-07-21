@@ -380,272 +380,170 @@
   .oc-note{ text-align:center; font-size:12.5px; color:var(--ivory-dim); margin-top:22px; }
 
 </style>
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-<script src="lenses-lover-catalog.js"></script>
 </head>
 <body class="lang-ar">
 
-<header>
-  <div class="wrap nav-row">
-    <a href="index.html" class="logo">LENSES<span> LOVER</span></a>
-    <nav class="links">
-      <a href="index.html">
-        <span class="ar">الرئيسية</span><span class="en">Home</span>
-      </a>
-      <a href="lenses-lover-shop.html">
-        <span class="ar">تسوقي</span><span class="en">Shop</span>
-      </a>
-      <a href="lenses-lover-about.html">
-        <span class="ar">من نحن</span><span class="en">About</span>
-      </a>
-      <a href="lenses-lover-blog.html">
-        <span class="ar">المدونة</span><span class="en">Blog</span>
-      </a>
-      <a href="lenses-lover-contact.html">
-        <span class="ar">تواصل معنا</span><span class="en">Contact</span>
-      </a>
-    </nav>
-    <div class="header-actions">
-      <div class="lang-toggle">
-        <button id="btn-ar" class="active" onclick="setLang('ar')">عربي</button>
-        <button id="btn-en" onclick="setLang('en')">EN</button>
+<div class="wrap" style="max-width:640px; padding-block:70px 90px;">
+
+  <h1 style="font-size:2rem; margin-bottom:8px; text-align:center;">
+    <span class="ar">تتبّعي طلبك</span><span class="en">Track Your Order</span>
+  </h1>
+  <p style="color:var(--ivory-dim); font-size:14.5px; text-align:center; margin-bottom:34px;">
+    <span class="ar">اكتبي رقم الطلب ورقم الواتساب اللي طلبتي بيه.</span>
+    <span class="en">Enter your order number and the WhatsApp number you used.</span>
+  </p>
+
+  <div style="background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius,18px); padding:26px 24px;">
+    <div style="margin-bottom:16px;">
+      <label style="display:block; font-size:13px; color:var(--ivory-dim); margin-bottom:8px;">
+        <span class="ar">رقم الطلب</span><span class="en">Order Number</span>
+      </label>
+      <input id="t-no" type="text" placeholder="LL-123456" autocomplete="off"
+        style="width:100%; padding:14px 16px; border-radius:12px; border:1px solid var(--line); background:var(--ink); color:var(--ivory); font-size:15px;">
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="display:block; font-size:13px; color:var(--ivory-dim); margin-bottom:8px;">
+        <span class="ar">رقم الواتساب</span><span class="en">WhatsApp Number</span>
+      </label>
+      <input id="t-wa" type="tel" inputmode="tel" placeholder="01XXXXXXXXX" autocomplete="off"
+        style="width:100%; padding:14px 16px; border-radius:12px; border:1px solid var(--line); background:var(--ink); color:var(--ivory); font-size:15px;">
+    </div>
+    <button id="t-btn"
+      style="width:100%; padding:15px; border-radius:999px; border:none; background:var(--amber); color:#fff; font-weight:800; font-size:15px; cursor:pointer;">
+      <span class="ar">تتبّعي الطلب</span><span class="en">Track Order</span>
+    </button>
+    <p id="t-msg" style="display:none; margin-top:14px; font-size:13.5px; text-align:center;"></p>
+  </div>
+
+  <!-- النتيجة -->
+  <div id="t-result" style="display:none; margin-top:26px;">
+    <div style="background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius,18px); padding:26px 24px;">
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:22px;">
+        <b id="r-no" style="font-size:1.15rem; color:var(--amber-light,var(--amber));"></b>
+        <span id="r-date" style="font-size:12.5px; color:var(--ivory-dim);"></span>
       </div>
-      <a href="lenses-lover-wishlist.html" class="icon-btn" aria-label="wishlist">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.4 2 4.8 5.6 4.1c2-.4 3.9.5 5 2.2 1.1-1.7 3-2.6 5-2.2 3.6.7 5.1 4.3 3.6 7.6C19.5 16.4 12 21 12 21z"/></svg>
-      </a>
-      <a href="lenses-lover-cart.html" class="icon-btn" aria-label="cart">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="10" cy="21" r="1.4"/><circle cx="17" cy="21" r="1.4"/></svg>
-        <span class="cart-badge" id="cart-count">0</span>
-      </a>
-    </div>
-  </div>
-</header>
 
+      <!-- شريط المراحل -->
+      <div id="r-steps" style="display:flex; align-items:flex-start; margin-bottom:26px;"></div>
 
-<section class="page-hero" style="padding-bottom:0;">
-  <div class="wrap">
-    <div class="crumbs"><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span class="sep">/</span><a href="lenses-lover-cart.html"><span class="ar">السلة</span><span class="en">Cart</span></a><span class="sep">/</span><span><span class="ar">تأكيد الطلب</span><span class="en">Order Confirmed</span></span></div>
-  </div>
-</section>
+      <div id="r-items" style="border-top:1px solid var(--line); padding-top:18px;"></div>
 
-<div class="wrap oc-wrap">
-  <div class="oc-hero">
-    <div class="oc-check">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#6b9e83" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-    </div>
-    <h1><span class="ar">تم استلام طلبك! 🎉</span><span class="en">Your order is confirmed! 🎉</span></h1>
-    <p><span class="ar">شكرًا لثقتك في LENSES LOVER — هنكلمك على الواتساب لتأكيد التفاصيل.</span><span class="en">Thank you for trusting LENSES LOVER — we'll contact you on WhatsApp to confirm.</span></p>
-    <div class="oc-order-no">
-      <span class="ar">رقم الطلب:</span><span class="en">Order no:</span>
-      <b id="order-no">#LL-000000</b>
-      <button class="oc-copy" onclick="copyNo()" aria-label="copy">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <div class="wa-cta">
-    <div class="wa-ic">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.7 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3 0-1.4.7-2.1 1-2.4.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5.2.5.8 1.9.8 2 .1.2.1.3 0 .5-.1.2-.2.3-.3.5-.2.2-.3.3-.1.6.7 1.2 1.5 2 2.8 2.7.2.1.4.1.5-.1.2-.2.6-.7.8-.9.2-.2.4-.2.6-.1.2.1 1.5.7 1.8.8.3.1.4.2.5.3.1.2.1.9-.1 1.6z"/></svg>
-    </div>
-    <div class="wa-txt">
-      <b><span class="ar">تابعي طلبك على الواتساب</span><span class="en">Track your order on WhatsApp</span></b>
-      <span><span class="ar">اضغطي هنا وابعتيلنا رقم طلبك للمتابعة الفورية.</span><span class="en">Tap here and send us your order number for instant updates.</span></span>
-    </div>
-    <a class="wa-go" id="wa-link" href="https://wa.me/201011423093" target="_blank" rel="noopener">
-      <span class="ar">افتحي الواتساب</span><span class="en">Open WhatsApp</span>
-    </a>
-  </div>
-
-  <div class="oc-steps">
-    <div class="oc-step done"><div class="st-ic">✓</div><b><span class="ar">تم الطلب</span><span class="en">Ordered</span></b><span><span class="ar">دلوقتي</span><span class="en">Now</span></span></div>
-    <div class="oc-step active"><div class="st-ic">🔎</div><b><span class="ar">التأكيد</span><span class="en">Confirming</span></b><span><span class="ar">خلال ساعات</span><span class="en">Within hours</span></span></div>
-    <div class="oc-step"><div class="st-ic">📦</div><b><span class="ar">التجهيز</span><span class="en">Packing</span></b><span><span class="ar">1 يوم</span><span class="en">1 day</span></span></div>
-    <div class="oc-step"><div class="st-ic">🚚</div><b><span class="ar">التوصيل</span><span class="en">Delivery</span></b><span id="eta-step"><span class="ar">2–4 أيام</span><span class="en">2–4 days</span></span></div>
-  </div>
-
-  <div class="oc-grid">
-    <div class="oc-card">
-      <h3>📍 <span class="ar">الشحن إلى</span><span class="en">Shipping to</span></h3>
-      <div class="oc-address" id="ship-to">
-        <span class="ar">سيتم التأكيد على الواتساب</span><span class="en">To be confirmed on WhatsApp</span>
+      <div style="display:flex; justify-content:space-between; margin-top:16px; padding-top:16px; border-top:1px solid var(--line); font-weight:800; font-size:1.05rem;">
+        <span><span class="ar">الإجمالي</span><span class="en">Total</span></span>
+        <span id="r-total"></span>
       </div>
-      <div class="kv" style="margin-top:14px;"><span><span class="ar">التوصيل المتوقع</span><span class="en">Est. delivery</span></span><b id="eta-date">—</b></div>
-    </div>
-    <div class="oc-card">
-      <h3>💳 <span class="ar">الدفع</span><span class="en">Payment</span></h3>
-      <div class="kv"><span><span class="ar">الطريقة</span><span class="en">Method</span></span><b id="pay-method">—</b></div>
-      <div class="kv"><span><span class="ar">الحالة</span><span class="en">Status</span></span><b id="pay-status" style="color:var(--amber-light)">—</b></div>
-      <div class="kv"><span><span class="ar">الدولة</span><span class="en">Country</span></span><b id="pay-country">—</b></div>
+
+      <a id="r-wa" href="#" target="_blank" rel="noopener"
+        style="display:block; text-align:center; margin-top:20px; padding:13px; border-radius:999px; border:1px solid var(--line); color:var(--ivory-dim); text-decoration:none; font-size:14px;">
+        <span class="ar">استفسار على الواتساب</span><span class="en">Ask on WhatsApp</span>
+      </a>
     </div>
   </div>
 
-  <div class="oc-items">
-    <h3><span class="ar">ملخص طلبك</span><span class="en">Order Summary</span></h3>
-    <div id="oc-lines"></div>
-    <div class="oc-tot">
-      <div class="kv"><span><span class="ar">المجموع الفرعي</span><span class="en">Subtotal</span></span><b id="oc-sub">—</b></div>
-      <div class="kv"><span><span class="ar">الشحن</span><span class="en">Shipping</span></span><b id="oc-ship">—</b></div>
-      <div class="kv" id="oc-disc-row" style="display:none;"><span><span class="ar">خصم الدفع المسبق</span><span class="en">Prepay discount</span></span><b id="oc-disc" style="color:var(--jade-light)">—</b></div>
-      <div class="grand"><span><span class="ar">الإجمالي</span><span class="en">Total</span></span><span id="oc-total">—</span></div>
-    </div>
-  </div>
-
-  <div class="oc-actions">
-    <a href="lenses-lover-shop.html" class="primary"><span class="ar">أكملي التسوق</span><span class="en">Continue Shopping</span></a>
-    <a href="lenses-lover-track.html" class="ghost" id="oc-track"><span class="ar">تتبّعي طلبك</span><span class="en">Track Your Order</span></a>
-  </div>
-  <p class="oc-note"><span class="ar">📧 هيوصلك إيميل بتفاصيل الطلب (لو دخلتي إيميلك). أي استفسار؟ إحنا على الواتساب.</span><span class="en">📧 A confirmation email is on its way (if you entered one). Questions? We're on WhatsApp.</span></p>
 </div>
 
-
-<footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div class="foot-col">
-        <div class="logo">LENSES<span> LOVER</span></div>
-        <p class="foot-desc">
-          <span class="ar">عدسات لاصقة ملونة وطبية مصممة للراحة والجمال الطبيعي — بثقة، بأمان، ولكل لون عين.</span>
-          <span class="en">Colored & prescription lenses designed for comfort and natural beauty — trusted, safe, for every eye color.</span>
-        </p>
-        <div class="social-row">
-          <a href="#" class="icon-btn" aria-label="instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
-          <a href="#" class="icon-btn" aria-label="tiktok"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3c.4 2 2 3.6 4 3.9V10c-1.5 0-2.9-.5-4-1.3V15a6 6 0 1 1-6-6c.3 0 .7 0 1 .1v3.2a2.8 2.8 0 1 0 2 2.7V3h3z"/></svg></a>
-          <a href="#" class="icon-btn" aria-label="whatsapp"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.7 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3 0-1.4.7-2.1 1-2.4.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5.2.5.8 1.9.8 2 .1.2.1.3 0 .5-.1.2-.2.3-.3.5-.2.2-.3.3-.1.6.7 1.2 1.5 2 2.8 2.7.2.1.4.1.5-.1.2-.2.6-.7.8-.9.2-.2.4-.2.6-.1.2.1 1.5.7 1.8.8.3.1.4.2.5.3.1.2.1.9-.1 1.6z"/></svg></a>
-        </div>
-      </div>
-      <div class="foot-col">
-        <h4><span class="ar">روابط سريعة</span><span class="en">Quick Links</span></h4>
-        <a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a>
-        <a href="lenses-lover-shop.html"><span class="ar">تسوقي</span><span class="en">Shop</span></a>
-        <a href="lenses-lover-about.html"><span class="ar">من نحن</span><span class="en">About</span></a>
-        <a href="lenses-lover-blog.html"><span class="ar">المدونة</span><span class="en">Blog</span></a>
-      </div>
-      <div class="foot-col">
-        <h4><span class="ar">السياسات</span><span class="en">Policies</span></h4>
-        <a href="lenses-lover-policies.html#shipping"><span class="ar">سياسة الشحن</span><span class="en">Shipping Policy</span></a>
-        <a href="lenses-lover-policies.html#privacy"><span class="ar">الخصوصية</span><span class="en">Privacy Policy</span></a>
-        <a href="lenses-lover-policies.html#payment"><span class="ar">سياسة الدفع</span><span class="en">Payment Policy</span></a>
-      </div>
-      <div class="foot-col">
-        <h4><span class="ar">تواصل معنا</span><span class="en">Contact</span></h4>
-        <a href="https://wa.me/201011423093"><span class="ar">واتساب: 01112780703</span><span class="en">WhatsApp: 01112780703</span></a>
-        <a href="mailto:hello@lenseslover.com">hello@lenseslover.com</a>
-
-      </div>
-    </div>
-    <div class="bottom-bar">
-      <span>© 2026 LENSES LOVER — <span class="ar">جميع الحقوق محفوظة</span><span class="en">All rights reserved</span></span>
-      <span><span class="ar">تصميم نموذجي تفاعلي</span><span class="en">Interactive design prototype</span></span>
-    </div>
-  </div>
-</footer>
-
 <script>
-  // ---------- language toggle ----------
-  function setLang(lang){
-    document.body.classList.toggle('lang-ar', lang==='ar');
-    document.body.classList.toggle('lang-en', lang==='en');
-    document.documentElement.setAttribute('dir', lang==='ar' ? 'rtl' : 'ltr');
-    document.documentElement.setAttribute('lang', lang);
-    document.getElementById('btn-ar').classList.toggle('active', lang==='ar');
-    document.getElementById('btn-en').classList.toggle('active', lang==='en');
+(function(){
+  var API='https://lenseslover-orders.skymoonsport.workers.dev/track';
+  var WA='201065463003';
+  function isAr(){ return document.body.classList.contains('lang-ar'); }
+  var msg=document.getElementById('t-msg');
+
+  function say(text, color){
+    msg.textContent=text; msg.style.color=color||'#d9534f'; msg.style.display='block';
   }
 
-  // ---------- reveal on scroll ----------
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); } });
-  }, { threshold:0.12 });
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  var STEPS=[
+    {k:'new',       ar:'تم الطلب',  en:'Placed'},
+    {k:'confirmed', ar:'التأكيد',   en:'Confirmed'},
+    {k:'packing',   ar:'التجهيز',   en:'Packing'},
+    {k:'shipped',   ar:'الشحن',     en:'Shipped'},
+    {k:'delivered', ar:'التوصيل',   en:'Delivered'}
+  ];
 
-  const WA_NUMBER='201011423093';
-  const isAr=()=>document.body.classList.contains('lang-ar');
-
-  // Load order from sessionStorage (set by checkout). Fallback to a demo order.
-  let order=null;
-  try { order=JSON.parse(sessionStorage.getItem('ll_last_order')||'null'); } catch(e){ order=null; }
-  try{
-    var tb=document.getElementById('oc-track');
-    if(tb && order && order.no) tb.href='lenses-lover-track.html?no='+encodeURIComponent(order.no);
-  }catch(e){}
-  if(!order){
-    order={
-      no:'LL-'+Math.floor(100000+Math.random()*900000),
-      currency:'EGP', country_ar:'مصر', country_en:'Egypt',
-      method_ar:'الدفع عند الاستلام', method_en:'Cash on Delivery', prepaid:false,
-      address_ar:'', address_en:'',
-      sub:1199, ship:0, disc:0, total:1199, eta_min:2, eta_max:4,
-      items:[
-        {ar:'وميض العسل',en:'Honey Glow',c1:'#e8b36b',c2:'#8c5a24',ring:'#5c3a18',ar_m:'عسلي · يومي',en_m:'Honey · Daily',price:399,qty:1},
-        {ar:'ستار الزمرد',en:'Emerald Veil',c1:'#7fbf9e',c2:'#1f5c42',ring:'#123626',ar_m:'زمردي · شهري',en_m:'Emerald · Monthly',price:450,qty:2}
-      ]
-    };
+  function renderSteps(status){
+    var box=document.getElementById('r-steps');
+    var idx=STEPS.findIndex(function(s){ return s.k===status; });
+    if(idx<0) idx=0;
+    box.innerHTML='';
+    if(status==='cancelled'){
+      box.innerHTML='<div style="width:100%; text-align:center; color:#d9534f; font-weight:700;">'
+        +(isAr()?'الطلب ملغي':'Order cancelled')+'</div>';
+      return;
+    }
+    STEPS.forEach(function(s,i){
+      var done=i<=idx;
+      var col=document.createElement('div');
+      col.style.cssText='flex:1; text-align:center; position:relative;';
+      col.innerHTML=
+        (i>0? '<div style="position:absolute; top:13px; '+(isAr()?'right':'left')+':50%; width:100%; height:2px; background:'+(done?'var(--amber)':'var(--line)')+';"></div>' : '')+
+        '<div style="position:relative; z-index:2; width:28px; height:28px; margin:0 auto 8px; border-radius:50%;'+
+        'background:'+(done?'var(--amber)':'var(--ink)')+'; border:2px solid '+(done?'var(--amber)':'var(--line)')+';'+
+        'color:#fff; font-size:13px; line-height:24px;">'+(done?'✓':'')+'</div>'+
+        '<div style="font-size:11.5px; color:'+(done?'var(--ivory)':'var(--ivory-dim)')+';">'+(isAr()?s.ar:s.en)+'</div>';
+      box.appendChild(col);
+    });
   }
 
-  const cur=()=> isAr()?({EGP:'ج.م',SAR:'ر.س',AED:'د.إ',KWD:'د.ك'}[order.currency]||order.currency):order.currency;
-  const money=n=> n.toLocaleString('en-US')+' '+cur();
+  function render(o){
+    document.getElementById('r-no').textContent='#'+o.order_no;
+    var d=new Date(o.created_at);
+    document.getElementById('r-date').textContent=
+      isNaN(d)? '' : d.toLocaleDateString(isAr()?'ar-EG':'en-GB',{day:'numeric',month:'long',year:'numeric'});
 
-  function fill(){
-    document.getElementById('order-no').textContent='#'+order.no;
-    // whatsapp deep link with prefilled message
-    const msgAr=`مرحبًا، عايزة أتابع طلبي رقم ${order.no} 🌸`;
-    const msgEn=`Hi, I'd like to track my order ${order.no} 🌸`;
-    const msg=encodeURIComponent(isAr()?msgAr:msgEn);
-    document.getElementById('wa-link').href=`https://wa.me/${WA_NUMBER}?text=${msg}`;
+    renderSteps(o.status);
 
-    // address
-    const addr=isAr()?order.address_ar:order.address_en;
-    if(addr && addr.trim()) document.getElementById('ship-to').innerHTML=addr;
-
-    // eta
-    const now=new Date();
-    const d1=new Date(now); d1.setDate(now.getDate()+ (order.eta_min||2));
-    const d2=new Date(now); d2.setDate(now.getDate()+ (order.eta_max||4));
-    const fmt=d=> d.toLocaleDateString(isAr()?'ar-EG':'en-GB',{day:'numeric',month:'short'});
-    document.getElementById('eta-date').textContent=`${fmt(d1)} – ${fmt(d2)}`;
-    document.getElementById('eta-step').innerHTML=`<span class="ar">${order.eta_min}–${order.eta_max} أيام</span><span class="en">${order.eta_min}–${order.eta_max} days</span>`;
-
-    // payment
-    document.getElementById('pay-method').innerHTML=`<span class="ar">${order.method_ar}</span><span class="en">${order.method_en}</span>`;
-    document.getElementById('pay-country').innerHTML=`<span class="ar">${order.country_ar}</span><span class="en">${order.country_en}</span>`;
-    const st=document.getElementById('pay-status');
-    if(order.prepaid){ st.innerHTML='<span class="ar">مدفوع ✓</span><span class="en">Paid ✓</span>'; st.style.color='var(--jade-light)'; }
-    else { st.innerHTML='<span class="ar">تُدفع عند الاستلام</span><span class="en">Pay on delivery</span>'; st.style.color='var(--amber-light)'; }
-
-    // items
-    const box=document.getElementById('oc-lines'); box.innerHTML='';
-    order.items.forEach(it=>{
-      const l=document.createElement('div'); l.className='oc-line';
-      l.innerHTML=`<div class="oc-th" style="--c1:${it.c1};--c2:${it.c2};--ring:${it.ring}"><div class="pupil"></div></div>
-        <div class="li"><b>${isAr()?it.ar:it.en}</b><span>× ${it.qty} · <span class="ar">${it.ar_m}</span><span class="en">${it.en_m}</span></span></div>
-        <div class="lp">${money(it.price*it.qty)}</div>`;
-      box.appendChild(l);
+    var box=document.getElementById('r-items');
+    box.innerHTML='';
+    (o.items||[]).forEach(function(it){
+      var row=document.createElement('div');
+      row.style.cssText='display:flex; justify-content:space-between; gap:12px; font-size:14px; padding:7px 0; color:var(--ivory);';
+      row.innerHTML='<span>'+(isAr()? (it.ar||it.en) : (it.en||it.ar))+' × '+(it.qty||1)+'</span>'
+                   +'<span style="color:var(--ivory-dim);">'+((it.price||0)*(it.qty||1))+' '+(o.currency||'EGP')+'</span>';
+      box.appendChild(row);
     });
 
-    // totals
-    document.getElementById('oc-sub').textContent=money(order.sub);
-    document.getElementById('oc-ship').textContent=order.ship===0?(isAr()?'مجاني':'Free'):money(order.ship);
-    if(order.disc>0){ document.getElementById('oc-disc-row').style.display='flex'; document.getElementById('oc-disc').textContent='-'+money(order.disc); }
-    document.getElementById('oc-total').textContent=money(order.total);
+    document.getElementById('r-total').textContent=(o.total||0)+' '+(o.currency||'EGP');
+    document.getElementById('r-wa').href='https://wa.me/'+WA+'?text='+
+      encodeURIComponent((isAr()?'استفسار عن الطلب رقم ':'Question about order ')+o.order_no);
+    document.getElementById('t-result').style.display='block';
   }
 
-  window.copyNo=function(){
-    navigator.clipboard && navigator.clipboard.writeText(order.no);
-    const b=document.querySelector('.oc-copy');
-    const o=b.innerHTML; b.innerHTML='<span style="font-size:12px;color:var(--jade-light)">✓</span>';
-    setTimeout(()=>b.innerHTML=o,1200);
-  };
+  function track(){
+    var no=document.getElementById('t-no').value.trim();
+    var wa=document.getElementById('t-wa').value.trim();
+    document.getElementById('t-result').style.display='none';
+    if(!no || !wa){ say(isAr()?'اكتبي رقم الطلب ورقم الواتساب':'Enter both fields'); return; }
+    say(isAr()?'جاري البحث...':'Searching...', 'var(--ivory-dim)');
+    fetch(API+'?no='+encodeURIComponent(no)+'&wa='+encodeURIComponent(wa))
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if(j && j.ok && j.order){ msg.style.display='none'; render(j.order); }
+        else if(j && j.error==='not_found'){
+          say(isAr()?'مفيش طلب بالبيانات دي — راجعي رقم الطلب والواتساب.':'No order found — check your details.');
+        } else {
+          say(isAr()?'حصلت مشكلة، جربي تاني بعد شوية.':'Something went wrong, try again.');
+        }
+      })
+      .catch(function(){ say(isAr()?'مشكلة في الاتصال، جربي تاني.':'Connection problem, try again.'); });
+  }
 
-  // re-fill on language switch (dates/labels)
-  const _setLang=setLang;
-  setLang=function(l){ _setLang(l); fill(); };
+  document.getElementById('t-btn').addEventListener('click', track);
+  ['t-no','t-wa'].forEach(function(id){
+    document.getElementById(id).addEventListener('keydown', function(e){ if(e.key==='Enter') track(); });
+  });
 
-  fill();
-
+  /* لو جت من صفحة التأكيد، نملا رقم الطلب تلقائي */
+  try{
+    var last=JSON.parse(sessionStorage.getItem('ll_last_order')||'null');
+    var q=new URLSearchParams(location.search).get('no');
+    if(q) document.getElementById('t-no').value=q;
+    else if(last && last.no) document.getElementById('t-no').value=last.no;
+  }catch(e){}
+})();
 </script>
 
-<script src="lenses-lover-enhance.js" defer></script>
+<script src="lenses-lover-enhance.js"></script>
 </body>
 </html>
