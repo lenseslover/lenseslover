@@ -457,12 +457,23 @@
     msg.textContent=text; msg.style.color=color||'#d9534f'; msg.style.display='block';
   }
 
+  var SV='stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"';
   var STEPS=[
-    {k:'new',       ar:'تم الطلب',  en:'Placed'},
-    {k:'confirmed', ar:'التأكيد',   en:'Confirmed'},
-    {k:'packing',   ar:'التجهيز',   en:'Packing'},
-    {k:'shipped',   ar:'الشحن',     en:'Shipped'},
-    {k:'delivered', ar:'التوصيل',   en:'Delivered'}
+    /* تم الطلب — فاتورة */
+    {k:'new', ar:'تم الطلب', en:'Placed',
+     ic:'<path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" '+SV+'/><path d="M14 2v6h6M8 13h8M8 17h5" '+SV+'/>'},
+    /* التأكيد — علامة صح داخل دائرة */
+    {k:'confirmed', ar:'التأكيد', en:'Confirmed',
+     ic:'<path d="M22 11.1V12a10 10 0 1 1-5.9-9.1" '+SV+'/><path d="M9 11l3 3L22 4" '+SV+'/>'},
+    /* التجهيز — كرتونة */
+    {k:'packing', ar:'التجهيز', en:'Packing',
+     ic:'<path d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8M2 4h20v4H2zM10 12h4" '+SV+'/>'},
+    /* الشحن — عربية نقل */
+    {k:'shipped', ar:'الشحن', en:'Shipped',
+     ic:'<path d="M1 3h13v13H1zM14 8h4l3 3v5h-7z" '+SV+'/><circle cx="5.5" cy="18.5" r="2" '+SV+'/><circle cx="17.5" cy="18.5" r="2" '+SV+'/>'},
+    /* التوصيل — بيت */
+    {k:'delivered', ar:'التوصيل', en:'Delivered',
+     ic:'<path d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" '+SV+'/><path d="M9 22V12h6v10" '+SV+'/>'}
   ];
 
   function renderSteps(status){
@@ -475,24 +486,34 @@
         +(isAr()?'الطلب ملغي':'Order cancelled')+'</div>';
       return;
     }
-    var BLUE='#3e8fc8';
+    var GREEN='#3fa96b';
     STEPS.forEach(function(s,i){
       var done=i<=idx;
-      var last=(i===STEPS.length-1);           /* التوصيل — لون مميز */
+      var last=(i===STEPS.length-1);            /* التوصيل — أخضر */
+      var active=(i===idx);                     /* المرحلة الحالية */
+      var main=last?GREEN:'var(--amber)';
       var col=document.createElement('div');
-      col.style.cssText='flex:1; text-align:center; position:relative;';
-      var dotBg  = done ? (last?BLUE:'var(--amber)') : 'var(--ink)';
-      var dotBrd = done ? (last?BLUE:'var(--amber)') : (last?BLUE:'var(--line)');
-      /* الخط بيوصل بين الدواير بس — نصف المسافة من كل ناحية عشان ما يخرجش برة */
+      col.style.cssText='flex:1; text-align:center; position:relative; min-width:0;';
+
+      var dotBg  = done ? main : 'var(--ink)';
+      var dotBrd = done ? main : (last?GREEN:'var(--line)');
+      var icoCol = done ? '#fff' : (last?GREEN:'var(--ivory-dim)');
+
       var line = (i>0)
-        ? '<div style="position:absolute; top:13px; '+(isAr()?'right':'left')+':50%; width:100%; height:2px;'+
-          ' background:'+(done?(last?BLUE:'var(--amber)'):'var(--line)')+'; z-index:1;"></div>'
+        ? '<div style="position:absolute; top:18px; '+(isAr()?'right':'left')+':50%; width:100%; height:2px;'+
+          ' background:'+(done?main:'var(--line)')+'; z-index:1;"></div>'
         : '';
+
       col.innerHTML= line+
-        '<div style="position:relative; z-index:2; width:28px; height:28px; margin:0 auto 8px; border-radius:50%;'+
-        'background:'+dotBg+'; border:2px solid '+dotBrd+';'+
-        'color:#fff; font-size:13px; line-height:24px;">'+(done?'✓':'')+'</div>'+
-        '<div style="font-size:11.5px; color:'+(done? (last?BLUE:'var(--ivory)') :'var(--ivory-dim)')+';">'+(isAr()?s.ar:s.en)+'</div>';
+        '<div style="position:relative; z-index:2; width:38px; height:38px; margin:0 auto 9px; border-radius:50%;'+
+        'display:flex; align-items:center; justify-content:center;'+
+        'background:'+dotBg+'; border:2px solid '+dotBrd+'; color:'+icoCol+';'+
+        (active? 'box-shadow:0 0 0 5px '+(last?'rgba(63,169,107,.18)':'rgba(200,138,62,.18)')+';' : '')+
+        '">'+
+          '<svg width="19" height="19" viewBox="0 0 24 24">'+s.ic+'</svg>'+
+        '</div>'+
+        '<div style="font-size:11.5px; font-weight:'+(active?'700':'400')+';'+
+        ' color:'+(done? (last?GREEN:'var(--ivory)') :'var(--ivory-dim)')+';">'+(isAr()?s.ar:s.en)+'</div>';
       box.appendChild(col);
     });
   }
