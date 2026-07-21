@@ -437,7 +437,7 @@
         <div class="field"><label><span class="ar">الاسم الأول</span><span class="en">First Name</span></label><input type="text" id="f-first"><span class="err-msg"></span></div>
         <div class="field"><label><span class="ar">الاسم الأخير</span><span class="en">Last Name</span></label><input type="text" id="f-last"><span class="err-msg"></span></div>
         <div class="field full"><label><span class="ar">رقم الواتساب</span><span class="en">WhatsApp Number</span></label><input type="tel" id="f-wa" inputmode="tel" placeholder="+20 1XX XXX XXXX"><span class="err-msg"></span></div>
-        <div class="field full"><label><span class="ar">البريد الإلكتروني (اختياري)</span><span class="en">Email (optional)</span></label><input type="email"></div>
+        <div class="field full"><label><span class="ar">البريد الإلكتروني (اختياري)</span><span class="en">Email (optional)</span></label><input type="email" id="f-email"></div>
       </div>
     </div>
 
@@ -880,6 +880,40 @@
     };
 
     try{ sessionStorage.setItem('ll_last_order', JSON.stringify(order)); }catch(e){}
+
+    /* ---- تسجيل الطلب في قاعدة البيانات (D1) ----
+       بيتبعت في الخلفية — لو السيرفر وقع لأي سبب، الطلب بيكمل على الواتساب عادي
+       وميتعطلش على العميلة أبدًا. */
+    (function saveOrder(){
+      var API='https://lenseslover-orders.skymoonsport.workers.dev/orders';
+      var gvv=function(id){ var e=document.getElementById(id); return e?e.value.trim():''; };
+      var payload={
+        order_no: order.no,
+        name: name,
+        whatsapp: gvv('f-wa'),
+        email: gvv('f-email'),
+        country: cc,
+        governorate: city,
+        area: area,
+        address: full,
+        items: order.items,
+        subtotal: sub,
+        shipping: ship,
+        discount: disc,
+        total: total,
+        currency: cur,
+        pay_method: (m?m.ar:'')
+      };
+      try{
+        /* keepalive عشان الطلب يكمل حتى لو الصفحة اتنقلت للواتساب */
+        fetch(API,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(payload),
+          keepalive:true
+        }).catch(function(){});
+      }catch(e){}
+    })();
 
     // ---- send order to store via WhatsApp (formatted message) ----
     const WA_STORE='201011423093';
