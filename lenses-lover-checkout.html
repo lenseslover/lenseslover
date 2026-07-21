@@ -302,6 +302,16 @@
   .crumbs a{ color:var(--ivory-dim); transition:color .2s ease; }
   .crumbs a:hover{ color:var(--amber-light); }
   .crumbs .sep{ opacity:.5; }
+
+  /* قائمة المحافظات بالبحث */
+  .gov-field{ position:relative; }
+  .gov-list{ position:absolute; inset-inline:0; top:100%; margin-top:6px; z-index:60;
+    background:var(--ink-2); border:1px solid var(--line); border-radius:14px;
+    max-height:230px; overflow-y:auto; display:none; box-shadow:0 14px 34px rgba(0,0,0,.3); }
+  .gov-list.open{ display:block; }
+  .gov-list .gov-item{ padding:10px 14px; font-size:14px; cursor:pointer; color:var(--ivory); }
+  .gov-list .gov-item:hover, .gov-list .gov-item.hl{ background:rgba(200,138,62,.16); color:var(--amber-light,var(--amber)); }
+  .gov-list .gov-empty{ padding:12px 14px; font-size:13px; color:var(--ivory-dim); }
   .page-hero h1{ font-size:42px; font-family:'Reem Kufi', sans-serif; color:var(--ivory); margin-bottom:12px; }
   body.lang-en .page-hero h1{ font-family:'Instrument Serif', serif; font-style:italic; font-weight:400; }
   .page-hero p.lead{ font-size:15.5px; color:var(--ivory-dim); max-width:560px; }
@@ -438,7 +448,10 @@
             <option value="kw" data-cur="KWD" data-gw="Tap (KNET)">🇰🇼 الكويت / Kuwait</option>
           </select>
         </div>
-        <div class="field"><label><span class="ar">المحافظة / المدينة</span><span class="en">City / Governorate</span></label><input type="text"></div>
+        <div class="field gov-field"><label><span class="ar">المحافظة</span><span class="en">Governorate</span></label>
+          <input type="text" id="gov-input" autocomplete="off" placeholder="ابحثي أو اختاري المحافظة">
+          <div class="gov-list" id="gov-list"></div>
+        </div>
         <div class="field"><label><span class="ar">المنطقة</span><span class="en">Area</span></label><input type="text"></div>
         <div class="field full"><label><span class="ar">العنوان بالتفصيل</span><span class="en">Full Address</span></label><input type="text"></div>
       </div>
@@ -661,6 +674,63 @@
     kw:{ar:'الكويت',en:'Kuwait',eta:[3,6]},
   };
 
+  /* ---------- المحافظات المصرية (27) مع بحث ---------- */
+  var EG_GOVS=[
+    {ar:'القاهرة',en:'Cairo'},{ar:'الجيزة',en:'Giza'},{ar:'الإسكندرية',en:'Alexandria'},
+    {ar:'القليوبية',en:'Qalyubia'},{ar:'الشرقية',en:'Sharqia'},{ar:'الدقهلية',en:'Dakahlia'},
+    {ar:'الغربية',en:'Gharbia'},{ar:'المنوفية',en:'Monufia'},{ar:'البحيرة',en:'Beheira'},
+    {ar:'كفر الشيخ',en:'Kafr El Sheikh'},{ar:'دمياط',en:'Damietta'},{ar:'بورسعيد',en:'Port Said'},
+    {ar:'الإسماعيلية',en:'Ismailia'},{ar:'السويس',en:'Suez'},{ar:'شمال سيناء',en:'North Sinai'},
+    {ar:'جنوب سيناء',en:'South Sinai'},{ar:'البحر الأحمر',en:'Red Sea'},{ar:'مطروح',en:'Matrouh'},
+    {ar:'الفيوم',en:'Faiyum'},{ar:'بني سويف',en:'Beni Suef'},{ar:'المنيا',en:'Minya'},
+    {ar:'أسيوط',en:'Asyut'},{ar:'سوهاج',en:'Sohag'},{ar:'قنا',en:'Qena'},{ar:'الأقصر',en:'Luxor'},
+    {ar:'أسوان',en:'Aswan'},{ar:'الوادي الجديد',en:'New Valley'}
+  ];
+  (function(){
+    var inp=document.getElementById('gov-input'), list=document.getElementById('gov-list');
+    if(!inp||!list) return;
+    var hl=-1, shown=[];
+    function norm(t){ return (t||'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim(); }
+    function paint(q){
+      var nq=norm(q);
+      shown = EG_GOVS.filter(function(g){ return !nq || norm(g.ar).indexOf(nq)>-1 || norm(g.en).indexOf(nq)>-1; });
+      list.innerHTML='';
+      if(!shown.length){
+        var e=document.createElement('div'); e.className='gov-empty';
+        e.textContent = isAr()? 'مفيش محافظة بالاسم ده' : 'No match';
+        list.appendChild(e); return;
+      }
+      shown.forEach(function(g,i){
+        var d=document.createElement('div'); d.className='gov-item'+(i===hl?' hl':'');
+        d.textContent = isAr()? g.ar : g.en;
+        d.onmousedown=function(ev){ ev.preventDefault(); pick(g); };
+        list.appendChild(d);
+      });
+    }
+    function pick(g){ inp.value = isAr()? g.ar : g.en; list.classList.remove('open'); hl=-1; }
+    function open(){ hl=-1; paint(inp.value); list.classList.add('open'); }
+    inp.addEventListener('focus', open);
+    inp.addEventListener('input', function(){ hl=-1; paint(inp.value); list.classList.add('open'); });
+    inp.addEventListener('blur', function(){ setTimeout(function(){ list.classList.remove('open'); },120); });
+    inp.addEventListener('keydown', function(e){
+      if(!list.classList.contains('open')) return;
+      if(e.key==='ArrowDown'){ e.preventDefault(); hl=Math.min(hl+1,shown.length-1); paint(inp.value); }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); hl=Math.max(hl-1,0); paint(inp.value); }
+      else if(e.key==='Enter'){ if(hl>-1&&shown[hl]){ e.preventDefault(); pick(shown[hl]); } }
+      else if(e.key==='Escape'){ list.classList.remove('open'); }
+    });
+    /* القائمة للمحافظات المصرية فقط — باقي الدول إدخال حر */
+    var csel=document.getElementById('country');
+    function syncCountry(){
+      var eg = csel.value==='eg';
+      inp.placeholder = eg ? (isAr()?'ابحثي أو اختاري المحافظة':'Search or select governorate')
+                           : (isAr()?'المدينة / المنطقة':'City / Region');
+      if(!eg) list.classList.remove('open');
+    }
+    if(csel){ csel.addEventListener('change', syncCountry); syncCountry(); }
+    inp.addEventListener('focus', function(){ if(csel && csel.value!=='eg') list.classList.remove('open'); });
+  })();
+
   window.placeOrder=function(){
     const sel=document.getElementById('country');
     const cc=sel.value;
@@ -681,7 +751,9 @@
     const inputs=document.querySelectorAll('.co-card input');
     const vals=[...inputs].map(i=>i.value.trim());
     // fields order: first,last,whatsapp,email, [country=select], city,area,fulladdr
-    const city=vals[4]||'', area=vals[5]||'', full=vals[6]||'';
+    /* المحافظة بتتقري بالـ id عشان ما تتأثرش لو اتضاف حقل جديد */
+    const govEl=document.getElementById('gov-input');
+    const city=(govEl?govEl.value.trim():'')||vals[4]||'', area=vals[5]||'', full=vals[6]||'';
     const name=[vals[0],vals[1]].filter(Boolean).join(' ');
     const addrParts=[full,area,city].filter(Boolean);
     const addrLine=addrParts.join('، ');
