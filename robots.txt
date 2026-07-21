@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+
+# صفحات خاصة — متتفهرسش في جوجل
+Disallow: /lenses-lover-admin
+Disallow: /lenses-lover-admin.html
+Disallow: /lenses-lover-checkout
+Disallow: /lenses-lover-checkout.html
+Disallow: /lenses-lover-cart
+Disallow: /lenses-lover-cart.html
+Disallow: /lenses-lover-order-confirmation
+Disallow: /lenses-lover-order-confirmation.html
+Disallow: /lenses-lover-account
+Disallow: /lenses-lover-account.html
+Disallow: /lenses-lover-login
+Disallow: /lenses-lover-login.html
+Disallow: /lenses-lover-register
+Disallow: /lenses-lover-register.html
+Disallow: /lenses-lover-forgot-password
+Disallow: /lenses-lover-forgot-password.html
+Disallow: /lenses-lover-reset-password
+Disallow: /lenses-lover-reset-password.html
+Disallow: /lenses-lover-verify-email
+Disallow: /lenses-lover-verify-email.html
+Disallow: /lenses-lover-wishlist
+Disallow: /lenses-lover-wishlist.html
+
+Sitemap: https://lenseslover.com/sitemap.xml
