@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<script>
+/* الثيم بيتحدد قبل أي رسم — يمنع وميض اللون الغامق عند التحديث */
+(function(){try{var t=localStorage.getItem('ll_theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
+</script>
+<style id="ll-theme-boot">
+/* ألوان الثيم الفاتح — متعرّفة هنا عشان أول رسمة تبقى فاتحة من غير وميض */
+html[data-theme="light"]{
+  --ink:#faf7f2; --ink-2:#ffffff; --ink-3:#f0e9dd;
+  --ivory:#221c14; --ivory-dim:#6e6558;
+  --amber:#a8702e; --amber-light:#c88a3e;
+  --line: rgba(21,18,14,0.12);
+  color-scheme: light;
+}
+html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
+</style>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<title>مقال — LENSES LOVER</title>
+<meta name="description" content="مقالات ونصائح عن العدسات اللاصقة الملونة والطبية من LENSES LOVER.">
+<link rel="canonical" href="https://lenseslover.com/lenses-lover-article">
+<style>
+  .art-wrap{ max-width:760px; margin:0 auto; padding:34px 5vw 90px; }
+  .art-crumbs{ font-size:12.5px; color:var(--ivory-dim); margin-bottom:18px; }
+  .art-crumbs a{ color:var(--ivory-dim); text-decoration:none; }
+  .art-crumbs a:hover{ color:var(--amber); }
+  .art-cat{ display:inline-block; font-size:12px; color:var(--amber-light,var(--amber));
+    background:rgba(200,138,62,.10); border:1px solid rgba(200,138,62,.28);
+    border-radius:999px; padding:5px 14px; margin-bottom:16px; }
+  .art-title{ font-size:2rem; line-height:1.45; margin:0 0 12px; }
+  @media (max-width:640px){ .art-title{ font-size:1.5rem; } }
+  .art-meta{ font-size:12.5px; color:var(--ivory-dim); margin-bottom:24px; }
+  .art-hero{ width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:var(--radius,18px);
+    border:1px solid var(--line); margin-bottom:30px; background:var(--ink-3); }
+  .art-body{ font-size:16px; line-height:2.05; color:var(--ivory); }
+  .art-body h2{ font-size:1.22rem; margin:34px 0 12px; color:var(--amber-light,var(--amber)); }
+  .art-body p{ margin:0 0 16px; }
+  .art-body ul{ margin:0 0 18px; padding-inline-start:22px; }
+  .art-body li{ margin-bottom:9px; }
+  .art-body strong{ color:var(--amber-light,var(--amber)); font-weight:700; }
+  .art-note{ background:var(--ink-2); border:1px solid var(--line); border-inline-start:3px solid var(--amber);
+    border-radius:14px; padding:16px 18px; font-size:14px; color:var(--ivory-dim); margin:28px 0 0; }
+  .art-cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:34px; padding-top:26px; border-top:1px solid var(--line); }
+  .art-cta a{ padding:13px 26px; border-radius:999px; text-decoration:none; font-size:14px; font-weight:700; }
+  .art-cta .primary{ background:var(--amber); color:#fff; }
+  .art-cta .ghost{ border:1px solid var(--line); color:var(--ivory-dim); }
+  .art-more{ margin-top:44px; }
+  .art-more h3{ font-size:1.1rem; margin-bottom:16px; }
+  .art-more-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+  .art-more-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:14px;
+    overflow:hidden; text-decoration:none; display:block; }
+  .art-more-card img{ width:100%; aspect-ratio:16/10; object-fit:cover; display:block; }
+  .art-more-card .t{ padding:12px 14px 15px; font-size:13.5px; color:var(--ivory); line-height:1.6; }
+  .art-404{ text-align:center; padding:80px 0; color:var(--ivory-dim); }
+</style>
+</head>
+<body class="lang-ar">
+
+<div class="art-wrap">
+  <div class="art-crumbs">
+    <a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a> /
+    <a href="lenses-lover-blog.html"><span class="ar">المدونة</span><span class="en">Blog</span></a>
+  </div>
+
+  <div id="art-content"></div>
+
+  <div id="art-missing" class="art-404" style="display:none;">
+    <p><span class="ar">المقال غير موجود.</span><span class="en">Article not found.</span></p>
+    <a href="lenses-lover-blog.html" style="color:var(--amber); text-decoration:none;">
+      <span class="ar">ارجعي للمدونة</span><span class="en">Back to blog</span>
+    </a>
+  </div>
+</div>
+
+<script src="lenses-lover-articles.js"></script>
+<script>
+(function(){
+  var A = window.LL_ARTICLES || [];
+  var id = new URLSearchParams(location.search).get('id') || '';
+  var a  = A.filter(function(x){ return x.id===id; })[0];
+  var box = document.getElementById('art-content');
+
+  if(!a){
+    document.getElementById('art-missing').style.display='block';
+    return;
+  }
+
+  /* --- العنوان والوصف والبيانات المنظمة --- */
+  document.title = a.ar + ' — LENSES LOVER';
+  var url = 'https://lenseslover.com/lenses-lover-article?id=' + encodeURIComponent(a.id);
+  function meta(sel, attr, val){
+    var el=document.head.querySelector(sel);
+    if(!el){
+      el=document.createElement('meta');
+      var p=sel.match(/\[(name|property)="(.+?)"\]/);
+      if(p) el.setAttribute(p[1], p[2]);
+      document.head.appendChild(el);
+    }
+    el.setAttribute(attr, val);
+  }
+  meta('meta[name="description"]','content', a.ar_e);
+  meta('meta[property="og:type"]','content','article');
+  meta('meta[property="og:title"]','content', a.ar);
+  meta('meta[property="og:description"]','content', a.ar_e);
+  meta('meta[property="og:image"]','content', a.img);
+  meta('meta[property="og:url"]','content', url);
+  var can=document.head.querySelector('link[rel="canonical"]');
+  if(can) can.href=url;
+
+  var ld={
+    "@context":"https://schema.org",
+    "@type":"Article",
+    "headline": a.ar,
+    "description": a.ar_e,
+    "image": a.img,
+    "datePublished": a.date,
+    "inLanguage": "ar-EG",
+    "author": { "@type":"Organization", "name":"LENSES LOVER" },
+    "publisher": {
+      "@type":"Organization", "name":"LENSES LOVER",
+      "logo": { "@type":"ImageObject", "url":"https://lenseslover.com/images/apple-touch-icon.png" }
+    },
+    "mainEntityOfPage": url
+  };
+  var sc=document.createElement('script');
+  sc.type='application/ld+json'; sc.textContent=JSON.stringify(ld);
+  document.head.appendChild(sc);
+
+  /* --- بناء المقال --- */
+  function esc(t){ var d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+  function inline(t){
+    /* **نص** → غامق */
+    return esc(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  }
+
+  var html = '';
+  html += '<span class="art-cat">'+esc(a.ar_c)+'</span>';
+  html += '<h1 class="art-title">'+esc(a.ar)+'</h1>';
+  html += '<div class="art-meta">📖 '+esc(a.ar_m)+'</div>';
+  html += '<img class="art-hero" src="'+a.img+'" alt="'+esc(a.ar)+'" loading="eager">';
+  html += '<div class="art-body">';
+  a.ar_body.forEach(function(b){
+    if(b[0]==='p')  html += '<p>'+inline(b[1])+'</p>';
+    if(b[0]==='h2') html += '<h2>'+esc(b[1])+'</h2>';
+    if(b[0]==='ul'){
+      html += '<ul>';
+      b[1].forEach(function(li){ html += '<li>'+inline(li)+'</li>'; });
+      html += '</ul>';
+    }
+    if(b[0]==='note') html += '<div class="art-note">'+inline(b[1])+'</div>';
+  });
+  html += '</div>';
+
+  html += '<div class="art-cta">'
+       +  '<a class="primary" href="lenses-lover-shop.html"><span class="ar">تسوّقي العدسات</span><span class="en">Shop Lenses</span></a>'
+       +  '<a class="ghost" href="lenses-lover-blog.html"><span class="ar">مقالات أخرى</span><span class="en">More Articles</span></a>'
+       +  '</div>';
+
+  /* مقالات مقترحة — نفس التصنيف أولًا */
+  var more = A.filter(function(x){ return x.id!==a.id; })
+              .sort(function(x,y){ return (y.cat===a.cat) - (x.cat===a.cat); })
+              .slice(0,3);
+  if(more.length){
+    html += '<div class="art-more"><h3><span class="ar">اقرئي أيضًا</span><span class="en">Read also</span></h3><div class="art-more-grid">';
+    more.forEach(function(m){
+      html += '<a class="art-more-card" href="lenses-lover-article.html?id='+encodeURIComponent(m.id)+'">'
+           +  '<img src="'+m.img+'" alt="'+esc(m.ar)+'" loading="lazy">'
+           +  '<div class="t">'+esc(m.ar)+'</div></a>';
+    });
+    html += '</div></div>';
+  }
+
+  box.innerHTML = html;
+})();
+</script>
+
+<script src="lenses-lover-enhance.js"></script>
+</body>
+</html>
