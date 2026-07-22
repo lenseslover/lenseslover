@@ -40,7 +40,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 <meta name="twitter:description" content="Shop all colored & prescription lenses — filter by color, brand, duration, and price.">
 <meta name="twitter:image" content="https://lenseslover.com/og-image.jpg">
 
-<title>عدسات لاصقة ملونة وطبية | كل الألوان والماركات — LENSES LOVER</title>
+<title>عدسات لاصقة ملونة | كل الألوان والماركات — LENSES LOVER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -88,6 +88,15 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   /* ---------- reveal on scroll ---------- */
   .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease; }
   .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* منع وميض الكروت: الجريد يظهر فورًا من غير إزاحة */
+  .product-grid.reveal, #product-grid.reveal, .color-grid.reveal{
+    opacity:1 !important; transform:none !important; transition:none !important;
+  }
+  /* على الموبايل: كل عناصر reveal تظهر فورًا — الإزاحة بتبان جانبية في RTL */
+  @media (max-width:768px){
+    .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+  }
   @media (prefers-reduced-motion: reduce){
     .reveal{ opacity:1; transform:none; transition:none; }
   }
@@ -394,10 +403,13 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   }
 
 </style>
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <script src="lenses-lover-catalog.js"></script>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 </head>
 <body class="lang-ar">
 
@@ -702,6 +714,22 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     }catch(e){}
   }
 
+
+  /* بيانات منظمة: قائمة المنتجات المعروضة — جوجل بيفهم إن دي صفحة تصنيف */
+  function seoItemList(list){
+    try{
+      var items=(list||[]).slice(0,20).map(function(p,i){
+        return { "@type":"ListItem", "position":i+1,
+                 "url":"https://lenseslover.com/lenses-lover-product?id="+encodeURIComponent(p.id),
+                 "name":p.ar };
+      });
+      var ld={ "@context":"https://schema.org", "@type":"ItemList",
+               "numberOfItems": (list||[]).length, "itemListElement": items };
+      var el=document.getElementById('ld-itemlist');
+      if(!el){ el=document.createElement('script'); el.type='application/ld+json'; el.id='ld-itemlist'; document.head.appendChild(el); }
+      el.textContent=JSON.stringify(ld);
+    }catch(e){}
+  }
   function render(){
     renderActive();
     seoTitle();
@@ -714,6 +742,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     if(state.sort==='low') list.sort((a,b)=>a.price-b.price);
     if(state.sort==='high') list.sort((a,b)=>b.price-a.price);
     countEl.textContent=list.length;
+    seoItemList(list);
     grid.innerHTML='';
     empty.style.display=list.length? 'none':'block';
     list.forEach(p=>{

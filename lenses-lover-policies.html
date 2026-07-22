@@ -29,7 +29,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 <meta property="og:url" content="https://lenseslover.com/lenses-lover-policies">
 <meta property="og:image" content="https://lenseslover.com/og-image.jpg">
 <meta property="og:locale" content="ar_EG">
-<title>الشحن والاسترجاع وسياسة الخصوصية | شحن لكل محافظات مصر — LENSES LOVER</title>
+<title>الشحن والاسترجاع | شحن لكل محافظات مصر — LENSES LOVER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Reem+Kufi:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -77,6 +77,15 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   /* ---------- reveal on scroll ---------- */
   .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease; }
   .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* منع وميض الكروت: الجريد يظهر فورًا من غير إزاحة */
+  .product-grid.reveal, #product-grid.reveal, .color-grid.reveal{
+    opacity:1 !important; transform:none !important; transition:none !important;
+  }
+  /* على الموبايل: كل عناصر reveal تظهر فورًا — الإزاحة بتبان جانبية في RTL */
+  @media (max-width:768px){
+    .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+  }
   @media (prefers-reduced-motion: reduce){
     .reveal{ opacity:1; transform:none; transition:none; }
   }
@@ -356,10 +365,41 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   .pol-note b{ color:var(--amber-light); }
 
 </style>
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <script src="lenses-lover-catalog.js"></script>
+<script type="application/ld+json" id="ld-shipping">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "الشحن والاسترجاع",
+  "url": "https://lenseslover.com/lenses-lover-policies",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "LENSES LOVER",
+    "url": "https://lenseslover.com/",
+    "makesOffer": {
+      "@type": "Offer",
+      "priceCurrency": "EGP",
+      "availableDeliveryMethod": "https://schema.org/OnSitePickup",
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": { "@type": "MonetaryAmount", "value": "60", "currency": "EGP" },
+        "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "EG" },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+          "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 4, "unitCode": "DAY" }
+        }
+      }
+    }
+  }
+}
+</script>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 </head>
 <body class="lang-ar">
 

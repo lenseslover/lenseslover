@@ -86,6 +86,15 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 
   .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease; }
   .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* منع وميض الكروت: الجريد يظهر فورًا من غير إزاحة */
+  .product-grid.reveal, #product-grid.reveal, .color-grid.reveal{
+    opacity:1 !important; transform:none !important; transition:none !important;
+  }
+  /* على الموبايل: كل عناصر reveal تظهر فورًا — الإزاحة بتبان جانبية في RTL */
+  @media (max-width:768px){
+    .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+  }
   @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
 
   /* ---------- header (shared) ---------- */
@@ -310,10 +319,13 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 
   ::selection{ background:var(--amber); color:var(--ink); }
 </style>
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <script src="lenses-lover-catalog.js"></script>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 </head>
 <body class="lang-ar">
 
