@@ -449,12 +449,13 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   <div class="blog-cats" id="cats"></div>
 
   <article class="featured-post reveal">
-    <div class="fp-media"><div class="pupil"></div></div>
+    <a class="fp-media" id="fp-media" href="lenses-lover-article.html?id=care-guide"
+       style="display:block; background-size:cover; background-position:center;"></a>
     <div class="fp-body">
       <span class="cat"><span class="ar">مقال مميز · العناية</span><span class="en">Featured · Care</span></span>
       <h2><span class="ar">دليلك الكامل للعناية بالعدسات اللاصقة</span><span class="en">Your Complete Guide to Contact Lens Care</span></h2>
       <p><span class="ar">من التخزين الصحيح للمحلول المناسب لمدة الاستخدام الآمنة — كل ما تحتاجين معرفته للحفاظ على عينك وعدساتك في أفضل حالة.</span><span class="en">From proper storage to the right solution and safe wear time — everything you need to keep your eyes and lenses in top shape.</span></p>
-      <a href="#" class="read-more"><span class="ar">اقرئي المقال</span><span class="en">Read Article</span>
+      <a href="lenses-lover-article.html?id=care-guide" class="read-more"><span class="ar">اقرئي المقال</span><span class="en">Read Article</span>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </article>
@@ -561,9 +562,14 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 
   function draw(){
     postsEl.innerHTML='';
-    POSTS.filter(p=>active==='all'||p.cat===active).forEach(p=>{
-      const a=document.createElement('a'); a.href='#'; a.className='post-card';
-      a.innerHTML=`<div class="post-media" style="--c1:${p.c1};--c2:${p.c2};--ring:${p.ring}"><div class="pupil"></div></div>
+    /* المقالات بتتقري من lenses-lover-articles.js — المميز مستبعد لأنه فوق */
+    const ART=(window.LL_ARTICLES||[]).filter(x=>!x.featured);
+    const list=ART.filter(p=>active==='all'||p.cat===active);
+    list.forEach(p=>{
+      const a=document.createElement('a');
+      a.href='lenses-lover-article.html?id='+encodeURIComponent(p.id);
+      a.className='post-card';
+      a.innerHTML=`<div class="post-media" style="background-image:url('${p.img}');background-size:cover;background-position:center;"></div>
         <div class="post-info">
           <span class="cat"><span class="ar">${p.ar_c}</span><span class="en">${p.en_c}</span></span>
           <h3><span class="ar">${p.ar}</span><span class="en">${p.en}</span></h3>
@@ -573,10 +579,18 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
       postsEl.appendChild(a);
     });
   }
+  /* صورة المقال المميز */
+  (function(){
+    var f=(window.LL_ARTICLES||[]).filter(x=>x.featured)[0];
+    var el=document.getElementById('fp-media');
+    if(f&&el) el.style.backgroundImage="url('"+f.img+"')";
+  })();
+
   draw();
 
 </script>
 
+<script src="lenses-lover-articles.js"></script>
 <script src="lenses-lover-enhance.js" defer></script>
 </body>
 </html>
