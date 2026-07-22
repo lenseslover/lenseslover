@@ -20,7 +20,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="تواصلي معنا على الواتساب أو الإيميل — ردود سريعة وأسئلة شائعة.">
-<meta name="keywords" content="عدسات لاصقة, عدسات ملونة, عدسات طبية, contact lenses, colored lenses, LENSES LOVER, مصر, الخليج">
+<meta name="keywords" content="عدسات لاصقة, عدسات ملونة, عدسات طبية, contact lenses, colored lenses, LENSES LOVER, مصر">
 <meta name="author" content="LENSES LOVER">
 <meta name="theme-color" content="#15120e">
 <link rel="canonical" href="https://lenseslover.com/lenses-lover-contact.html">
@@ -388,6 +388,35 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   .faq-a p{ padding:0 20px 18px; font-size:14px; color:var(--ivory-dim); }
   .faq-item.open .faq-a{ max-height:220px; }
 
+
+  /* ---------- تخطيط صفحة التواصل الجديد ---------- */
+  .top-space{ padding-top:34px; }
+  .faq-grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px 22px; align-items:start; }
+  @media (max-width:860px){ .faq-grid2{ grid-template-columns:1fr; } }
+
+  .why-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  @media (max-width:900px){ .why-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:520px){ .why-grid{ grid-template-columns:1fr; } }
+  .why-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px 20px; text-align:center; }
+  .why-card .ic{ font-size:28px; display:block; margin-bottom:12px; }
+  .why-card h4{ font-size:15px; margin-bottom:8px; }
+  .why-card p{ font-size:13px; color:var(--ivory-dim); line-height:1.9; }
+
+  .brand-row{ display:flex; gap:14px; padding:18px 0; border-bottom:1px solid var(--line); align-items:flex-start; }
+  .brand-row:last-child{ border-bottom:none; }
+  .brand-row b{ min-width:130px; color:var(--amber-light,var(--amber)); font-size:14.5px; }
+  .brand-row span{ font-size:13.5px; color:var(--ivory-dim); line-height:1.95; }
+  @media (max-width:560px){ .brand-row{ flex-direction:column; gap:4px; } }
+
+  .tips-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  @media (max-width:860px){ .tips-grid{ grid-template-columns:1fr; } }
+  .tip-card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:24px 22px; }
+  .tip-card h4{ font-size:15px; margin-bottom:10px; color:var(--amber-light,var(--amber)); }
+  .tip-card p{ font-size:13.5px; color:var(--ivory-dim); line-height:2; }
+
+  .reach-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media (max-width:760px){ .reach-grid{ grid-template-columns:1fr; } }
 </style>
 <script src="lenses-lover-catalog.js"></script>
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -396,6 +425,78 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<script type="application/ld+json" id="ld-faq">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "بتشحنوا لكل محافظات مصر؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "أيوه، بنشحن لكل الـ 27 محافظة. القاهرة والجيزة 1–2 يوم عمل، وباقي المحافظات 2–4 أيام."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "إزاي أدفع؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "الدفع عند الاستلام متاح لكل محافظات مصر — بتدفعي للمندوب وقت ما يوصلك الطلب، ومفيش أي دفع مقدم."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "العدسات أصلية؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "كل العدسات أصلية من ماركات معروفة: إيكوال بيري، ميتون، أربان لاير، فريش ليدي، ودهب."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "فيه عدسات بمقاسات نظر؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "أيوه، فيه عدسات طبية بمقاسات من -0.50 لـ -6.00."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "إزاي أعرف مقاس النظر بتاعي؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "مقاس النظر بيتحدد من الكشف عند دكتور عيون، أو من روشتة نظارتك. ابعتيلنا صورة من الروشتة على الواتساب ونساعدك."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "العدسات آمنة للاستخدام اليومي؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "أيوه، كل عدساتنا بنسبة ترطيب عالية ومادة قابلة للتنفس، مع الالتزام بمدة الاستخدام وعدم النوم بيها."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "أقدر أرجّع أو أستبدل الطلب؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "لأسباب صحية، مفيش استرجاع بعد فتح العلبة. لو العلبة مقفولة أو فيه عيب مصنعي، كلمينا على الواتساب."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "إزاي أتابع طلبي؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "من صفحة تتبع الطلب، اكتبي رقم الطلب ورقم الواتساب اللي طلبتي بيه."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body class="lang-ar">
 
@@ -436,67 +537,9 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 </header>
 
 
-<section class="page-hero">
-  <div class="wrap">
-    <div class="crumbs"><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a><span class="sep">/</span><span><span class="ar">تواصل معنا</span><span class="en">Contact</span></span></div>
-    <h1><span class="ar">تواصلي معنا</span><span class="en">Contact Us</span></h1>
-    <p class="lead"><span class="ar">أي سؤال عن منتج أو طلب؟ إحنا موجودين — والرد الأسرع دايمًا على الواتساب.</span><span class="en">Any question about a product or an order? We're here — fastest replies always on WhatsApp.</span></p>
-  </div>
-</section>
 
-<div class="wrap contact-wrap">
-  <div class="contact-form">
-    <h3><span class="ar">ابعتي رسالتك</span><span class="en">Send a Message</span></h3>
-    <p class="sub"><span class="ar">هنرد عليكِ خلال ساعات العمل بأقصى سرعة.</span><span class="en">We'll get back to you as fast as possible during working hours.</span></p>
-    <div class="field"><label><span class="ar">الاسم</span><span class="en">Name</span></label><input type="text"></div>
-    <div class="field"><label><span class="ar">رقم الواتساب</span><span class="en">WhatsApp Number</span></label><input type="tel" placeholder="+20 1XX XXX XXXX"></div>
-    <div class="field"><label><span class="ar">الموضوع</span><span class="en">Subject</span></label>
-      <select>
-        <option><span>استفسار عن منتج</span></option>
-        <option>متابعة طلب / Order follow-up</option>
-        <option>شراكة / Partnership</option>
-        <option>أخرى / Other</option>
-      </select>
-    </div>
-    <div class="field"><label><span class="ar">رسالتك</span><span class="en">Your Message</span></label><textarea></textarea></div>
-    <button class="send-btn" onclick="sendMsg(this)"><span class="ar">إرسال</span><span class="en">Send</span></button>
-  </div>
 
-  <div class="contact-side">
-    <a href="https://wa.me/201065463003" class="info-card wa-card">
-      <span class="ic">💬</span>
-      <div><h4><span class="ar">واتساب (الأسرع)</span><span class="en">WhatsApp (fastest)</span></h4><p>01065463003</p></div>
-    </a>
-    <a href="mailto:hello@lenseslover.com" class="info-card">
-      <span class="ic">✉️</span>
-      <div><h4><span class="ar">البريد الإلكتروني</span><span class="en">Email</span></h4><p>hello@lenseslover.com</p></div>
-    </a>
-    <div class="info-card">
-      <span class="ic">📍</span>
-      <div><h4><span class="ar">الموقع</span><span class="en">Location</span></h4><p><span class="ar">القاهرة، مصر — شحن لكل مصر والخليج</span><span class="en">Cairo, Egypt — shipping across Egypt & the Gulf</span></p></div>
-    </div>
-    <div class="info-card hours-card">
-      <span class="ic">🕒</span>
-      <div><h4><span class="ar">ساعات العمل</span><span class="en">Working Hours</span></h4>
-        <p><span class="ar">السبت – الخميس: 10ص – 10م</span><span class="en">Sat – Thu: 10 AM – 10 PM</span></p>
-        <p><span class="ar">الجمعة: 2م – 10م</span><span class="en">Fri: 2 PM – 10 PM</span></p>
-      </div>
-    </div>
-    <div class="info-card">
-      <span class="ic">📱</span>
-      <div style="flex:1;">
-        <h4><span class="ar">تابعينا</span><span class="en">Follow Us</span></h4>
-        <p style="display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;">
-          <a href="https://www.facebook.com/share/195DYoJEA3/?mibextid=wwXIfr" target="_blank" rel="noopener" style="color:var(--amber-light);">Facebook</a>
-          <a href="https://www.instagram.com/lenses_lover1?igsh=Z3Y0cmoyZG1vejF0&utm_source=qr" target="_blank" rel="noopener" style="color:var(--amber-light);">Instagram</a>
-          <a href="https://www.tiktok.com/@lenses_lover111?_r=1&_t=ZS-983grLT1W8z" target="_blank" rel="noopener" style="color:var(--amber-light);">TikTok</a>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<section class="pad faq-band">
+<section class="pad faq-band top-space">
   <div class="wrap">
     <div class="section-head reveal" style="justify-content:center; text-align:center;">
       <div><span class="tag"><span class="ar">أسئلة شائعة</span><span class="en">FAQ</span></span>
@@ -506,6 +549,141 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   </div>
 </section>
 
+
+
+<!-- ========== ليه تختاري LENSES LOVER ========== -->
+<section class="pad">
+  <div class="wrap">
+    <div class="section-head reveal" style="justify-content:center; text-align:center;">
+      <div>
+        <span class="tag"><span class="ar">ليه إحنا</span><span class="en">Why us</span></span>
+        <h2><span class="ar">ليه تختاري LENSES LOVER؟</span><span class="en">Why Choose LENSES LOVER?</span></h2>
+      </div>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <span class="ic">✓</span>
+        <h4><span class="ar">منتجات أصلية</span><span class="en">Authentic Products</span></h4>
+        <p><span class="ar">ماركات معتمدة بعلب مقفولة وتواريخ صلاحية واضحة — مفيش تقليد.</span><span class="en">Certified brands in sealed packs with clear expiry dates.</span></p>
+      </div>
+      <div class="why-card">
+        <span class="ic">🚚</span>
+        <h4><span class="ar">شحن لكل مصر</span><span class="en">Nationwide Shipping</span></h4>
+        <p><span class="ar">بنوصّل لكل الـ 27 محافظة — القاهرة والجيزة 1–2 يوم، وباقي المحافظات 2–4 أيام.</span><span class="en">We deliver to all 27 governorates — 1–2 days in Cairo & Giza, 2–4 elsewhere.</span></p>
+      </div>
+      <div class="why-card">
+        <span class="ic">💵</span>
+        <h4><span class="ar">الدفع عند الاستلام</span><span class="en">Cash on Delivery</span></h4>
+        <p><span class="ar">بتدفعي للمندوب وقت ما يوصلك الطلب — مفيش دفع مقدم ولا بيانات بنكية.</span><span class="en">Pay the courier on arrival — no prepayment, no bank details.</span></p>
+      </div>
+      <div class="why-card">
+        <span class="ic">💬</span>
+        <h4><span class="ar">متابعة على الواتساب</span><span class="en">WhatsApp Follow-up</span></h4>
+        <p><span class="ar">بنأكد طلبك ونتابعه معاكي خطوة بخطوة لحد ما يوصلك.</span><span class="en">We confirm and follow your order step by step until it arrives.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== الماركات ========== -->
+<section class="pad" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head reveal" style="justify-content:center; text-align:center;">
+      <div>
+        <span class="tag"><span class="ar">ماركاتنا</span><span class="en">Our brands</span></span>
+        <h2><span class="ar">الماركات اللي عندنا</span><span class="en">The Brands We Carry</span></h2>
+      </div>
+    </div>
+    <div class="reveal" style="background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:8px 26px;">
+      <div class="brand-row">
+        <b>Eqqual Berre</b>
+        <span class="ar">ألوان رمادية وخضراء بلمسة طبيعية جدًا، مناسبة للاستخدام اليومي — من أكثر ماركاتنا طلبًا.</span>
+        <span class="en">Very natural grey and green shades, ideal for daily wear — one of our most requested brands.</span>
+      </div>
+      <div class="brand-row">
+        <b>Meetone</b>
+        <span class="ar">تشكيلة واسعة بتدرجات متعددة الطبقات، بتدي عمق للعين مع مظهر طبيعي.</span>
+        <span class="en">A wide range with multi-tone gradients that add depth while staying natural.</span>
+      </div>
+      <div class="brand-row">
+        <b>Urban Layer</b>
+        <span class="ar">ألوان زرقاء وبنفسجية جريئة بقطر أكبر — للي بتحب الإطلالة الواضحة.</span>
+        <span class="en">Bold blues and violets with a larger diameter — for a more striking look.</span>
+      </div>
+      <div class="brand-row">
+        <b>Fresh Lady</b>
+        <span class="ar">أكبر تشكيلة عندنا بأكتر من 180 لون، شهري، وبخيار مقاسات النظر.</span>
+        <span class="en">Our largest range with 180+ shades, monthly wear, with prescription options.</span>
+      </div>
+      <div class="brand-row">
+        <b>Dahab</b>
+        <span class="ar">ألوان دافية وترابية بخيارات شهرية وسنوية — مناسبة جدًا للبشرة القمحية والسمراء.</span>
+        <span class="en">Warm earthy shades in monthly and yearly options — great for medium and deep skin tones.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== قبل ما تطلبي ========== -->
+<section class="pad" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head reveal" style="justify-content:center; text-align:center;">
+      <div>
+        <span class="tag"><span class="ar">معلومات مهمة</span><span class="en">Good to know</span></span>
+        <h2><span class="ar">قبل ما تطلبي</span><span class="en">Before You Order</span></h2>
+      </div>
+    </div>
+    <div class="tips-grid reveal">
+      <div class="tip-card">
+        <h4><span class="ar">تجميلي ولا طبي؟</span><span class="en">Cosmetic or Prescription?</span></h4>
+        <p><span class="ar">التجميلي بيغيّر لون العين بس. الطبي بيغيّر اللون ويصحح النظر في نفس الوقت، وبيحتاج مقاسك من الكشف أو من روشتة نضارتك. المقاسات المتاحة من -0.50 لـ -6.00.</span><span class="en">Cosmetic lenses change color only. Prescription lenses also correct vision and need your power from an eye exam or glasses prescription, available from -0.50 to -6.00.</span></p>
+      </div>
+      <div class="tip-card">
+        <h4><span class="ar">أنهي مدة تناسبك؟</span><span class="en">Which Duration Suits You?</span></h4>
+        <p><span class="ar">المدة بتُحسب من أول ما تفتحي العلبة مش من عدد مرات اللبس. لو بتلبسي مرة أو مرتين في الأسبوع، الشهري أوفر. ولو بتلبسي بانتظام، السنوي أوفر على المدى الطويل.</span><span class="en">Duration counts from when you first open the pack, not by how often you wear them. Occasional wearers do best with monthly; regular wearers save more with yearly.</span></p>
+      </div>
+      <div class="tip-card">
+        <h4><span class="ar">استخدام آمن</span><span class="en">Safe Wear</span></h4>
+        <p><span class="ar">اغسلي إيدك قبل اللمس، استخدمي محلول مخصص مش مياه، متناميش بالعدسات، ومتلبسيهاش أكتر من 8–10 ساعات يوميًا. أي احمرار أو ألم — شيليها فورًا واستشيري دكتور عيون.</span><span class="en">Wash your hands first, use proper solution not water, never sleep in lenses, and limit wear to 8–10 hours. Any redness or pain — remove them and see an eye doctor.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== طرق التواصل ========== -->
+<section class="pad" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head reveal" style="justify-content:center; text-align:center;">
+      <div>
+        <span class="tag"><span class="ar">تواصلي معنا</span><span class="en">Get in touch</span></span>
+        <h2><span class="ar">لسه عندك سؤال؟</span><span class="en">Still Have a Question?</span></h2>
+      </div>
+    </div>
+    <div class="reach-grid reveal">
+      <a href="https://wa.me/201065463003" target="_blank" rel="noopener" class="info-card wa-card">
+        <span class="ic">💬</span>
+        <div>
+          <h4><span class="ar">واتساب (الأسرع)</span><span class="en">WhatsApp (fastest)</span></h4>
+          <p>01065463003</p>
+        </div>
+      </a>
+      <div class="info-card">
+        <span class="ic">📍</span>
+        <div>
+          <h4><span class="ar">الموقع</span><span class="en">Location</span></h4>
+          <p><span class="ar">مصر</span><span class="en">Egypt</span></p>
+        </div>
+      </div>
+      <div class="info-card">
+        <span class="ic">🕒</span>
+        <div>
+          <h4><span class="ar">ساعات العمل</span><span class="en">Working Hours</span></h4>
+          <p><span class="ar">طول أيام الأسبوع</span><span class="en">All week</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="wrap">
@@ -539,13 +717,13 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
       <div class="foot-col">
         <h4><span class="ar">تواصل معنا</span><span class="en">Contact</span></h4>
         <a href="https://wa.me/201065463003"><span class="ar">واتساب: 01065463003</span><span class="en">WhatsApp: 01065463003</span></a>
-        <a href="mailto:hello@lenseslover.com">hello@lenseslover.com</a>
+        
         <a href="lenses-lover-account.html"><span class="ar">حسابي</span><span class="en">My Account</span></a>
       </div>
     </div>
     <div class="bottom-bar">
       <span>© 2026 LENSES LOVER — <span class="ar">جميع الحقوق محفوظة</span><span class="en">All rights reserved</span></span>
-      <span><span class="ar">تصميم نموذجي تفاعلي</span><span class="en">Interactive design prototype</span></span>
+      </span>
     </div>
   </div>
 </footer>
@@ -568,15 +746,55 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
   const FAQS=[
-    {qa:'هل العدسات آمنة للاستخدام اليومي؟', qe:'Are the lenses safe for daily wear?',
-     aa:'كل عدساتنا معتمدة وبنسبة ترطيب عالية مناسبة للاستخدام اليومي، مع الالتزام بمدة الاستخدام الموضحة في كل منتج.',
-     ae:'All our lenses are certified with high water content suitable for daily wear, as long as you follow the wear duration shown on each product.'},
-    {qa:'كم مدة التوصيل؟', qe:'How long is delivery?',
-     aa:'داخل القاهرة والجيزة 1–2 يوم عمل، باقي المحافظات 2–4 أيام، ودول الخليج 3–6 أيام عمل.',
-     ae:'1–2 business days in Cairo & Giza, 2–4 days for other governorates, and 3–6 days for the Gulf.'},
-    {qa:'هل يوجد دفع عند الاستلام؟', qe:'Is cash on delivery available?',
-     aa:'نعم، الدفع عند الاستلام متاح في مصر والسعودية، مع خصم 5% لو اخترتِ الدفع المسبق إلكترونيًا.',
-     ae:'Yes, cash on delivery is available in Egypt & Saudi Arabia, with a 5% discount if you prepay online.'},
+    {qa:'بتشحنوا لكل محافظات مصر؟',
+     qe:'Do you ship to all Egyptian governorates?',
+     aa:'أيوه، بنشحن لكل الـ 27 محافظة. القاهرة والجيزة 1–2 يوم عمل، وباقي المحافظات 2–4 أيام.',
+     ae:'Yes, we ship to all 27 governorates. Cairo & Giza in 1–2 business days, other governorates in 2–4 days.'},
+
+    {qa:'إزاي أدفع؟',
+     qe:'How do I pay?',
+     aa:'الدفع عند الاستلام متاح لكل محافظات مصر — بتدفعي للمندوب وقت ما يوصلك الطلب، ومفيش أي دفع مقدم. الدفع بالبطاقة والمحافظ الإلكترونية قريبًا.',
+     ae:'Cash on delivery is available in all Egyptian governorates — you pay the courier when your order arrives, with no prepayment. Card and e-wallet payments are coming soon.'},
+
+    {qa:'العدسات أصلية؟',
+     qe:'Are the lenses authentic?',
+     aa:'كل العدسات أصلية من ماركات معروفة: إيكوال بيري، ميتون، أربان لاير، فريش ليدي، ودهب — بعلبها المقفولة وتواريخ صلاحيتها.',
+     ae:'All lenses are authentic from known brands: Eqqual Berre, Meetone, Urban Layer, Fresh Lady, and Dahab — sealed with clear expiry dates.'},
+
+    {qa:'فيه عدسات بمقاسات نظر؟',
+     qe:'Do you have prescription lenses?',
+     aa:'أيوه، فيه عدسات طبية بمقاسات من -0.50 لـ -6.00. وقت الطلب بتختاري "طبي" وتحددي مقاسك لكل عين.',
+     ae:'Yes, we offer prescription lenses from -0.50 to -6.00. At checkout, choose "prescription" and specify your power for each eye.'},
+
+    {qa:'إزاي أعرف مقاس النظر بتاعي؟',
+     qe:'How do I know my prescription?',
+     aa:'مقاس النظر بيتحدد من الكشف عند دكتور عيون، أو من روشتة نظارتك لو عندك واحدة. لو محتارة في قراءة المقاس، ابعتيلنا صورة من الروشتة على الواتساب ونساعدك.',
+     ae:'Your prescription comes from an eye exam or your existing glasses prescription. If you are unsure how to read it, send us a photo on WhatsApp and we will help.'},
+
+    {qa:'العدسات آمنة للاستخدام اليومي؟',
+     qe:'Are the lenses safe for daily wear?',
+     aa:'أيوه، كل عدساتنا بنسبة ترطيب عالية ومادة قابلة للتنفس. المهم تلتزمي بمدة الاستخدام الموضحة في كل منتج، ومتناميش بيهم، ومتلبسيهمش أكتر من 8–10 ساعات في اليوم.',
+     ae:'Yes, all our lenses have high water content and breathable material. Just follow the wear duration shown on each product, never sleep in them, and avoid wearing them more than 8–10 hours a day.'},
+
+    {qa:'إيه الفرق بين الشهري والسنوي؟',
+     qe:'What is the difference between monthly and yearly lenses?',
+     aa:'المدة بتُحسب من أول ما تفتحي العلبة مش من عدد مرات اللبس. الشهرية بتستمر شهر والسنوية سنة مع العناية المنتظمة. لو بتلبسي بشكل متكرر، السنوية أوفر.',
+     ae:'Duration counts from the first time you open the pack, not from how often you wear them. Monthly lenses last a month and yearly ones a year with proper care. If you wear them often, yearly is more economical.'},
+
+    {qa:'أقدر أرجّع أو أستبدل الطلب؟',
+     qe:'Can I return or exchange my order?',
+     aa:'لأسباب صحية تخص سلامة العين، مفيش استرجاع أو استبدال بعد فتح العلبة. لو العلبة لسه مقفولة، أو فيه عيب مصنعي، كلمينا على الواتساب فورًا ونحلها.',
+     ae:'For eye-health safety reasons, we cannot accept returns or exchanges once the pack is opened. If the pack is still sealed, or there is a manufacturing defect, contact us on WhatsApp right away.'},
+
+    {qa:'إزاي أتابع طلبي؟',
+     qe:'How do I track my order?',
+     aa:'من صفحة تتبع الطلب، اكتبي رقم الطلب ورقم الواتساب اللي طلبتي بيه، وهتشوفي مرحلة طلبك الحالية. وكمان بنتابع معاكي على الواتساب من ساعة التأكيد لحد التسليم.',
+     ae:'Go to the order tracking page, enter your order number and the WhatsApp number you used, and you will see your current status. We also follow up on WhatsApp from confirmation to delivery.'},
+
+    {qa:'أقدر ألبس العدسات لو بلبس نضارة؟',
+     qe:'Can I wear lenses if I wear glasses?',
+     aa:'أيوه، تقدري تستخدمي العدسات الطبية بنفس مقاس نضارتك تقريبًا. لو المقاس عالي أو عندك أستجماتيزم، الأفضل تسألي دكتور عيون الأول.',
+     ae:'Yes, you can use prescription lenses with roughly the same power as your glasses. If your power is high or you have astigmatism, check with an eye doctor first.'}
   ];
   const faq=document.getElementById('faq');
   FAQS.forEach(f=>{
@@ -588,11 +806,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     faq.appendChild(it);
   });
 
-  window.sendMsg=function(btn){
-    const ar=document.body.classList.contains('lang-ar');
-    btn.textContent=ar?'✓ تم إرسال رسالتك':'✓ Message sent';
-    btn.style.background='var(--jade)'; btn.style.color='var(--ivory)';
-  };
+  
 
 </script>
 
