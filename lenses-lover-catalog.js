@@ -42,7 +42,6 @@ window.LL_CATALOG = {
     { key:'blue',  c1:'#7fa8c9', c2:'#28516e', ring:'#1a3244', ar:'أزرق',  en:'Blue' },
     { key:'hazel', c1:'#c9a15b', c2:'#6b4a24', ring:'#4a2f17', ar:'بندقي', en:'Hazel' },
     { key:'brown', c1:'#b0793f', c2:'#5c3a18', ring:'#3d2610', ar:'بني',   en:'Brown' },
-    { key:'purple', c1:'#b39ddb', c2:'#4a2c6b', ring:'#32204a', ar:'بنفسجي', en:'Purple' },
     { key:'yellow', c1:'#e6d27a', c2:'#8a7420', ring:'#5c4d13', ar:'أصفر',   en:'Yellow' }
   ],
 
@@ -315,13 +314,6 @@ window.LL_CATALOG = {
     { id:'fresh-lady-stunna-girl-nadine-brown', brand:'fresh-lady', ar:'ستونا جيرل نادين براون', en:'Stunna Girl Nadine Brown', family:'brown', dur:'monthly', type:'optical', price:200, slug:'stunna-girl-nadine-brown', n:2 },
     { id:'fresh-lady-three-tone-brown', brand:'fresh-lady', ar:'ثري تون براون', en:'Three Tone Brown', family:'brown', dur:'monthly', type:'optical', price:200, slug:'three-tone-brown', n:1 },
     { id:'fresh-lady-wildness-brown', brand:'fresh-lady', ar:'وايلدنس براون', en:'Wildness Brown', family:'brown', dur:'monthly', type:'optical', price:200, slug:'wildness-brown', n:1 },
-    { id:'fresh-lady-diamond-purple', brand:'fresh-lady', ar:'دايموند بيربل', en:'Diamond Purple', family:'purple', dur:'monthly', type:'optical', price:200, slug:'diamond-purple', n:1 },
-    { id:'fresh-lady-electric-blink-purple', brand:'fresh-lady', ar:'إلكتريك بلينك بيربل', en:'Electric Blink Purple', family:'purple', dur:'monthly', type:'optical', price:200, slug:'electric-blink-purple', n:1 },
-    { id:'fresh-lady-fruit-juice-violet', brand:'fresh-lady', ar:'فروت جوس فيوليت', en:'Fruit Juice Violet', family:'purple', dur:'monthly', type:'optical', price:200, slug:'fruit-juice-violet', n:1 },
-    { id:'fresh-lady-mousse-pink', brand:'fresh-lady', ar:'موس بينك', en:'Mousse Pink', family:'purple', dur:'monthly', type:'optical', price:200, slug:'mousse-pink', n:1 },
-    { id:'fresh-lady-sailor-moon-violet', brand:'fresh-lady', ar:'سيلور مون فيوليت', en:'Sailor Moon Violet', family:'purple', dur:'monthly', type:'optical', price:200, slug:'sailor-moon-violet', n:1 },
-    { id:'fresh-lady-vika-tricolor-purple', brand:'fresh-lady', ar:'فيكا تراي كولور بيربل', en:'Vika Tricolor Purple', family:'purple', dur:'monthly', type:'optical', price:200, slug:'vika-tricolor-purple', n:1 },
-    { id:'fresh-lady-violette', brand:'fresh-lady', ar:'فيوليت', en:'Violette', family:'purple', dur:'monthly', type:'optical', price:200, slug:'violette', n:1 },
     { id:'fresh-lady-bella-yellow', brand:'fresh-lady', ar:'بيلا يلو', en:'Bella Yellow', family:'yellow', dur:'monthly', type:'optical', price:200, slug:'bella-yellow', n:1 },
     { id:'fresh-lady-polar-lights-yellow', brand:'fresh-lady', ar:'بولار لايتس يلو', en:'Polar Lights Yellow', family:'yellow', dur:'monthly', type:'optical', price:200, slug:'polar-lights-yellow', n:1 },
     { id:'fresh-lady-vika-tricolor-yellow', brand:'fresh-lady', ar:'فيكا تراي كولور يلو', en:'Vika Tricolor Yellow', family:'yellow', dur:'monthly', type:'optical', price:200, slug:'vika-tricolor-yellow', n:1 }
