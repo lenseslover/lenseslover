@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<script>
+/* الثيم قبل أي رسم */
+(function(){try{var t=localStorage.getItem('ll_theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<title>لوحة المنتجات — LENSES LOVER</title>
+<style>
+  :root{
+    --ink:#faf7f2; --ink-2:#ffffff; --ink-3:#f2ece2;
+    --ivory:#221c14; --ivory-dim:#6e6558;
+    --amber:#a8702e; --amber-light:#c88a3e;
+    --line:rgba(21,18,14,0.12); --radius:16px;
+    --green:#3fa96b; --red:#d9534f;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI',Tahoma,sans-serif; }
+  body{ background:var(--ink); color:var(--ivory); line-height:1.6; }
+
+  .top{ background:var(--ink-2); border-bottom:1px solid var(--line); padding:14px 4vw;
+        display:flex; align-items:center; gap:18px; position:sticky; top:0; z-index:50; flex-wrap:wrap; }
+  .top .logo{ font-weight:800; font-size:17px; }
+  .top .logo span{ color:var(--amber); }
+  .tabs{ display:flex; gap:6px; margin-inline-start:auto; flex-wrap:wrap; }
+  .tab{ padding:9px 18px; border-radius:999px; border:1px solid var(--line);
+        background:transparent; font-size:13.5px; cursor:pointer; color:var(--ivory-dim); }
+  .tab.on{ background:var(--amber); border-color:var(--amber); color:#fff; font-weight:700; }
+
+  .wrap{ max-width:1180px; margin:0 auto; padding:26px 4vw 90px; }
+  .panel{ display:none; } .panel.on{ display:block; }
+  h2{ font-size:1.3rem; margin-bottom:6px; }
+  .sub{ font-size:13.5px; color:var(--ivory-dim); margin-bottom:20px; }
+
+  .bar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px; }
+  .inp,.sel{ padding:10px 14px; border-radius:10px; border:1px solid var(--line);
+             background:var(--ink-2); font-size:13.5px; color:var(--ivory); }
+  .inp:focus,.sel:focus{ outline:none; border-color:var(--amber); }
+  .btn{ padding:10px 20px; border-radius:999px; border:none; background:var(--amber);
+        color:#fff; font-size:13.5px; font-weight:700; cursor:pointer; }
+  .btn:disabled{ opacity:.5; cursor:default; }
+  .btn.ghost{ background:transparent; border:1px solid var(--line); color:var(--ivory-dim); }
+  .btn.danger{ background:var(--red); }
+  .btn.sm{ padding:7px 13px; font-size:12.5px; }
+  .push{ margin-inline-start:auto; }
+
+  .tbl{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .row{ display:grid; grid-template-columns:52px 2fr 1.1fr 1.1fr 92px 62px 128px;
+        gap:10px; align-items:center; padding:11px 14px; border-bottom:1px solid var(--line); font-size:13.5px; }
+  .row.head{ background:var(--ink-3); font-weight:700; font-size:12px; color:var(--ivory-dim); }
+  .row:last-child{ border-bottom:none; }
+  .thumb{ width:42px; height:42px; border-radius:9px; background:var(--ink-3) center/cover;
+          border:1px solid var(--line); }
+  .nm b{ display:block; font-size:13.5px; }
+  .nm span{ font-size:11px; color:var(--ivory-dim); }
+  .mini{ padding:6px 9px; border-radius:8px; border:1px solid var(--line);
+         background:var(--ink); font-size:12.5px; color:var(--ivory); width:100%; }
+  .price-edit{ width:76px; text-align:center; }
+  @media (max-width:920px){
+    .row{ grid-template-columns:44px 1fr 84px 60px; }
+    .row .hide-sm{ display:none; }
+  }
+
+  .cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+  .card{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:20px; }
+  .card h3{ font-size:15px; margin-bottom:3px; }
+  .card .k{ font-size:11.5px; color:var(--ivory-dim); margin-bottom:14px; }
+  .fld{ margin-bottom:12px; }
+  .fld label{ display:block; font-size:12px; color:var(--ivory-dim); margin-bottom:5px; }
+  .fld input,.fld select{ width:100%; padding:9px 12px; border-radius:9px;
+    border:1px solid var(--line); background:var(--ink); font-size:13.5px; color:var(--ivory); }
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .chk{ font-size:12.5px; color:var(--ivory-dim); display:flex; gap:7px; align-items:center; cursor:pointer; }
+
+  .imgs{ display:grid; grid-template-columns:repeat(auto-fill,minmax(112px,1fr)); gap:12px; }
+  .img-box{ position:relative; aspect-ratio:1; border-radius:12px; border:1px solid var(--line);
+            background:var(--ink-3) center/cover; overflow:hidden; }
+  .img-box .del{ position:absolute; top:6px; inset-inline-end:6px; width:26px; height:26px;
+                 border-radius:50%; background:rgba(217,83,79,.92); color:#fff; border:none;
+                 font-size:15px; cursor:pointer; line-height:1; }
+  .img-box .ord{ position:absolute; bottom:6px; inset-inline-start:6px; background:rgba(0,0,0,.55);
+                 color:#fff; font-size:10.5px; padding:2px 7px; border-radius:999px; }
+  .drop{ aspect-ratio:1; border:2px dashed var(--line); border-radius:12px; display:flex;
+         flex-direction:column; align-items:center; justify-content:center; gap:6px;
+         color:var(--ivory-dim); font-size:12.5px; cursor:pointer; text-align:center; padding:10px; }
+  .drop:hover{ border-color:var(--amber); color:var(--amber); }
+  .drop b{ font-size:22px; font-weight:400; }
+
+  .note{ background:var(--ink-3); border-inline-start:3px solid var(--amber);
+         border-radius:10px; padding:12px 15px; font-size:12.5px; color:var(--ivory-dim); margin-top:16px; }
+  .toast{ position:fixed; bottom:22px; inset-inline-start:50%; transform:translateX(50%);
+          background:var(--green); color:#fff; padding:12px 24px; border-radius:999px;
+          font-size:13.5px; font-weight:700; z-index:200; display:none; box-shadow:0 8px 26px rgba(0,0,0,.2); }
+  .toast.err{ background:var(--red); }
+  .msg{ text-align:center; padding:40px 0; color:var(--ivory-dim); font-size:14px; }
+
+  #gate{ max-width:400px; margin:70px auto; }
+  #gate input{ width:100%; padding:14px 16px; border-radius:12px; border:1px solid var(--line);
+               background:var(--ink-2); font-size:15px; margin-bottom:12px; color:var(--ivory); }
+</style>
+</head>
+<body>
+
+<!-- ===== الدخول ===== -->
+<div id="gate">
+  <h2 style="text-align:center; margin-bottom:6px;">لوحة المنتجات</h2>
+  <p class="sub" style="text-align:center;">اكتب كلمة السر للدخول</p>
+  <input id="key" type="password" placeholder="كلمة السر" autocomplete="current-password">
+  <button class="btn" style="width:100%;" id="login">دخول</button>
+  <p id="gate-msg" style="display:none; margin-top:12px; font-size:13px; color:var(--red); text-align:center;"></p>
+</div>
+
+<!-- ===== اللوحة ===== -->
+<div id="app" style="display:none;">
+  <div class="top">
+    <div class="logo">LENSES<span> LOVER</span></div>
+    <div class="tabs">
+      <button class="tab on" data-p="products">المنتجات</button>
+      <button class="tab" data-p="prices">الأسعار والعروض</button>
+      <button class="tab" data-p="images">الصور</button>
+      <button class="tab" data-p="add">إضافة منتج</button>
+      <button class="tab" id="logout">خروج</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- 1) المنتجات -->
+    <div class="panel on" id="p-products">
+      <h2>المنتجات</h2>
+      <p class="sub" id="prod-count">جاري التحميل…</p>
+      <div class="bar">
+        <input class="inp" id="q" placeholder="بحث بالاسم أو الكود" style="min-width:210px;">
+        <select class="sel" id="fb"></select>
+        <select class="sel" id="ff"></select>
+        <button class="btn push" onclick="show('add')">+ منتج جديد</button>
+      </div>
+      <div class="tbl" id="tbl"></div>
+      <div class="note">السعر والنوع وعلامة "مميز" بتتحفظ فورًا. "مميز" بتحدد اللي يظهر في الأكثر مبيعًا.</div>
+    </div>
+
+    <!-- 2) الأسعار والعروض -->
+    <div class="panel" id="p-prices">
+      <h2>الأسعار والعروض</h2>
+      <p class="sub" id="brand-count">—</p>
+      <div class="cards" id="brand-cards"></div>
+    </div>
+
+    <!-- 3) الصور -->
+    <div class="panel" id="p-images">
+      <h2>صور المنتجات</h2>
+      <p class="sub">اختاري الماركة ثم المنتج — الصورة الأولى هي اللي بتظهر في المتجر.</p>
+      <div class="bar">
+        <select class="sel" id="ib" style="min-width:170px;"></select>
+        <select class="sel" id="ip" style="min-width:260px;"></select>
+        <span class="push" id="img-count" style="font-size:12.5px; color:var(--ivory-dim);"></span>
+      </div>
+      <div class="card" id="img-card"><div class="msg">اختاري منتج</div></div>
+    </div>
+
+    <!-- 4) إضافة منتج -->
+    <div class="panel" id="p-add">
+      <h2 id="add-title">إضافة منتج جديد</h2>
+      <p class="sub">املي البيانات — المنتج هيتسجل في قاعدة البيانات فورًا.</p>
+      <div class="cards" style="grid-template-columns:1fr 1fr;">
+        <div class="card">
+          <h3 style="margin-bottom:16px;">بيانات المنتج</h3>
+          <div class="two">
+            <div class="fld"><label>الاسم بالعربي *</label><input id="a-ar" placeholder="أثينا جراي"></div>
+            <div class="fld"><label>الاسم بالإنجليزي</label><input id="a-en" placeholder="Athena Grey"></div>
+          </div>
+          <div class="two">
+            <div class="fld"><label>الماركة *</label><select id="a-brand"></select></div>
+            <div class="fld"><label>اللون *</label><select id="a-family"></select></div>
+          </div>
+          <div class="two">
+            <div class="fld"><label>المدة</label>
+              <select id="a-dur"><option value="monthly">شهري</option><option value="yearly">سنوي</option><option value="both">شهري أو سنوي</option></select>
+            </div>
+            <div class="fld"><label>النوع</label>
+              <select id="a-type"><option value="cosmetic">تجميلي فقط</option><option value="optical">تجميلي أو طبي</option></select>
+            </div>
+          </div>
+          <div class="two">
+            <div class="fld"><label>السعر</label><input id="a-price" type="number" placeholder="200"></div>
+            <div class="fld"><label>الكود (slug) *</label><input id="a-slug" placeholder="athena-grey"></div>
+          </div>
+          <div class="fld"><label>عدد الصور</label><input id="a-n" type="number" value="1" min="1"></div>
+          <label class="chk"><input type="checkbox" id="a-featured"> منتج مميز (يظهر في الأكثر مبيعًا)</label>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:6px;">الصور</h3>
+          <p style="font-size:12.5px; color:var(--ivory-dim); margin-bottom:14px;">
+            احفظي المنتج الأول، وبعدها ارفعي صوره من تبويب "الصور".
+          </p>
+          <div class="note" id="a-path">مسار الصور هيكون: —</div>
+        </div>
+      </div>
+      <div class="bar" style="margin-top:20px;">
+        <button class="btn" id="a-save">حفظ المنتج</button>
+        <button class="btn ghost" onclick="show('products')">إلغاء</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var API='https://lenseslover-orders.skymoonsport.workers.dev';
+  var KEY='', DATA={brands:[],families:[],products:[]}, editId=null;
+
+  var $=function(id){ return document.getElementById(id); };
+  function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':String(t)); return d.innerHTML; }
+
+  function toast(msg, err){
+    var t=$('toast'); t.textContent=msg; t.className='toast'+(err?' err':'');
+    t.style.display='block'; clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.style.display='none'; }, 2200);
+  }
+
+  function api(path, opts){
+    opts=opts||{};
+    opts.headers=Object.assign({'X-Admin-Key':KEY}, opts.headers||{});
+    if(opts.body && typeof opts.body==='string') opts.headers['Content-Type']='application/json';
+    return fetch(API+path, opts).then(function(r){ return r.json(); });
+  }
+
+  /* ---------- الدخول ---------- */
+  function tryLogin(k){
+    KEY=k;
+    return api('/admin/catalog').then(function(j){
+      if(j && j.ok){
+        try{ localStorage.setItem('ll_admin_key', k); }catch(e){}
+        DATA={brands:j.brands||[], families:j.families||[], products:j.products||[]};
+        $('gate').style.display='none'; $('app').style.display='block';
+        boot();
+        return true;
+      }
+      return false;
+    }).catch(function(){ return false; });
+  }
+  $('login').onclick=function(){
+    var k=$('key').value.trim(); if(!k) return;
+    $('gate-msg').style.display='none';
+    tryLogin(k).then(function(ok){
+      if(!ok){ $('gate-msg').textContent='كلمة السر غلط'; $('gate-msg').style.display='block'; }
+    });
+  };
+  $('key').addEventListener('keydown', function(e){ if(e.key==='Enter') $('login').click(); });
+  $('logout').onclick=function(){ try{ localStorage.removeItem('ll_admin_key'); }catch(e){} location.reload(); };
+
+  /* ---------- التبويبات ---------- */
+  window.show=function(p){
+    document.querySelectorAll('.panel').forEach(function(x){ x.classList.remove('on'); });
+    $('p-'+p).classList.add('on');
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('on', t.dataset.p===p); });
+    window.scrollTo({top:0, behavior:'smooth'});
+    if(p==='add' && !editId) resetAdd();
+  };
+  document.querySelectorAll('.tab[data-p]').forEach(function(t){ t.onclick=function(){ show(t.dataset.p); }; });
+
+  /* ---------- التحميل الأولي ---------- */
+  function boot(){
+    var bOpts='<option value="">كل الماركات</option>'+DATA.brands.map(function(b){
+      return '<option value="'+esc(b.key)+'">'+esc(b.ar)+(b.active?'':' — قريبًا')+'</option>'; }).join('');
+    $('fb').innerHTML=bOpts;
+    $('ib').innerHTML=DATA.brands.map(function(b){
+      return '<option value="'+esc(b.key)+'">'+esc(b.ar)+(b.active?'':' — قريبًا')+'</option>'; }).join('');
+    $('ff').innerHTML='<option value="">كل الألوان</option>'+DATA.families.map(function(f){
+      return '<option value="'+esc(f.key)+'">'+esc(f.ar)+'</option>'; }).join('');
+    $('a-brand').innerHTML=DATA.brands.map(function(b){
+      return '<option value="'+esc(b.key)+'">'+esc(b.ar)+(b.active?'':' — قريبًا')+'</option>'; }).join('');
+    $('a-family').innerHTML=DATA.families.map(function(f){
+      return '<option value="'+esc(f.key)+'">'+esc(f.ar)+'</option>'; }).join('');
+
+    drawProducts(); drawBrands(); fillImgProducts();
+  }
+
+  function brandOf(k){ return DATA.brands.filter(function(b){ return b.key===k; })[0]||{}; }
+  function famOf(k){ return DATA.families.filter(function(f){ return f.key===k; })[0]||{}; }
+
+  function imgUrl(p, i){
+    var b=brandOf(p.brand);
+    if(p.imgs && p.imgs.length) return p.imgs[Math.min(i||0, p.imgs.length-1)];
+    var base=b.img_base||'https://cdn.lenseslover.com/products/';
+    return b.numbered ? base+p.slug+'-'+((i||0)+1)+'.webp' : base+p.slug+'.webp';
+  }
+
+  /* ---------- 1) المنتجات ---------- */
+  function filtered(){
+    var q=$('q').value.trim().toLowerCase(), fb=$('fb').value, ff=$('ff').value;
+    return DATA.products.filter(function(p){
+      if(fb && p.brand!==fb) return false;
+      if(ff && p.family!==ff) return false;
+      if(q && !(p.ar+' '+p.en+' '+p.slug).toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }
+
+  function drawProducts(){
+    var list=filtered();
+    $('prod-count').textContent=list.length+' من '+DATA.products.length+' منتج';
+    var h='<div class="row head"><span></span><span>المنتج</span>'
+        + '<span class="hide-sm">الماركة</span><span class="hide-sm">النوع</span>'
+        + '<span>السعر</span><span>مميز</span><span class="hide-sm"></span></div>';
+    list.slice(0,300).forEach(function(p){
+      var b=brandOf(p.brand), f=famOf(p.family);
+      var durAr = p.dur==='both'?'شهري أو سنوي':(p.dur==='yearly'?'سنوي':'شهري');
+      h+='<div class="row" data-id="'+esc(p.id)+'">'
+       + '<div class="thumb" style="background-image:url(\''+imgUrl(p,0)+'\')"></div>'
+       + '<div class="nm"><b>'+esc(p.ar)+'</b><span>'+esc(p.en)+' · '+durAr+' · '+esc(f.ar||'')+'</span></div>'
+       + '<span class="hide-sm" style="font-size:12.5px; color:var(--ivory-dim);">'+esc(b.ar||p.brand)+'</span>'
+       + '<span class="hide-sm"><select class="mini" data-k="type">'
+       +   '<option value="cosmetic"'+(p.type==='cosmetic'?' selected':'')+'>تجميلي</option>'
+       +   '<option value="optical"'+(p.type==='optical'?' selected':'')+'>تجميلي أو طبي</option>'
+       + '</select></span>'
+       + '<input class="mini price-edit" data-k="price" value="'+(p.price||0)+'">'
+       + '<span><input type="checkbox" data-k="featured"'+(p.featured?' checked':'')+'></span>'
+       + '<span class="hide-sm">'
+       +   '<button class="btn ghost sm" data-a="edit">تعديل</button> '
+       +   '<button class="btn danger sm" data-a="del">حذف</button>'
+       + '</span></div>';
+    });
+    $('tbl').innerHTML=h;
+    if(list.length>300) $('tbl').insertAdjacentHTML('beforeend',
+      '<div class="msg">عرض أول 300 — استخدمي البحث أو الفلاتر للوصول للباقي</div>');
+    wireRows();
+  }
+
+  function wireRows(){
+    $('tbl').querySelectorAll('.row[data-id]').forEach(function(row){
+      var id=row.dataset.id;
+      var p=DATA.products.filter(function(x){ return x.id===id; })[0];
+      if(!p) return;
+      row.querySelectorAll('[data-k]').forEach(function(el){
+        el.onchange=function(){
+          var k=el.dataset.k;
+          if(k==='featured') p.featured=el.checked?1:0;
+          else if(k==='price') p.price=parseInt(el.value,10)||0;
+          else p[k]=el.value;
+          saveProduct(p, true);
+        };
+      });
+      var eb=row.querySelector('[data-a="edit"]'); if(eb) eb.onclick=function(){ openEdit(p); };
+      var db=row.querySelector('[data-a="del"]'); if(db) db.onclick=function(){ delProduct(p); };
+    });
+  }
+
+  ['q','fb','ff'].forEach(function(id){
+    var el=$(id); if(!el) return;
+    el.addEventListener(id==='q'?'input':'change', function(){
+      clearTimeout(el._t); el._t=setTimeout(drawProducts, id==='q'?300:0);
+    });
+  });
+
+  function saveProduct(p, quiet){
+    return api('/admin/product',{ method:'POST', body:JSON.stringify(p) })
+      .then(function(j){
+        if(j&&j.ok){ if(!quiet) toast('اتحفظ'); else toast('اتحفظ'); }
+        else toast('فشل الحفظ', true);
+        return j;
+      }).catch(function(){ toast('مشكلة في الاتصال', true); });
+  }
+
+  function delProduct(p){
+    if(!confirm('تحذفي «'+p.ar+'» نهائيًا؟')) return;
+    api('/admin/product/delete',{ method:'POST', body:JSON.stringify({id:p.id}) })
+      .then(function(j){
+        if(j&&j.ok){
+          DATA.products=DATA.products.filter(function(x){ return x.id!==p.id; });
+          drawProducts(); fillImgProducts(); toast('اتحذف');
+        } else toast('فشل الحذف', true);
+      }).catch(function(){ toast('مشكلة في الاتصال', true); });
+  }
+
+  /* ---------- 2) الماركات ---------- */
+  function drawBrands(){
+    $('brand-count').textContent=DATA.brands.length+' ماركة — '
+      + DATA.brands.filter(function(b){return b.active;}).length+' شغالة';
+    var h='';
+    DATA.brands.forEach(function(b){
+      var cnt=DATA.products.filter(function(p){ return p.brand===b.key; }).length;
+      h+='<div class="card" data-b="'+esc(b.key)+'"'+(b.active?'':' style="opacity:.75;"')+'>'
+       + '<h3>'+esc(b.ar)+(b.active?'':' <span style="font-size:11px; color:var(--amber); font-weight:400;">— قريبًا</span>')+'</h3>'
+       + '<div class="k">'+esc(b.key)+' · '+cnt+' منتج</div>'
+       + '<div class="two">'
+       +   '<div class="fld"><label>سعر الشهري</label><input data-f="price_monthly" value="'+(b.price_monthly==null?'':b.price_monthly)+'" placeholder="—"></div>'
+       +   '<div class="fld"><label>سعر السنوي</label><input data-f="price_yearly" value="'+(b.price_yearly==null?'':b.price_yearly)+'" placeholder="—"></div>'
+       + '</div>'
+       + '<div class="fld"><label>زيادة النظر (تُضاف لو طبي)</label><input data-f="optical_plus" value="'+(b.optical_plus||0)+'"></div>'
+       + '<div class="fld"><label>العرض (الكمية / السعر)</label><div class="two">'
+       +   '<input data-f="offer_qty" value="'+(b.offer_qty==null?'':b.offer_qty)+'" placeholder="الكمية">'
+       +   '<input data-f="offer_bundle" value="'+(b.offer_bundle==null?'':b.offer_bundle)+'" placeholder="السعر">'
+       + '</div></div>'
+       + '<div class="fld"><label>نص العرض</label><input data-f="offer_ar" value="'+esc(b.offer_ar||'')+'" placeholder="قطعتين بـ 350 ج.م"></div>'
+       + '<label class="chk"><input type="checkbox" data-f="offer_cosmetic_only"'+(b.offer_cosmetic_only?' checked':'')+'> العرض للتجميلي فقط</label>'
+       + '<label class="chk" style="margin-top:8px;"><input type="checkbox" data-f="active"'+(b.active?' checked':'')+'> الماركة ظاهرة في المتجر</label>'
+       + '<button class="btn sm" style="margin-top:14px;" data-a="save">حفظ</button>'
+       + '</div>';
+    });
+    $('brand-cards').innerHTML=h;
+    $('brand-cards').querySelectorAll('.card[data-b]').forEach(function(card){
+      card.querySelector('[data-a="save"]').onclick=function(){
+        var key=card.dataset.b, payload={key:key};
+        card.querySelectorAll('[data-f]').forEach(function(el){
+          payload[el.dataset.f] = el.type==='checkbox' ? (el.checked?1:0) : el.value.trim();
+        });
+        api('/admin/brand',{ method:'POST', body:JSON.stringify(payload) })
+          .then(function(j){
+            if(j&&j.ok){
+              var b=brandOf(key);
+              Object.keys(payload).forEach(function(k){ if(k!=='key') b[k]=payload[k]; });
+              toast('اتحفظ'); drawBrands();
+            } else toast('فشل الحفظ', true);
+          }).catch(function(){ toast('مشكلة في الاتصال', true); });
+      };
+    });
+  }
+
+  /* ---------- 3) الصور ---------- */
+  function fillImgProducts(){
+    var bk=$('ib').value || (DATA.brands[0]&&DATA.brands[0].key);
+    var list=DATA.products.filter(function(p){ return p.brand===bk; });
+    $('ip').innerHTML=list.length
+      ? list.map(function(p){ return '<option value="'+esc(p.id)+'">'+esc(p.ar)+' — '+esc(p.en)+'</option>'; }).join('')
+      : '<option value="">مفيش منتجات</option>';
+    drawImages();
+  }
+  $('ib').onchange=fillImgProducts;
+  $('ip').onchange=drawImages;
+
+  function drawImages(){
+    var id=$('ip').value;
+    var p=DATA.products.filter(function(x){ return x.id===id; })[0];
+    if(!p){ $('img-card').innerHTML='<div class="msg">اختاري منتج</div>'; $('img-count').textContent=''; return; }
+    var b=brandOf(p.brand);
+    var count=p.img_count||1;
+    $('img-count').textContent=count+' صورة';
+    var h='<div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">'
+        + '<div class="thumb" style="width:50px;height:50px;background-image:url(\''+imgUrl(p,0)+'\')"></div>'
+        + '<div><b style="font-size:15px;">'+esc(p.ar)+'</b>'
+        + '<div style="font-size:12px; color:var(--ivory-dim);">'+esc(p.en)+' · '+esc(b.ar||'')+'</div></div>'
+        + '</div><div class="imgs">';
+    for(var i=0;i<count;i++){
+      h+='<div class="img-box" style="background-image:url(\''+imgUrl(p,i)+'\')">'
+       + '<button class="del" data-i="'+i+'">×</button>'
+       + '<span class="ord">'+(i+1)+(i===0?' — الرئيسية':'')+'</span></div>';
+    }
+    h+='<label class="drop"><b>+</b><span>ارفعي صورة</span>'
+     + '<input type="file" accept="image/*" hidden id="up"></label></div>'
+     + '<div class="note">المسار: '+esc((b.img_base||'').replace('https://cdn.lenseslover.com/',''))+esc(p.slug)+'-N.webp</div>';
+    $('img-card').innerHTML=h;
+
+    $('img-card').querySelectorAll('.del').forEach(function(btn){
+      btn.onclick=function(){ delImage(p, parseInt(btn.dataset.i,10)); };
+    });
+    var up=$('up'); if(up) up.onchange=function(){ uploadImage(p, up.files[0]); };
+  }
+
+  function imgPath(p, idx){
+    var b=brandOf(p.brand);
+    var base=(b.img_base||'https://cdn.lenseslover.com/products/').replace('https://cdn.lenseslover.com/','');
+    return b.numbered ? base+p.slug+'-'+(idx+1)+'.webp' : base+p.slug+'.webp';
+  }
+
+  function uploadImage(p, file){
+    if(!file) return;
+    var idx=(p.img_count||1);
+    var path=imgPath(p, idx);
+    toast('جاري الرفع…');
+    file.arrayBuffer().then(function(buf){
+      return fetch(API+'/admin/image?path='+encodeURIComponent(path),{
+        method:'POST',
+        headers:{'X-Admin-Key':KEY,'Content-Type':file.type||'image/webp'},
+        body:buf
+      }).then(function(r){ return r.json(); });
+    }).then(function(j){
+      if(j&&j.ok){
+        p.img_count=idx+1;
+        saveProduct(p, true).then(function(){ drawImages(); toast('الصورة اترفعت'); });
+      } else toast('فشل الرفع: '+((j&&j.error)||''), true);
+    }).catch(function(){ toast('مشكلة في الرفع', true); });
+  }
+
+  function delImage(p, i){
+    if(!confirm('تحذفي الصورة رقم '+(i+1)+'؟')) return;
+    var path=imgPath(p, i);
+    api('/admin/image/delete',{ method:'POST', body:JSON.stringify({path:path}) })
+      .then(function(j){
+        if(j&&j.ok){
+          p.img_count=Math.max(1,(p.img_count||1)-1);
+          saveProduct(p, true).then(function(){ drawImages(); drawProducts(); toast('الصورة اتحذفت'); });
+        } else toast('فشل الحذف', true);
+      }).catch(function(){ toast('مشكلة في الاتصال', true); });
+  }
+
+  /* ---------- 4) إضافة / تعديل ---------- */
+  function resetAdd(){
+    editId=null;
+    $('add-title').textContent='إضافة منتج جديد';
+    ['a-ar','a-en','a-price','a-slug'].forEach(function(id){ $(id).value=''; });
+    $('a-n').value=1; $('a-featured').checked=false;
+    updatePath();
+  }
+  function openEdit(p){
+    editId=p.id;
+    $('add-title').textContent='تعديل: '+p.ar;
+    $('a-ar').value=p.ar; $('a-en').value=p.en||'';
+    $('a-brand').value=p.brand; $('a-family').value=p.family;
+    $('a-dur').value=p.dur||'monthly'; $('a-type').value=p.type||'cosmetic';
+    $('a-price').value=p.price||0; $('a-slug').value=p.slug;
+    $('a-n').value=p.img_count||1; $('a-featured').checked=!!p.featured;
+    updatePath(); show('add');
+  }
+  function updatePath(){
+    var b=brandOf($('a-brand').value);
+    var slug=$('a-slug').value||'slug';
+    $('a-path').textContent='مسار الصور: '+((b.img_base||'').replace('https://cdn.lenseslover.com/',''))+slug+'-1.webp';
+  }
+  ['a-brand','a-slug'].forEach(function(id){ $(id).addEventListener('input', updatePath); $(id).addEventListener('change', updatePath); });
+
+  $('a-save').onclick=function(){
+    var ar=$('a-ar').value.trim(), slug=$('a-slug').value.trim(), brand=$('a-brand').value;
+    if(!ar || !slug || !brand){ toast('املي الاسم والكود والماركة', true); return; }
+    var p={
+      id: editId || (brand+'-'+slug),
+      brand: brand, slug: slug,
+      ar: ar, en: $('a-en').value.trim()||ar,
+      family: $('a-family').value,
+      dur: $('a-dur').value, type: $('a-type').value,
+      price: parseInt($('a-price').value,10)||0,
+      img_count: parseInt($('a-n').value,10)||1,
+      featured: $('a-featured').checked?1:0,
+      active: 1
+    };
+    $('a-save').disabled=true;
+    saveProduct(p).then(function(j){
+      $('a-save').disabled=false;
+      if(j&&j.ok){
+        var ex=DATA.products.filter(function(x){ return x.id===p.id; })[0];
+        if(ex) Object.assign(ex,p); else DATA.products.push(p);
+        drawProducts(); fillImgProducts();
+        toast(editId?'اتحفظ':'المنتج اتضاف');
+        resetAdd(); show('products');
+      }
+    });
+  };
+
+  /* دخول تلقائي */
+  try{ var saved=localStorage.getItem('ll_admin_key'); if(saved) tryLogin(saved); }catch(e){}
+})();
+</script>
+</body>
+</html>
