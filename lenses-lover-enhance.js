@@ -508,9 +508,7 @@
     { key:'fresh-lady',  ar:'فريش ليدي',   en:'Fresh Lady'  },
     { key:'dahab',       ar:'دهب',         en:'Dahab'       },
     { key:'wonderlook',  ar:'وندرلوك',     en:'Wonderlook'  },
-    { key:'luminous',    ar:'لومينوس',     en:'Luminous'    },
-    { key:'naturel',     ar:'ناتوريل',     en:'Naturel'     },
-    { key:'mylense',     ar:'ماي لينس',    en:'MyLense'     }
+    { key:'luminous',    ar:'لومينوس',     en:'Luminous'    }
   ];
 
   var brands=document.createElement('aside'); brands.className='ll-brands';
