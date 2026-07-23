@@ -177,7 +177,15 @@
     <!-- 4) إضافة منتج -->
     <div class="panel" id="p-add">
       <h2 id="add-title">إضافة منتج جديد</h2>
-      <p class="sub">املي البيانات — المنتج هيتسجل في قاعدة البيانات فورًا.</p>
+      <p class="sub">اختاري منتج موجود للتعديل، أو سيبي القايمة فاضية لإضافة منتج جديد.</p>
+
+      <div class="bar" style="background:var(--ink-2); border:1px solid var(--line);
+           border-radius:14px; padding:14px 16px; margin-bottom:20px;">
+        <select class="sel" id="pick-brand" style="min-width:170px;"></select>
+        <select class="sel" id="pick-product" style="min-width:280px;"></select>
+        <button class="btn ghost sm" id="pick-new">+ منتج جديد بدل التعديل</button>
+      </div>
+
       <div class="cards" style="grid-template-columns:1fr 1fr 1fr;">
         <div class="card">
           <h3 style="margin-bottom:16px;">بيانات المنتج</h3>
@@ -355,6 +363,9 @@
       return '<option value="'+esc(f.key)+'">'+esc(f.ar)+'</option>'; }).join('');
     $('rel-brand').innerHTML='<option value="">كل الماركات</option>'+DATA.brands.map(function(b){
       return '<option value="'+esc(b.key)+'">'+esc(b.ar)+(b.active?'':' — قريبًا')+'</option>'; }).join('');
+    $('pick-brand').innerHTML='<option value="">كل الماركات</option>'+DATA.brands.map(function(b){
+      return '<option value="'+esc(b.key)+'">'+esc(b.ar)+(b.active?'':' — قريبًا')+'</option>'; }).join('');
+    fillPickProducts();
 
     drawProducts(); drawBrands(); fillImgProducts(); loadBanner();
   }
@@ -583,6 +594,24 @@
   }
 
   /* ---------- 4) إضافة / تعديل ---------- */
+  /* ---------- اختيار منتج للتعديل من نفس التبويب ---------- */
+  function fillPickProducts(){
+    var bk=$('pick-brand').value;
+    var list=DATA.products.filter(function(p){ return !bk || p.brand===bk; });
+    $('pick-product').innerHTML='<option value="">— منتج جديد —</option>'
+      + list.map(function(p){
+          return '<option value="'+esc(p.id)+'"'+(p.id===editId?' selected':'')+'>'+esc(p.ar)+' — '+esc(p.en)+'</option>';
+        }).join('');
+  }
+  $('pick-brand').addEventListener('change', fillPickProducts);
+  $('pick-product').addEventListener('change', function(){
+    var id=$('pick-product').value;
+    if(!id){ resetAdd(); return; }
+    var p=DATA.products.filter(function(x){ return x.id===id; })[0];
+    if(p) openEdit(p, true);
+  });
+  $('pick-new').onclick=function(){ $('pick-product').value=''; resetAdd(); };
+
   function resetAdd(){
     editId=null;
     $('add-title').textContent='إضافة منتج جديد';
@@ -591,7 +620,7 @@
     relSelected=[]; drawRelChips(); drawRelPicker();
     updatePath();
   }
-  function openEdit(p){
+  function openEdit(p, fromPicker){
     editId=p.id;
     $('add-title').textContent='تعديل: '+p.ar;
     $('a-ar').value=p.ar; $('a-en').value=p.en||'';
@@ -601,6 +630,12 @@
     $('a-n').value=p.img_count||1; $('a-featured').checked=!!p.featured;
     $('a-desc').value=p.desc_ar||'';
     relSelected = Array.isArray(p.related) ? p.related.slice() : [];
+    /* نزامن قايمة الاختيار فوق */
+    if(!fromPicker){
+      $('pick-brand').value=p.brand;
+      fillPickProducts();
+      $('pick-product').value=p.id;
+    }
     drawRelChips(); drawRelPicker();
     updatePath(); show('add');
   }
