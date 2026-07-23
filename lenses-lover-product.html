@@ -1031,9 +1031,9 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
       const picked = P.related
         .map(function(id){ return CAT.products.filter(function(x){ return x.id===id; })[0]; })
         .filter(function(x){ return x && x.id!==P.id; });
-      if (picked.length) return picked.slice(0,20);
+      if (picked.length) return picked;
     }
-    return CAT.products.filter(function(x){ return x.brand===P.brand && x.id!==P.id; }).slice(0,20);
+    return CAT.products.filter(function(x){ return x.brand===P.brand && x.id!==P.id; }).slice(0,8);
   })();
   const productGrid = document.getElementById('product-grid');
   relatedList.forEach(pr=>{
