@@ -124,12 +124,15 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 
   /* ---------- product hero ---------- */
   .product-hero{ padding-block:28px 60px; }
-  .product-grid-main{ display:grid; grid-template-columns:0.95fr 1.05fr; gap:56px; align-items:start; }
-  @media (max-width:940px){ .product-grid-main{ grid-template-columns:1fr; } }
+  .product-grid-main{ display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:stretch; }
+  @media (max-width:940px){ .product-grid-main{ grid-template-columns:1fr; gap:24px; } }
 
   /* gallery / iris stage */
-  .gallery{ position:sticky; top:96px; }
+  .gallery{ position:sticky; top:96px; display:flex; flex-direction:column; }
   @media (max-width:940px){ .gallery{ position:static; } }
+  /* العمودين بنفس الارتفاع والمحتوى موزّع من غير فراغات كبيرة */
+  .p-info{ display:flex; flex-direction:column; }
+  .gallery-stage{ flex:1; }
   .gallery-stage{
     background:radial-gradient(circle at 50% 38%, var(--ink-3), var(--ink-2) 70%);
     border:1px solid var(--line); border-radius:var(--radius);
