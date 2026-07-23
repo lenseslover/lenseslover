@@ -123,6 +123,7 @@
       <button class="tab" data-p="prices">الأسعار والعروض</button>
       <button class="tab" data-p="images">الصور</button>
       <button class="tab" data-p="add">إضافة منتج</button>
+      <button class="tab" data-p="banner">الشريط العلوي</button>
       <button class="tab" id="logout">خروج</button>
     </div>
   </div>
@@ -206,6 +207,42 @@
       </div>
     </div>
 
+    <!-- 5) الشريط العلوي -->
+    <div class="panel" id="p-banner">
+      <h2>الشريط العلوي</h2>
+      <p class="sub">شريط بيظهر أعلى كل صفحات الموقع — للعروض والإعلانات.</p>
+
+      <div class="cards" style="grid-template-columns:1fr;">
+        <div class="card" style="max-width:640px;">
+          <div class="fld">
+            <label>النص المعروض</label>
+            <input id="bn-text" placeholder="شحن مجاني على الطلبات فوق 500 جنيه">
+          </div>
+          <div class="fld">
+            <label>اللينك (اختياري — الشريط كله بيبقى قابل للضغط)</label>
+            <input id="bn-link" placeholder="lenses-lover-shop.html?brand=dahab">
+          </div>
+          <label class="chk" style="margin-bottom:16px;">
+            <input type="checkbox" id="bn-active"> الشريط ظاهر على الموقع
+          </label>
+
+          <div style="border-top:1px solid var(--line); padding-top:16px; margin-bottom:16px;">
+            <label style="display:block; font-size:12px; color:var(--ivory-dim); margin-bottom:8px;">معاينة</label>
+            <div id="bn-preview" style="background:var(--amber); color:#fff; font-size:13.5px;
+                 font-weight:700; text-align:center; padding:11px 16px; border-radius:10px;">
+              اكتبي النص فوق
+            </div>
+          </div>
+
+          <button class="btn" id="bn-save">حفظ</button>
+        </div>
+      </div>
+
+      <div class="note">
+        الشريط بيظهر على كل صفحات الموقع. العميلة تقدر تقفله بزرار ×، ويرجع يظهر لو غيّرتي النص.
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -280,7 +317,7 @@
     $('a-family').innerHTML=DATA.families.map(function(f){
       return '<option value="'+esc(f.key)+'">'+esc(f.ar)+'</option>'; }).join('');
 
-    drawProducts(); drawBrands(); fillImgProducts();
+    drawProducts(); drawBrands(); fillImgProducts(); loadBanner();
   }
 
   function brandOf(k){ return DATA.brands.filter(function(b){ return b.key===k; })[0]||{}; }
@@ -551,6 +588,42 @@
         resetAdd(); show('products');
       }
     });
+  };
+
+  /* ---------- 5) الشريط العلوي ---------- */
+  function loadBanner(){
+    api('/admin/settings').then(function(j){
+      if(!j || !j.ok) return;
+      var st=j.settings||{};
+      $('bn-text').value   = st.banner_text || '';
+      $('bn-link').value   = st.banner_link || '';
+      $('bn-active').checked = st.banner_active === '1';
+      previewBanner();
+    }).catch(function(){});
+  }
+  function previewBanner(){
+    var t=$('bn-text').value.trim();
+    var el=$('bn-preview');
+    el.textContent = t || 'اكتبي النص فوق';
+    el.style.opacity = $('bn-active').checked && t ? '1' : '.45';
+  }
+  ['bn-text','bn-active'].forEach(function(id){
+    var el=$(id); if(!el) return;
+    el.addEventListener('input', previewBanner);
+    el.addEventListener('change', previewBanner);
+  });
+  $('bn-save').onclick=function(){
+    var payload={
+      banner_text: $('bn-text').value.trim(),
+      banner_link: $('bn-link').value.trim(),
+      banner_active: $('bn-active').checked ? '1' : '0'
+    };
+    $('bn-save').disabled=true;
+    api('/admin/settings',{ method:'POST', body:JSON.stringify(payload) })
+      .then(function(j){
+        $('bn-save').disabled=false;
+        toast(j && j.ok ? 'اتحفظ' : 'فشل الحفظ', !(j && j.ok));
+      }).catch(function(){ $('bn-save').disabled=false; toast('مشكلة في الاتصال', true); });
   };
 
   /* دخول تلقائي */

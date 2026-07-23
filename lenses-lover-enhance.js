@@ -25,6 +25,16 @@
   }
   @keyframes llmarq{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
+  /* ---------- الشريط العلوي (إعلانات وعروض) ---------- */
+  .ll-banner{ position:relative; z-index:130; background:var(--amber); color:#fff;
+    font-size:13.5px; font-weight:700; text-align:center; padding:11px 46px;
+    text-decoration:none; display:block; line-height:1.5; }
+  .ll-banner:hover{ filter:brightness(1.06); }
+  .ll-banner .x{ position:absolute; inset-inline-end:12px; top:50%; transform:translateY(-50%);
+    width:24px; height:24px; border-radius:50%; border:none; background:rgba(255,255,255,.22);
+    color:#fff; font-size:15px; line-height:1; cursor:pointer; }
+  @media (max-width:560px){ .ll-banner{ font-size:12.5px; padding:10px 40px; } }
+
   /* back to top — زرار عائم بيظهر مع النزول ويختفي فوق */
   .ll-top{ position:fixed; right:22px; bottom:22px; z-index:119;
     width:46px; height:46px; border-radius:50%; border:none;
@@ -604,6 +614,43 @@
     var _sl=window.setLang;
     window.setLang=function(l){ _sl(l); refreshWa(); if(drawer.classList.contains('show')) renderDrawer(); if(brands.classList.contains('show')) renderBrands(); };
   }
+
+  /* ---------- الشريط العلوي ---------- */
+  (function(){
+    var API='https://lenseslover-orders.skymoonsport.workers.dev/settings';
+    var HIDE='ll_banner_hidden';
+
+    function render(st){
+      if(!st || st.banner_active !== '1') return;
+      var txt=(st.banner_text||'').trim();
+      if(!txt) return;
+      /* لو العميلة قفلته قبل كده بنفس النص، ميظهرش تاني */
+      try{ if(sessionStorage.getItem(HIDE)===txt) return; }catch(e){}
+
+      var link=(st.banner_link||'').trim();
+      var el=document.createElement(link ? 'a' : 'div');
+      el.className='ll-banner';
+      if(link){ el.href=link; }
+      el.textContent=txt;
+
+      var x=document.createElement('button');
+      x.className='x'; x.setAttribute('aria-label','إغلاق'); x.innerHTML='&times;';
+      x.onclick=function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        try{ sessionStorage.setItem(HIDE, txt); }catch(e){}
+        el.remove();
+      };
+      el.appendChild(x);
+
+      document.body.insertBefore(el, document.body.firstChild);
+    }
+
+    try{
+      fetch(API).then(function(r){ return r.json(); })
+        .then(function(j){ if(j && j.ok) render(j.settings); })
+        .catch(function(){});
+    }catch(e){}
+  })();
 
   /* ---------- back to top ---------- */
   var topBtn=document.createElement('button');
