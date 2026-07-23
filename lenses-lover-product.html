@@ -705,8 +705,16 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     const typeAr = (P.type==='optical') ? 'تجميلي أو طبي بمقاسات نظر' : 'تجميلي';
     const typeEn = (P.type==='optical') ? 'cosmetic or with optical powers' : 'cosmetic';
     const dAr = document.getElementById('p-desc-ar'), dEn = document.getElementById('p-desc-en');
-    if(dAr) dAr.textContent = 'عدسة '+fam+' من '+(BRAND?BRAND.ar:'')+' — الاستخدام '+durAr+'، والنوع '+typeAr+'. نسبة ترطيب عالية ومادة قابلة للتنفس تمنع الجفاف طوال اليوم.';
-    if(dEn) dEn.textContent = 'A '+P.family+' lens by '+(BRAND?BRAND.en:'')+' — '+CAT.durEn(P)+' wear, '+typeEn+'. High water content and breathable material for all-day comfort.';
+
+    /* الأولوية: وصف المنتج الخاص ← وصف البراند ← الوصف التلقائي */
+    const autoAr = 'عدسة '+fam+' من '+(BRAND?BRAND.ar:'')+' — الاستخدام '+durAr+'، والنوع '+typeAr+'. نسبة ترطيب عالية ومادة قابلة للتنفس تمنع الجفاف طوال اليوم.';
+    const autoEn = 'A '+P.family+' lens by '+(BRAND?BRAND.en:'')+' — '+CAT.durEn(P)+' wear, '+typeEn+'. High water content and breathable material for all-day comfort.';
+
+    const finalAr = P.descAr || (BRAND && BRAND.descAr) || autoAr;
+    const finalEn = P.descEn || (BRAND && BRAND.descEn) || autoEn;
+
+    if(dAr) dAr.textContent = finalAr;
+    if(dEn) dEn.textContent = finalEn;
     const sAr=document.getElementById('iris-sub-ar'), sEn=document.getElementById('iris-sub-en');
     if(sAr) sAr.textContent = fam+' · '+durAr+' · '+typeAr;
     if(sEn) sEn.textContent = P.family+' · '+CAT.durEn(P)+' · '+typeEn;

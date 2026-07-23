@@ -208,6 +208,14 @@
           </div>
           <div class="fld"><label>عدد الصور</label><input id="a-n" type="number" value="1" min="1"></div>
           <label class="chk"><input type="checkbox" id="a-featured"> منتج مميز (يظهر في الأكثر مبيعًا)</label>
+
+          <div class="fld" style="margin-top:16px; margin-bottom:0;">
+            <label>شرح المنتج (اختياري)</label>
+            <textarea id="a-desc" rows="4" placeholder="سيبيه فاضي عشان يظهر شرح الماركة أو الشرح التلقائي"
+              style="width:100%; padding:10px 12px; border-radius:9px; border:1px solid var(--line);
+                     background:var(--ink); font-size:13.5px; color:var(--ivory); font-family:inherit;
+                     resize:vertical; line-height:1.9;"></textarea>
+          </div>
         </div>
         <div class="card">
           <h3 style="margin-bottom:6px;">المنتجات المقترحة</h3>
@@ -216,7 +224,8 @@
             (8 منتجات من نفس الماركة).
           </p>
           <div class="rel-chips" id="rel-chips"></div>
-          <input class="inp" id="rel-search" placeholder="ابحثي عن منتج لإضافته"
+          <select class="sel" id="rel-brand" style="width:100%; margin-bottom:8px;"></select>
+          <input class="inp" id="rel-search" placeholder="أو ابحثي في كل الماركات"
                  style="width:100%; margin-bottom:8px;">
           <div class="rel-box" id="rel-picker"></div>
         </div>
@@ -344,6 +353,8 @@
       return '<option value="'+esc(b.key)+'">'+esc(b.ar)+(b.active?'':' — قريبًا')+'</option>'; }).join('');
     $('a-family').innerHTML=DATA.families.map(function(f){
       return '<option value="'+esc(f.key)+'">'+esc(f.ar)+'</option>'; }).join('');
+    $('rel-brand').innerHTML='<option value="">كل الماركات</option>'+DATA.brands.map(function(b){
+      return '<option value="'+esc(b.key)+'">'+esc(b.ar)+(b.active?'':' — قريبًا')+'</option>'; }).join('');
 
     drawProducts(); drawBrands(); fillImgProducts(); loadBanner();
   }
@@ -467,6 +478,11 @@
        + '<div class="fld"><label>نص العرض</label><input data-f="offer_ar" value="'+esc(b.offer_ar||'')+'" placeholder="قطعتين بـ 350 ج.م"></div>'
        + '<label class="chk"><input type="checkbox" data-f="offer_cosmetic_only"'+(b.offer_cosmetic_only?' checked':'')+'> العرض للتجميلي فقط</label>'
        + '<label class="chk" style="margin-top:8px;"><input type="checkbox" data-f="active"'+(b.active?' checked':'')+'> الماركة ظاهرة في المتجر</label>'
+       + '<div class="fld" style="margin-top:14px; margin-bottom:0;"><label>شرح الماركة (بيظهر تحت كل منتجاتها)</label>'
+       +   '<textarea data-f="desc_ar" rows="3" placeholder="اختياري"'
+       +   ' style="width:100%; padding:9px 12px; border-radius:9px; border:1px solid var(--line);'
+       +   ' background:var(--ink); font-size:13px; color:var(--ivory); font-family:inherit; resize:vertical;">'
+       +   esc(b.desc_ar||'')+'</textarea></div>'
        + '<button class="btn sm" style="margin-top:14px;" data-a="save">حفظ</button>'
        + '</div>';
     });
@@ -570,7 +586,7 @@
   function resetAdd(){
     editId=null;
     $('add-title').textContent='إضافة منتج جديد';
-    ['a-ar','a-en','a-price','a-slug'].forEach(function(id){ $(id).value=''; });
+    ['a-ar','a-en','a-price','a-slug','a-desc'].forEach(function(id){ $(id).value=''; });
     $('a-n').value=1; $('a-featured').checked=false;
     relSelected=[]; drawRelChips(); drawRelPicker();
     updatePath();
@@ -583,6 +599,7 @@
     $('a-dur').value=p.dur||'monthly'; $('a-type').value=p.type||'cosmetic';
     $('a-price').value=p.price||0; $('a-slug').value=p.slug;
     $('a-n').value=p.img_count||1; $('a-featured').checked=!!p.featured;
+    $('a-desc').value=p.desc_ar||'';
     relSelected = Array.isArray(p.related) ? p.related.slice() : [];
     drawRelChips(); drawRelPicker();
     updatePath(); show('add');
@@ -607,7 +624,8 @@
       img_count: parseInt($('a-n').value,10)||1,
       featured: $('a-featured').checked?1:0,
       active: 1,
-      related: relSelected.slice()
+      related: relSelected.slice(),
+      desc_ar: $('a-desc').value.trim()
     };
     $('a-save').disabled=true;
     saveProduct(p).then(function(j){
@@ -649,8 +667,9 @@
     var list=DATA.products.filter(function(p){
       if(p.id===curId) return false;
       if(relSelected.indexOf(p.id)>-1) return false;
-      if(!q) return p.brand===$('a-brand').value;
-      return (p.ar+' '+p.en+' '+p.slug).toLowerCase().indexOf(q)>-1;
+      if(q) return (p.ar+' '+p.en+' '+p.slug).toLowerCase().indexOf(q)>-1;
+      var rb=$('rel-brand').value;
+      return rb ? p.brand===rb : true;
     }).slice(0,60);
 
     $('rel-picker').innerHTML = list.length
@@ -676,7 +695,7 @@
   $('rel-search').addEventListener('input', function(){
     clearTimeout(this._t); this._t=setTimeout(drawRelPicker, 250);
   });
-  $('a-brand').addEventListener('change', function(){ if(!$('rel-search').value) drawRelPicker(); });
+  $('rel-brand').addEventListener('change', function(){ $('rel-search').value=''; drawRelPicker(); });
 
   /* ---------- 5) الشريط العلوي ---------- */
   function loadBanner(){
