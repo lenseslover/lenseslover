@@ -288,6 +288,7 @@
 (function(){
   var API='https://lenseslover-orders.skymoonsport.workers.dev';
   var KEY='', DATA={brands:[],families:[],products:[]}, editId=null;
+  var relSelected = [];
 
   var $=function(id){ return document.getElementById(id); };
   function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':String(t)); return d.innerHTML; }
@@ -640,7 +641,6 @@
   };
 
   /* ---------- المنتجات المقترحة ---------- */
-  var relSelected = [];
 
   function relLabel(){
     var el=$('rel-count');
