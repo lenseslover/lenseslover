@@ -1112,7 +1112,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     card.style.textDecoration='none';
     card.innerHTML = `
       <div class="product-media" style="padding:0;aspect-ratio:3/3.4;overflow:hidden;">
-        ${(function(){var o=CAT.offerOf(pr.brand);return o?`<span class="tag-badge"><span class="ar">${o.ar.replace(' ج.م','')}</span><span class="en">${o.en.replace(' EGP','')}</span></span>`:'';})()}
+        ${(function(){var o=CAT.offerOfProduct(pr);return o?`<span class="tag-badge"><span class="ar">${o.ar.replace(' ج.م','')}</span><span class="en">${o.en.replace(' EGP','')}</span></span>`:'';})()}
         <img src="${pr.img}" alt="${pr.en}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
       </div>
       <div class="product-info">

@@ -740,7 +740,8 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     const grid=document.createElement('div');
     grid.className='product-grid grid-solo-mobile';
     productGrid.appendChild(grid);
-    const offer=(CATB.offerOf?CATB.offerOf(b.key):null);
+    /* العرض بيتحسب لكل لون على حدة — بيحترم قايمة ألوان العرض */
+    const offerFor=(pr)=>(CATB.offerOfProduct?CATB.offerOfProduct(pr):(CATB.offerOf?CATB.offerOf(b.key):null));
     const durAr=(picks[0].dur==='both')?'شهري أو سنوي':'شهري';
     const durEn=(picks[0].dur==='both')?'Monthly / Yearly':'Monthly';
     picks.forEach(pr=>{
@@ -749,7 +750,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     card.addEventListener('click', (ev)=>{ if(!ev.target.closest('.add-btn') && !ev.target.closest('.wish-btn')) location.href='lenses-lover-product.html?id='+pr.id; });
     card.innerHTML = `
       <div class="product-media" style="padding:0;aspect-ratio:3/3.4;overflow:hidden;">
-        ${offer?('<span class="tag-badge"><span class="ar">'+offer.ar+'</span><span class="en">'+(offer.en||offer.ar)+'</span></span>'):''}
+        ${(function(){const offer=offerFor(pr);return offer?('<span class="tag-badge"><span class="ar">'+offer.ar+'</span><span class="en">'+(offer.en||offer.ar)+'</span></span>'):'';})()}
         <button class="wish-btn" aria-label="wishlist">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.4 2 4.8 5.6 4.1c2-.4 3.9.5 5 2.2 1.1-1.7 3-2.6 5-2.2 3.6.7 5.1 4.3 3.6 7.6C19.5 16.4 12 21 12 21z"/></svg>
         </button>
