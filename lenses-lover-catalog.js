@@ -145,6 +145,12 @@
 
   /* السعر الطبي الصريح المكتوب في لوحة التحكم — بيرجّع null لو مش متكتب */
   C.opticalPriceOf = function(p, dur){
+    /* سعر المنتج له الأولوية — لو فاضي بياخد من الماركة */
+    if (dur === 'yearly') {
+      if (p.priceOpticalYearly != null) return p.priceOpticalYearly;
+    } else {
+      if (p.priceOptical != null) return p.priceOptical;
+    }
     var b = C.brandByKey[p.brand];
     if (!b || !b.opticalPricing) return null;
     var op = b.opticalPricing;
