@@ -5,6 +5,8 @@
 <script>
 /* الثيم بيتحدد قبل أي رسم — يمنع وميض اللون الغامق عند التحديث */
 (function(){try{var t=localStorage.getItem('ll_theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
+/* اللغة بتتحدد قبل أي رسم — يمنع وميض قلب الاتجاه عند التحديث */
+(function(){try{var l=localStorage.getItem('ll_lang');if(l==='en'){var h=document.documentElement;h.setAttribute('lang','en');h.setAttribute('dir','ltr');h.setAttribute('data-boot-lang','en');}}catch(e){}})();
 </script>
 <style id="ll-theme-boot">
 /* ألوان الثيم الفاتح — متعرّفة هنا عشان أول رسمة تبقى فاتحة من غير وميض */
@@ -245,7 +247,10 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     box-shadow:0 30px 60px -25px rgba(0,0,0,0.65);
   }
   #hero-model{ width:100%; height:100%; object-fit:cover; object-position:center 12%;
-    display:block; transition:opacity .35s ease; }
+    display:block; opacity:0; transition:opacity .35s ease; }
+  #hero-model.loaded{ opacity:1; }
+  /* خلفية هادية للحاوية لحد ما الصورة تجهز — يمنع الوميض */
+  .hero-model-wrap{ background:var(--ink-3); }
   .swatch-row{ display:flex; gap:12px; }
   .swatch.photo{ background-size:cover !important; background-position:center !important; width:44px; height:44px; }
   .swatch{
@@ -444,6 +449,10 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 </head>
 <body class="lang-ar">
+<script>
+/* طبّق كلاس اللغة على الـ body قبل رسم المحتوى */
+(function(){try{if(localStorage.getItem('ll_lang')==='en'){document.body.classList.remove('lang-ar');document.body.classList.add('lang-en');}}catch(e){}})();
+</script>
 
 <header>
   <div class="wrap nav-row">
@@ -684,15 +693,21 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   function selectIris(key, el){
     const f=FAMS.find(x=>x.key===key); if(!f || !HERO_MAP[key]) return;
     const img=document.getElementById('hero-model');
-    img.style.opacity=0;
-    setTimeout(()=>{ img.src=PROD_CDN+HERO_MAP[key].img; img.onload=()=>{ img.style.opacity=1; }; },180);
+    img.classList.remove('loaded');
+    setTimeout(()=>{ img.src=PROD_CDN+HERO_MAP[key].img; img.onload=()=>{ img.classList.add('loaded'); }; },180);
     document.getElementById('iris-label-ar').textContent=f.ar;
     document.getElementById('iris-label-en').textContent=f.en;
     document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
     el.classList.add('active');
   }
   // initial
-  (function(){ const img=document.getElementById('hero-model'); img.src=PROD_CDN+HERO_MAP.gray.img;
+  (function(){ const img=document.getElementById('hero-model');
+    /* أضف كلاس loaded لما الصورة تجهز — يمنع الوميض */
+    function markLoaded(){ img.classList.add('loaded'); }
+    img.addEventListener('load', markLoaded);
+    /* لو الصورة اتغيّرت لاحقًا (تبديل اللون)، تفضل ظاهرة */
+    img.src=PROD_CDN+HERO_MAP.gray.img;
+    if(img.complete && img.naturalWidth) markLoaded();
     document.getElementById('iris-label-ar').textContent=FAMS[0]?FAMS[0].ar:'رمادي';
     document.getElementById('iris-label-en').textContent=FAMS[0]?FAMS[0].en:'Gray'; })();
 
