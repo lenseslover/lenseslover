@@ -489,7 +489,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
           <div class="gov-list" id="gov-list"></div>
           <span class="err-msg"></span>
         </div>
-        <div class="field"><label><span class="ar">المنطقة</span><span class="en">Area</span></label><input type="text" id="f-area"></div>
+        <div class="field"><label><span class="ar">المنطقة</span><span class="en">Area</span></label><input type="text" id="f-area" list="area-list" autocomplete="off"><datalist id="area-list"></datalist><span class="err-msg"></span></div>
         <div class="field full"><label><span class="ar">العنوان بالتفصيل</span><span class="en">Full Address</span></label><input type="text" id="f-addr"><span class="err-msg"></span></div>
       </div>
     </div>
@@ -502,6 +502,11 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
         <span class="en">Gateway for your country: <b id="gw-name-en" style="color:var(--amber-light)">Paymob</b> — Currency: <b id="cur-name-en" style="color:var(--amber-light)">EGP</b></span>
       </p>
       <div class="pay-methods" id="pay-methods"></div>
+
+      <div class="cod-note" id="cod-note">
+        <span class="ar"><b>ملاحظة:</b> لتأكيد الطلب، يُدفع مبلغ الشحن مقدمًا عن طريق فودافون كاش، ويُدفع باقي المبلغ عند الاستلام.</span>
+        <span class="en"><b>Note:</b> To confirm your order, the shipping fee is paid in advance via Vodafone Cash; the remaining amount is paid on delivery.</span>
+      </div>
 
       <div class="card-fields" id="card-fields">
         <div class="field-grid">
@@ -602,7 +607,57 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   }
   const items=llLoadCart();
   if(items.length===0){ location.replace('lenses-lover-cart.html'); }
-  const SHIP=60, FREE=800;
+  /* ---------- أسعار الشحن (من لوحة التحكم) ---------- */
+  var SHIP_RATES = [];          // [{gov, area, price}]
+  var SHIP_FALLBACK = 70;       // لو الجدول لسه محملش
+
+  function shipApiBase(){
+    return (window.LL_API || 'https://lenseslover-orders.skymoonsport.workers.dev');
+  }
+  function loadShipping(){
+    try{
+      var cached = sessionStorage.getItem('ll-ship');
+      if(cached){ SHIP_RATES = JSON.parse(cached) || []; }
+    }catch(e){}
+    fetch(shipApiBase()+'/shipping')
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if(j && j.ok && Array.isArray(j.rates)){
+          SHIP_RATES = j.rates;
+          try{ sessionStorage.setItem('ll-ship', JSON.stringify(j.rates)); }catch(e){}
+          if(typeof drawLines==='function') drawLines();
+        }
+      }).catch(function(){});
+  }
+  loadShipping();
+
+  function normTxt(x){
+    return String(x||'').trim().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/\s+/g,' ').toLowerCase();
+  }
+  /* سعر الشحن: منطقة خاصة أولًا، بعدين المحافظة */
+  function shipCost(){
+    var cc=(document.getElementById('country')||{}).value || 'eg';
+    if(cc!=='eg') return 0;
+    var gov=((document.getElementById('gov-input')||{}).value||'').trim();
+    var area=((document.getElementById('f-area')||{}).value||'').trim();
+    if(!gov) return 0;
+    var g=normTxt(gov), a=normTxt(area);
+    var exact=null, byGov=null;
+    SHIP_RATES.forEach(function(r){
+      if(normTxt(r.gov)!==g) return;
+      if(r.area){ if(a && normTxt(r.area)===a) exact=r.price; }
+      else byGov=r.price;
+    });
+    if(exact!=null) return exact;
+    if(byGov!=null) return byGov;
+    return SHIP_FALLBACK;
+  }
+  /* مناطق ليها سعر خاص في المحافظة المختارة */
+  function areasFor(gov){
+    var g=normTxt(gov), out=[];
+    SHIP_RATES.forEach(function(r){ if(r.area && normTxt(r.gov)===g) out.push(r.area); });
+    return out;
+  }
 
   // payment methods per country (from plan ch.6)
   const METHODS = {
@@ -694,7 +749,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   function totals(){
     const offD=(window.LL_CATALOG&&window.LL_CATALOG.offerDiscount)?window.LL_CATALOG.offerDiscount(items):0;
     const sub=items.reduce((s,i)=>s+i.price*i.qty,0)-offD;
-    const ship=sub>=FREE?0:SHIP;
+    const ship=shipCost();
     const prepay=(selected && selected!=='cod');
     const disc=prepay?Math.round(sub*0.05):0;
     document.getElementById('co-sub').textContent=money(sub);
@@ -830,6 +885,15 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
       }
     }
 
+    var areaEl=document.getElementById('f-area');
+    if(areaEl){
+      clearErr(areaEl);
+      if(!areaEl.value.trim()){
+        setErr(areaEl,'اكتبي المنطقة','Area is required');
+        bad.push(areaEl);
+      }
+    }
+
     var addr=document.getElementById('f-addr');
     if(addr){
       clearErr(addr);
@@ -847,6 +911,23 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     return true;
   }
   /* الخطأ يختفي أول ما تصححي */
+  /* تحديث الشحن واقتراحات المناطق مع تغيير المحافظة/المنطقة */
+  (function(){
+    var gi=document.getElementById('gov-input'), ai=document.getElementById('f-area');
+    function fillAreas(){
+      var dl=document.getElementById('area-list');
+      if(!dl||!gi) return;
+      dl.innerHTML = areasFor(gi.value).map(function(a){
+        return '<option value="'+String(a).replace(/"/g,'&quot;')+'">';
+      }).join('');
+    }
+    function upd(){ fillAreas(); if(typeof drawLines==='function') drawLines(); }
+    if(gi){ gi.addEventListener('input', upd); gi.addEventListener('change', upd); gi.addEventListener('blur', upd); }
+    if(ai){ ai.addEventListener('input', function(){ if(typeof drawLines==='function') drawLines(); });
+            ai.addEventListener('change', function(){ if(typeof drawLines==='function') drawLines(); }); }
+    setTimeout(upd, 400);
+  })();
+
   ['f-first','f-last','f-wa','f-addr','gov-input'].forEach(function(id){
     var el=document.getElementById(id);
     if(el) el.addEventListener('input', function(){ clearErr(el); });
@@ -884,7 +965,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     // recompute totals
     const offD=(window.LL_CATALOG&&window.LL_CATALOG.offerDiscount)?window.LL_CATALOG.offerDiscount(items):0;
     const sub=items.reduce((s,i)=>s+i.price*i.qty,0)-offD;
-    const ship=sub>=FREE?0:SHIP;
+    const ship=shipCost();
     const disc=prepaid?Math.round(sub*0.05):0;
     const total=sub+ship-disc;
 

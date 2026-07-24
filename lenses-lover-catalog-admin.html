@@ -134,6 +134,7 @@
       <button class="tab" data-p="prices">الأسعار والعروض</button>
       <button class="tab" data-p="images">الصور</button>
       <button class="tab" data-p="add">إضافة منتج</button>
+      <button class="tab" data-p="shipping">الشحن</button>
       <button class="tab" data-p="banner">الشريط العلوي</button>
       <button class="tab" id="logout">خروج</button>
     </div>
@@ -160,6 +161,25 @@
       <h2>الأسعار والعروض</h2>
       <p class="sub" id="brand-count">—</p>
       <div class="cards" id="brand-cards"></div>
+    </div>
+
+    <!-- الشحن -->
+    <div class="panel" id="p-shipping">
+      <h2>أسعار الشحن</h2>
+      <p class="sub">سعر لكل محافظة، وممكن تضيفي مناطق ليها سعر خاص (زي 6 أكتوبر).</p>
+      <div class="card" style="max-width:760px;">
+        <h3 style="margin-bottom:12px;">المحافظات</h3>
+        <div id="ship-govs"></div>
+        <h3 style="margin:20px 0 10px;">مناطق بسعر خاص</h3>
+        <div id="ship-areas"></div>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <select class="sel" id="ship-new-gov" style="min-width:150px;"></select>
+          <input id="ship-new-area" placeholder="اسم المنطقة" style="flex:1; padding:9px 12px; border-radius:9px; border:1px solid var(--line); background:var(--ink); color:var(--ivory); font-family:inherit;">
+          <input id="ship-new-price" type="number" placeholder="السعر" style="width:100px; padding:9px 12px; border-radius:9px; border:1px solid var(--line); background:var(--ink); color:var(--ivory); font-family:inherit;">
+          <button class="btn sm" id="ship-add">إضافة</button>
+        </div>
+        <button class="btn" style="margin-top:18px;" id="ship-save">حفظ أسعار الشحن</button>
+      </div>
     </div>
 
     <!-- 3) الصور -->
@@ -354,7 +374,76 @@
     window.scrollTo({top:0, behavior:'smooth'});
     if(p==='add' && !editId) resetAdd();
   };
-  document.querySelectorAll('.tab[data-p]').forEach(function(t){ t.onclick=function(){ show(t.dataset.p); }; });
+  document.querySelectorAll('.tab[data-p]').forEach(function(t){ t.onclick=function(){ show(t.dataset.p); if(t.dataset.p==='shipping') loadShip(); }; });
+
+  /* ---------- الشحن ---------- */
+  var EG_GOVS_ADMIN=['القاهرة','الجيزة','الإسكندرية','القليوبية','الشرقية','الدقهلية','الغربية',
+    'المنوفية','البحيرة','كفر الشيخ','دمياط','بورسعيد','الإسماعيلية','السويس','شمال سيناء',
+    'جنوب سيناء','البحر الأحمر','مطروح','الفيوم','بني سويف','المنيا','أسيوط','سوهاج','قنا',
+    'الأقصر','أسوان','الوادي الجديد'];
+  var SHIP=[];
+  function loadShip(){
+    api('/shipping').then(function(j){
+      SHIP=(j&&j.rates)?j.rates:[];
+      drawShip();
+    }).catch(function(){ toast('مشكلة في تحميل الشحن', true); });
+  }
+  function drawShip(){
+    var govs=$('ship-govs'), areas=$('ship-areas');
+    if(!govs) return;
+    govs.innerHTML = EG_GOVS_ADMIN.map(function(g){
+      var row=SHIP.filter(function(r){ return r.gov===g && !r.area; })[0];
+      return '<div style="display:flex; align-items:center; gap:10px; padding:5px 0; border-bottom:1px solid var(--line);">'
+           + '<span style="flex:1; font-size:13px;">'+esc(g)+'</span>'
+           + '<input class="sg" data-g="'+esc(g)+'" type="number" value="'+(row?row.price:'')+'" placeholder="—"'
+           + ' style="width:95px; padding:7px 10px; border-radius:8px; border:1px solid var(--line); background:var(--ink); color:var(--ivory); font-family:inherit;"></div>';
+    }).join('');
+    var av=SHIP.filter(function(r){ return !!r.area; });
+    areas.innerHTML = av.length ? av.map(function(r,i){
+      return '<div style="display:flex; align-items:center; gap:10px; padding:5px 0; border-bottom:1px solid var(--line);">'
+           + '<span style="flex:1; font-size:13px;">'+esc(r.gov)+' · <b>'+esc(r.area)+'</b></span>'
+           + '<input class="sa" data-g="'+esc(r.gov)+'" data-a="'+esc(r.area)+'" type="number" value="'+r.price+'"'
+           + ' style="width:95px; padding:7px 10px; border-radius:8px; border:1px solid var(--line); background:var(--ink); color:var(--ivory); font-family:inherit;">'
+           + '<button class="btn sm sa-del" data-i="'+i+'" style="background:transparent; color:var(--amber);">حذف</button></div>';
+    }).join('') : '<div style="opacity:.6; font-size:12px;">مفيش مناطق خاصة</div>';
+
+    var sel=$('ship-new-gov');
+    if(sel) sel.innerHTML = EG_GOVS_ADMIN.map(function(g){ return '<option>'+esc(g)+'</option>'; }).join('');
+
+    areas.querySelectorAll('.sa-del').forEach(function(b){
+      b.onclick=function(){
+        var target=av[parseInt(b.dataset.i,10)];
+        SHIP=SHIP.filter(function(r){ return !(r.area===target.area && r.gov===target.gov); });
+        drawShip();
+      };
+    });
+  }
+  function collectShip(){
+    var out=[];
+    document.querySelectorAll('.sg').forEach(function(el){
+      if(el.value!=='') out.push({ gov:el.dataset.g, area:null, price:parseInt(el.value,10)||0 });
+    });
+    document.querySelectorAll('.sa').forEach(function(el){
+      out.push({ gov:el.dataset.g, area:el.dataset.a, price:parseInt(el.value,10)||0 });
+    });
+    return out;
+  }
+  if($('ship-add')) $('ship-add').onclick=function(){
+    var g=$('ship-new-gov').value, a=$('ship-new-area').value.trim(), pr=parseInt($('ship-new-price').value,10)||0;
+    if(!a){ toast('اكتبي اسم المنطقة', true); return; }
+    SHIP=collectShip();
+    SHIP.push({ gov:g, area:a, price:pr });
+    $('ship-new-area').value=''; $('ship-new-price').value='';
+    drawShip();
+  };
+  if($('ship-save')) $('ship-save').onclick=function(){
+    var rates=collectShip();
+    api('/admin/shipping',{ method:'POST', body:JSON.stringify({ rates:rates }) })
+      .then(function(j){
+        if(j&&j.ok){ SHIP=rates; toast('اتحفظ'); drawShip(); }
+        else toast('فشل الحفظ', true);
+      }).catch(function(){ toast('مشكلة في الاتصال', true); });
+  };
 
   /* ---------- التحميل الأولي ---------- */
   function boot(){
