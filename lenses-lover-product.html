@@ -875,9 +875,11 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   function currentPrice(){
     const pr = CAT.pricingOf ? CAT.pricingOf(P) : null;
     let base = (pr && selDur && pr[selDur] != null) ? pr[selDur] : P.price;
-    /* زيادة النظر (فريش ليدي/دهب): تتضاف لما العميل يختار "طبي" */
-    if(P.type === 'optical' && selPowerType === 'optical' && CAT.opticalPlusOf){
-      base += CAT.opticalPlusOf(P);
+    if(P.type === 'optical' && selPowerType === 'optical'){
+      /* السعر الطبي المكتوب صريح في لوحة التحكم له الأولوية */
+      const exp = CAT.opticalPriceOf ? CAT.opticalPriceOf(P, selDur || 'monthly') : null;
+      if(exp != null) return exp;
+      if(CAT.opticalPlusOf) base += CAT.opticalPlusOf(P);
     }
     return base;
   }
@@ -893,15 +895,16 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     if(P.type !== 'optical') return;
     const plus = CAT.opticalPlusOf ? CAT.opticalPlusOf(P) : 0;
     const base = basePrice();
+    const expOpt = CAT.opticalPriceOf ? CAT.opticalPriceOf(P, selDur || 'monthly') : null;
     document.querySelectorAll('#power-type button').forEach(function(b){
       const isOpt = b.dataset.power === 'optical';
-      if(!plus){
+      if(!plus && expOpt == null){
         b.innerHTML = isOpt
           ? '<span class="ar">طبي (بمقاس نظر)</span><span class="en">Prescription</span>'
           : '<span class="ar">تجميلي (بدون نظر)</span><span class="en">Cosmetic (no power)</span>';
         return;
       }
-      const val = isOpt ? (base + plus) : base;
+      const val = isOpt ? (expOpt != null ? expOpt : base + plus) : base;
       const ar  = isOpt ? 'طبي' : 'تجميلي';
       const en  = isOpt ? 'Prescription' : 'Cosmetic';
       b.innerHTML = '<span class="ar">'+ar+' — '+val+' ج.م</span>'

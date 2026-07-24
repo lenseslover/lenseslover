@@ -143,6 +143,15 @@
     return (b && b.opticalPlus) ? b.opticalPlus : 0;
   };
 
+  /* السعر الطبي الصريح المكتوب في لوحة التحكم — بيرجّع null لو مش متكتب */
+  C.opticalPriceOf = function(p, dur){
+    var b = C.brandByKey[p.brand];
+    if (!b || !b.opticalPricing) return null;
+    var op = b.opticalPricing;
+    if (dur === 'yearly') return (op.yearly != null) ? op.yearly : null;
+    return (op.monthly != null) ? op.monthly : null;
+  };
+
   C.durAr    = function(p){ var d=C.durations[p.dur]; return d?d.ar:''; };
   C.durEn    = function(p){ var d=C.durations[p.dur]; return d?d.en:''; };
   C.durArAdj = function(p){ var d=C.durations[p.dur]; return d?d.arAdj:''; };
