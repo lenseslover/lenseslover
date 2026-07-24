@@ -296,9 +296,23 @@
   });
 
   /* ---------- product catalog (shared, mirrors shop) ---------- */
-  var CATALOG=(window.LL_CATALOG?window.LL_CATALOG.products:[]).map(function(p){
+  function buildCatalog(){
+    return (window.LL_CATALOG?window.LL_CATALOG.products:[]).map(mapProduct);
+  }
+  function mapProduct(p){
+    /* الماركة والمدة من المنتج نفسه — مش مكتوبين صريح */
+    var C=window.LL_CATALOG||{};
+    var b=(C.brandByKey&&C.brandByKey[p.brand])?C.brandByKey[p.brand]:null;
+    var bAr=b?b.ar:'', bEn=b?b.en:'';
+    var dAr=(p.dur==='yearly')?'سنوي':(p.dur==='both')?'شهري أو سنوي':'شهري';
+    var dEn=(p.dur==='yearly')?'Yearly':(p.dur==='both')?'Monthly / Yearly':'Monthly';
     return {id:p.id, ar:p.ar, en:p.en, img:p.img, price:p.price,
-      ar_m:'شهري · إيكوال بيري', en_m:'Monthly · Eqqual Berre'};
+      ar_m: dAr+(bAr?' · '+bAr:''), en_m: dEn+(bEn?' · '+bEn:'')};
+  }
+  var CATALOG=buildCatalog();
+  /* لو الكتالوج وصل من الشبكة بعد تحميل الصفحة، نعيد بناء قايمة البحث */
+  window.addEventListener('ll-catalog-updated', function(){
+    CATALOG=buildCatalog();
   });
 
   /* ---------- cart state (sessionStorage) ---------- */
