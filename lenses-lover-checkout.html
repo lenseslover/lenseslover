@@ -369,7 +369,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   .field input:focus, .field select:focus{ outline:2px solid var(--amber); outline-offset:1px; }
 
   .pay-methods{ display:flex; flex-direction:column; gap:12px; }
-  .pay-opt{ display:flex; align-items:center; gap:14px; padding:15px 16px; border:1px solid var(--line); border-radius:14px; background:var(--ink); cursor:pointer; transition:border-color .2s ease, background .2s ease; }
+  .pay-opt{ display:flex; align-items:center; flex-wrap:wrap; gap:14px; padding:15px 16px; border:1px solid var(--line); border-radius:14px; background:var(--ink); cursor:pointer; transition:border-color .2s ease, background .2s ease; }
   .pay-opt:hover{ border-color:var(--amber-light); }
   .pay-opt.active{ border-color:var(--amber); background:rgba(200,138,62,.08); }
   .pay-opt .radio{ width:20px; height:20px; border-radius:50%; border:2px solid var(--ivory-dim); flex-shrink:0; position:relative; transition:border-color .2s ease; }
@@ -382,8 +382,12 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   body.lang-en .pay-opt .badge-tag{ margin-inline-start:auto; }
   .card-fields{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); display:none; }
   .card-fields.show{ display:block; }
-  .cod-note{ margin-top:14px; font-size:12.5px; color:var(--amber-light); background:rgba(200,138,62,.08); border:1px solid rgba(200,138,62,.25); border-radius:12px; padding:12px 14px; display:none; }
-  .cod-note.show{ display:block; }
+  .pay-opt .cod-inline{
+    flex-basis:100%; width:100%; margin-top:10px; padding-top:10px;
+    border-top:1px solid rgba(200,138,62,.25);
+    font-size:12.5px; line-height:1.85; color:var(--amber-light);
+  }
+  .pay-opt .cod-inline b{ font-weight:700; }
 
   .co-summary{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:26px; position:sticky; top:96px; }
   .co-summary h3{ font-size:17px; margin-bottom:18px; }
@@ -503,11 +507,6 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
       </p>
       <div class="pay-methods" id="pay-methods"></div>
 
-      <div class="cod-note" id="cod-note">
-        <span class="ar"><b>ملاحظة:</b> لتأكيد الطلب، يُدفع مبلغ الشحن مقدمًا عن طريق فودافون كاش، ويُدفع باقي المبلغ عند الاستلام.</span>
-        <span class="en"><b>Note:</b> To confirm your order, the shipping fee is paid in advance via Vodafone Cash; the remaining amount is paid on delivery.</span>
-      </div>
-
       <div class="card-fields" id="card-fields">
         <div class="field-grid">
           <div class="field full"><label><span class="ar">رقم البطاقة</span><span class="en">Card Number</span></label><input type="text" placeholder="0000 0000 0000 0000"></div>
@@ -568,8 +567,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
       </div>
       <div class="foot-col">
         <h4><span class="ar">تواصل معنا</span><span class="en">Contact</span></h4>
-        <a href="https://wa.me/201065463003"><span class="ar">واتساب: 01065463003</span><span class="en">WhatsApp: 01065463003</span></a>
-        <a href="mailto:hello@lenseslover.com">hello@lenseslover.com</a>
+        <a href="https://wa.me/201065463003"><span class="ar">واتساب</span><span class="en">WhatsApp</span></a>
 
       </div>
     </div>
@@ -702,6 +700,12 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
       el.innerHTML=`<span class="radio"></span>${iconHtml}
         <span class="txt"><b><span class="ar">${m.ar}</span><span class="en">${m.en}</span></b>
         <span><span class="ar">${m.ar_s}</span><span class="en">${m.en_s}</span></span></span>${tag}`;
+      if(m.id==='cod'){
+        el.innerHTML += `<div class="cod-inline">
+          <span class="ar"><b>ملاحظة:</b> لتأكيد الطلب، يُدفع مبلغ الشحن مقدمًا عن طريق فودافون كاش، ويُدفع باقي المبلغ عند الاستلام.</span>
+          <span class="en"><b>Note:</b> To confirm your order, the shipping fee is paid in advance via Vodafone Cash; the rest is paid on delivery.</span>
+        </div>`;
+      }
       if(m.soon){
         el.classList.add('soon');
         el.innerHTML += `<span class="badge-tag soon-tag"><span class="ar">قريبًا</span><span class="en">Soon</span></span>`;
@@ -718,7 +722,6 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     document.querySelectorAll('.pay-opt').forEach(o=>o.classList.remove('active'));
     el.classList.add('active'); selected=m.id;
     document.getElementById('card-fields').classList.toggle('show', ['card','mada','knet'].includes(m.id));
-    var cn=document.getElementById('cod-note'); if(cn) cn.classList.toggle('show', m.id==='cod');
     totals();
   }
 
