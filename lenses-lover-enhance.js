@@ -485,10 +485,19 @@
 
   /* make existing header cart icon open the drawer instead of navigating (except on cart page) */
   var onCartPage=/lenses-lover-cart\.html/.test(location.pathname);
-  var cartLink=document.querySelector('.header-actions a[aria-label="cart"]');
+  /* السلة ممكن تكون <a> أو <button> حسب الصفحة */
+  var cartLink=document.querySelector('.header-actions [aria-label="cart"]');
   if(cartLink && !onCartPage){
+    cartLink.style.cursor='pointer';
     cartLink.addEventListener('click', function(e){ e.preventDefault(); openDrawer(); });
   }
+
+  /* اللوجو يودّي للصفحة الرئيسية */
+  document.querySelectorAll('header .logo').forEach(function(lg){
+    if(lg.closest('a')) return;
+    lg.style.cursor='pointer';
+    lg.addEventListener('click', function(){ location.href='index.html'; });
+  });
 
   /* ---------- auto-wire product "add to cart" buttons on catalog pages ---------- */
   /* Shop & wishlist build cards dynamically with their own handlers; to avoid double-adds
