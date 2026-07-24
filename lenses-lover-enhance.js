@@ -630,10 +630,21 @@
     if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openSearch(); }
   });
 
-  /* ---------- keep language-dependent bits in sync ---------- */
+  /* ---------- اللغة: حفظ الاختيار وتطبيقه في كل الصفحات ---------- */
   if(typeof window.setLang==='function'){
     var _sl=window.setLang;
-    window.setLang=function(l){ _sl(l); refreshWa(); if(drawer.classList.contains('show')) renderDrawer(); if(brands.classList.contains('show')) renderBrands(); };
+    window.setLang=function(l){
+      _sl(l);
+      try{ localStorage.setItem('ll_lang', l); }catch(e){}
+      refreshWa();
+      if(drawer.classList.contains('show')) renderDrawer();
+      if(brands.classList.contains('show')) renderBrands();
+    };
+    /* طبّق اللغة المحفوظة عند فتح أي صفحة */
+    try{
+      var saved=localStorage.getItem('ll_lang');
+      if(saved && saved!=='ar'){ window.setLang(saved); }
+    }catch(e){}
   }
 
   /* ---------- الشريط العلوي ---------- */
