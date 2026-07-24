@@ -692,6 +692,9 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   /* حالة الاختيارات — لازم تتعرّف قبل selectColor() */
   var selDur = null;          // 'monthly' | 'yearly' | null
   var selPowerType = 'cosmetic';
+  /* هل المنتج بيتباع طبي؟ optical = الاتنين · optical_only = طبي بس */
+  function hasOptical(){ return P.type === 'optical' || P.type === 'optical_only'; }
+  function opticalOnly(){ return P.type === 'optical_only'; }
 
   const params = new URLSearchParams(location.search);
   let P = CAT.byId(params.get('id')) || CAT.products[0];
@@ -716,8 +719,8 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   function renderDesc(){
     const fam = famAr(P.family);
     const durAr = CAT.durAr(P);
-    const typeAr = (P.type==='optical') ? 'تجميلي أو طبي بمقاسات نظر' : 'تجميلي';
-    const typeEn = (P.type==='optical') ? 'cosmetic or with optical powers' : 'cosmetic';
+    const typeAr = (P.type==='optical_only') ? 'طبي بمقاسات نظر' : (P.type==='optical') ? 'تجميلي أو طبي بمقاسات نظر' : 'تجميلي';
+    const typeEn = (P.type==='optical_only') ? 'with optical powers' : (P.type==='optical') ? 'cosmetic or with optical powers' : 'cosmetic';
     const dAr = document.getElementById('p-desc-ar'), dEn = document.getElementById('p-desc-en');
 
     /* الأولوية: وصف المنتج الخاص ← وصف البراند ← الوصف التلقائي */
@@ -794,7 +797,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     (function seo(){
       var url = 'https://lenseslover.com/lenses-lover-product?id=' + encodeURIComponent(P.id);
       var famA = famAr(P.family) || '';
-      var typeA = (P.type==='optical') ? 'تجميلي أو طبي بمقاسات نظر' : 'تجميلي';
+      var typeA = (P.type==='optical_only') ? 'طبي بمقاسات نظر' : (P.type==='optical') ? 'تجميلي أو طبي بمقاسات نظر' : 'تجميلي';
       var price = (CAT.pricingOf && CAT.pricingOf(P)) ? (CAT.pricingOf(P).monthly || P.price) : P.price;
       var desc = 'عدسات ' + P.ar + ' — لون ' + famA + '، ' + typeA + '، من ' + (BRAND?BRAND.ar:'') +
                  '. السعر ' + price + ' ج.م. شحن لكل محافظات مصر والدفع عند الاستلام.';
@@ -875,7 +878,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   function currentPrice(){
     const pr = CAT.pricingOf ? CAT.pricingOf(P) : null;
     let base = (pr && selDur && pr[selDur] != null) ? pr[selDur] : P.price;
-    if(P.type === 'optical' && selPowerType === 'optical'){
+    if(hasOptical() && selPowerType === 'optical'){
       /* السعر الطبي المكتوب صريح في لوحة التحكم له الأولوية */
       const exp = CAT.opticalPriceOf ? CAT.opticalPriceOf(P, selDur || 'monthly') : null;
       if(exp != null) return exp;
@@ -892,7 +895,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 
   /* نص أزرار "تجميلي / طبي" — يعرض سعر كل نوع، ويتحدّث مع تغيير المدة */
   function paintPowerLabels(){
-    if(P.type !== 'optical') return;
+    if(!hasOptical()) return;
     const plus = CAT.opticalPlusOf ? CAT.opticalPlusOf(P) : 0;
     const base = basePrice();
     const expOpt = CAT.opticalPriceOf ? CAT.opticalPriceOf(P, selDur || 'monthly') : null;
@@ -967,8 +970,14 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   function buildPowerOpts(){
     const wrap = document.getElementById('power-wrap');
     if(!wrap) return;
-    if(P.type !== 'optical'){ wrap.classList.remove('on'); selPowerType='cosmetic'; return; }
+    if(!hasOptical()){ wrap.classList.remove('on'); selPowerType='cosmetic'; return; }
     wrap.classList.add('on');
+    /* طبي فقط: نخفي أزرار الاختيار ونثبّت النوع على طبي */
+    if(opticalOnly()){
+      selPowerType = 'optical';
+      const tw = document.getElementById('power-type');
+      if(tw) tw.style.display = 'none';
+    }
 
     // املأ القوائم مرة واحدة
     const od = document.getElementById('power-od'), os = document.getElementById('power-os');
@@ -1020,7 +1029,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 
     // وصف المقاس
     let powAr = '', powEn = '';
-    if(P.type === 'optical' && selPowerType === 'optical'){
+    if(hasOptical() && selPowerType === 'optical'){
       const od = document.getElementById('power-od'), os = document.getElementById('power-os');
       const v1 = od ? od.value : '', v2 = os ? os.value : '';
       powAr = ' · نظر ' + v1 + '/' + v2;
