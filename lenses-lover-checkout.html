@@ -382,12 +382,12 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   body.lang-en .pay-opt .badge-tag{ margin-inline-start:auto; }
   .card-fields{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); display:none; }
   .card-fields.show{ display:block; }
-  .pay-opt .cod-inline{
+  .pay-opt .pay-note{
     flex-basis:100%; width:100%; margin-top:10px; padding-top:10px;
     border-top:1px solid rgba(200,138,62,.25);
     font-size:12.5px; line-height:1.85; color:var(--amber-light);
   }
-  .pay-opt .cod-inline b{ font-weight:700; }
+  .pay-opt .pay-note b{ font-weight:700; }
 
   .co-summary{ background:var(--ink-2); border:1px solid var(--line); border-radius:var(--radius); padding:26px; position:sticky; top:96px; }
   .co-summary h3{ font-size:17px; margin-bottom:18px; }
@@ -662,7 +662,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     eg:[
       {id:'cod', icon:'💵', ar:'الدفع عند الاستلام', en:'Cash on Delivery', ar_s:'ادفعي كاش عند وصول الطلب', en_s:'Pay cash when it arrives', tag_ar:'الأشهر', tag_en:'Popular'},
       {id:'card', icon:'💳', ar:'بطاقة فيزا / ماستركارد', en:'Visa / Mastercard', ar_s:'قريبًا', en_s:'Coming soon', soon:true},
-      {id:'vcash', icon:'📱', ar:'فودافون كاش / فوري', en:'Vodafone Cash / Fawry', ar_s:'محافظ إلكترونية محلية', en_s:'Local e-wallets'},
+      {id:'vcash', icon:'📱', ar:'فودافون كاش / إنستاباي / تحويل بنكي', en:'Vodafone Cash / InstaPay / Bank Transfer', ar_s:'محافظ إلكترونية وتحويلات بنكية', en_s:'E-wallets & bank transfers'},
     ],
     sa:[
       {id:'mada', icon:'💳', ar:'مدى (Mada)', en:'Mada', ar_s:'البطاقة المحلية السعودية', en_s:'Saudi local card', tag_ar:'إلزامي', tag_en:'Required'},
@@ -700,8 +700,14 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
       el.innerHTML=`<span class="radio"></span>${iconHtml}
         <span class="txt"><b><span class="ar">${m.ar}</span><span class="en">${m.en}</span></b>
         <span><span class="ar">${m.ar_s}</span><span class="en">${m.en_s}</span></span></span>${tag}`;
+      if(m.id==='vcash'){
+        el.innerHTML += `<div class="pay-note">
+          <span class="ar"><b>ملاحظة:</b> بعد إتمام الطلب، تواصلي معانا على الواتساب لاستلام بيانات التحويل، وابعتي صورة التحويل مع رقم الطلب.</span>
+          <span class="en"><b>Note:</b> After placing your order, contact us on WhatsApp for transfer details, then send the transfer receipt with your order number.</span>
+        </div>`;
+      }
       if(m.id==='cod'){
-        el.innerHTML += `<div class="cod-inline">
+        el.innerHTML += `<div class="pay-note">
           <span class="ar"><b>ملاحظة:</b> لتأكيد الطلب، يُدفع مبلغ الشحن مقدمًا عن طريق فودافون كاش، ويُدفع باقي المبلغ عند الاستلام.</span>
           <span class="en"><b>Note:</b> To confirm your order, the shipping fee is paid in advance via Vodafone Cash; the rest is paid on delivery.</span>
         </div>`;
