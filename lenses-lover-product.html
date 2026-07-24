@@ -882,12 +882,40 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     return base;
   }
 
+  /* السعر الأساسي حسب المدة المختارة (من غير زيادة النظر) */
+  function basePrice(){
+    const pr = CAT.pricingOf ? CAT.pricingOf(P) : null;
+    return (pr && selDur && pr[selDur] != null) ? pr[selDur] : P.price;
+  }
+
+  /* نص أزرار "تجميلي / طبي" — يعرض سعر كل نوع، ويتحدّث مع تغيير المدة */
+  function paintPowerLabels(){
+    if(P.type !== 'optical') return;
+    const plus = CAT.opticalPlusOf ? CAT.opticalPlusOf(P) : 0;
+    const base = basePrice();
+    document.querySelectorAll('#power-type button').forEach(function(b){
+      const isOpt = b.dataset.power === 'optical';
+      if(!plus){
+        b.innerHTML = isOpt
+          ? '<span class="ar">طبي (بمقاس نظر)</span><span class="en">Prescription</span>'
+          : '<span class="ar">تجميلي (بدون نظر)</span><span class="en">Cosmetic (no power)</span>';
+        return;
+      }
+      const val = isOpt ? (base + plus) : base;
+      const ar  = isOpt ? 'طبي' : 'تجميلي';
+      const en  = isOpt ? 'Prescription' : 'Cosmetic';
+      b.innerHTML = '<span class="ar">'+ar+' — '+val+' ج.م</span>'
+                  + '<span class="en">'+en+' — '+val+' EGP</span>';
+    });
+  }
+
   function paintPrice(){
     const val = currentPrice();
     const pv = document.getElementById('p-price-val');
     if(pv) pv.textContent = val;
     const sb = document.querySelector('.sticky-buy .sb-price');
     if(sb) sb.innerHTML = val + ' <span class="ar">ج.م</span><span class="en">EGP</span>';
+    paintPowerLabels();
   }
 
   function buildDurOpts(){
@@ -966,6 +994,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     const on = selPowerType === 'optical';
     document.getElementById('power-eyes').classList.toggle('on', on);
     document.getElementById('power-hint').style.display = on ? 'flex' : 'none';
+    paintPowerLabels();
   }
 
   // ---------- quantity stepper ----------
