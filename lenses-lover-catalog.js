@@ -126,8 +126,14 @@
   /* duration label helpers */
   /* أسعار المدد لبراند بيبيع نفس اللون بمدتين (زي Urban Layer) */
   C.pricingOf = function(p){
+    /* السعر بيتقرا من المنتج نفسه أولًا — أي رقم في لوحة التحكم يظهر في كل مكان.
+       تسعير الماركة بيستخدم كاحتياطي بس لو المنتج مالوش سعر سنوي. */
+    if (p.priceYearly != null) return { monthly: p.price, yearly: p.priceYearly };
     var b = C.brandByKey[p.brand];
-    return (b && b.pricing) ? b.pricing : null;   // {monthly, yearly} أو null
+    if (b && b.pricing) {
+      return { monthly: p.price, yearly: b.pricing.yearly };
+    }
+    return null;
   };
 
   /* زيادة سعر النظر — بتتضاف على السعر الأساسي لما العميل يختار "طبي"

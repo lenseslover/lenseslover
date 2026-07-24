@@ -206,8 +206,12 @@
             </div>
           </div>
           <div class="two">
-            <div class="fld"><label>السعر</label><input id="a-price" type="number" placeholder="200"></div>
+            <div class="fld"><label>السعر (شهري)</label><input id="a-price" type="number" placeholder="200"></div>
+            <div class="fld"><label>السعر السنوي</label><input id="a-price-yearly" type="number" placeholder="—"></div>
+          </div>
+          <div class="two">
             <div class="fld"><label>الكود (slug) *</label><input id="a-slug" placeholder="athena-grey"></div>
+            <div class="fld"></div>
           </div>
           <div class="fld"><label>عدد الصور</label><input id="a-n" type="number" value="1" min="1"></div>
           <label class="chk"><input type="checkbox" id="a-featured"> منتج مميز (يظهر في الأكثر مبيعًا)</label>
@@ -615,7 +619,7 @@
   function resetAdd(){
     editId=null;
     $('add-title').textContent='إضافة منتج جديد';
-    ['a-ar','a-en','a-price','a-slug','a-desc'].forEach(function(id){ $(id).value=''; });
+    ['a-ar','a-en','a-price','a-price-yearly','a-slug','a-desc'].forEach(function(id){ $(id).value=''; });
     $('a-n').value=1; $('a-featured').checked=false;
     relSelected=[]; drawRelChips(); drawRelPicker();
     updatePath();
@@ -626,7 +630,9 @@
     $('a-ar').value=p.ar; $('a-en').value=p.en||'';
     $('a-brand').value=p.brand; $('a-family').value=p.family;
     $('a-dur').value=p.dur||'monthly'; $('a-type').value=p.type||'cosmetic';
-    $('a-price').value=p.price||0; $('a-slug').value=p.slug;
+    $('a-price').value=p.price||0;
+    $('a-price-yearly').value=(p.priceYearly==null?'':p.priceYearly);
+    $('a-slug').value=p.slug;
     $('a-n').value=p.img_count||1; $('a-featured').checked=!!p.featured;
     $('a-desc').value=p.desc_ar||'';
     relSelected = Array.isArray(p.related) ? p.related.slice() : [];
@@ -656,6 +662,7 @@
       family: $('a-family').value,
       dur: $('a-dur').value, type: $('a-type').value,
       price: parseInt($('a-price').value,10)||0,
+      price_yearly: ($('a-price-yearly').value==='' ? null : (parseInt($('a-price-yearly').value,10)||0)),
       img_count: parseInt($('a-n').value,10)||1,
       featured: $('a-featured').checked?1:0,
       active: 1,
