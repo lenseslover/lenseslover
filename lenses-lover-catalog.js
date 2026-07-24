@@ -61,7 +61,12 @@
     return (b && b.offer) ? b.offer : null;
   };
   C.offerOfProduct = function(p){
-    return p ? C.offerOf(p.brand) : null;
+    if (!p) return null;
+    var off = C.offerOf(p.brand);
+    if (!off) return null;
+    /* لو العرض محدد بألوان معينة، يتطبّق عليها بس. فاضي = كل الماركة */
+    if (off.slugs && off.slugs.length && off.slugs.indexOf(p.slug) === -1) return null;
+    return off;
   };
 
   /* legacy alias — some pages still read LL_CATALOG.offer2 */
@@ -76,7 +81,7 @@
       if(!it || it.offer2 === false) return;
       var p = C.resolve(it);
       if(!p) return;
-      var o = C.offerOf(p.brand);
+      var o = C.offerOfProduct(p);
       if(!o) return;
       /* لو العرض للتجميلي فقط، القطع الطبية (سعرها أعلى من الأساسي) متتحسبش فيه */
       if(o.cosmeticOnly && (it.price != null) && Number(it.price) !== Number(p.price)) return;
@@ -102,7 +107,7 @@
       if(!it || it.offer2 === false) return;
       var p = C.resolve(it);
       if(!p) return;
-      var o = C.offerOf(p.brand);
+      var o = C.offerOfProduct(p);
       if(!o) return;
       /* لو العرض للتجميلي فقط، القطع الطبية (سعرها أعلى من الأساسي) متتحسبش فيه */
       if(o.cosmeticOnly && (it.price != null) && Number(it.price) !== Number(p.price)) return;

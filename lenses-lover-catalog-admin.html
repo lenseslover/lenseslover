@@ -498,6 +498,31 @@
        +   '<input data-f="offer_bundle" value="'+(b.offer_bundle==null?'':b.offer_bundle)+'" placeholder="السعر">'
        + '</div></div>'
        + '<div class="fld"><label>نص العرض</label><input data-f="offer_ar" value="'+esc(b.offer_ar||'')+'" placeholder="قطعتين بـ 350 ج.م"></div>'
+       + (function(){
+           var sel = [];
+           try {
+             var raw = (b.offer && b.offer.slugs) ? b.offer.slugs : b.offer_slugs;
+             sel = raw ? (typeof raw==='string' ? JSON.parse(raw) : raw) : [];
+           } catch(e){ sel=[]; }
+           if(!Array.isArray(sel)) sel=[];
+           var prods = DATA.products.filter(function(p){ return p.brand===b.key; });
+           var rows = prods.map(function(p){
+             var on = sel.indexOf(p.slug)!==-1;
+             return '<label class="chk" style="margin:0; padding:3px 0;">'
+                  + '<input type="checkbox" class="off-slug" value="'+esc(p.slug)+'"'+(on?' checked':'')+'> '
+                  + esc(p.ar)+' <span style="opacity:.6; font-size:11px;">'+esc(p.en)+'</span></label>';
+           }).join('');
+           return '<div class="fld"><label>ألوان العرض ('+(sel.length? sel.length+' مختار' : 'كل الماركة')+')</label>'
+                + '<div style="display:flex; gap:6px; margin-bottom:6px;">'
+                +   '<button type="button" class="btn sm" data-a="off-all">اختيار الكل</button>'
+                +   '<button type="button" class="btn sm" data-a="off-none">إلغاء الكل</button>'
+                + '</div>'
+                + '<div class="off-list" style="max-height:180px; overflow:auto; border:1px solid var(--line); border-radius:9px; padding:8px; background:var(--ink);">'
+                + (rows || '<div style="opacity:.6; font-size:12px;">مفيش منتجات</div>')
+                + '</div>'
+                + '<div style="font-size:11px; opacity:.65; margin-top:5px;">سيبها فاضية = العرض على كل ألوان الماركة</div>'
+                + '</div>';
+         })()
        + '<label class="chk"><input type="checkbox" data-f="offer_cosmetic_only"'+(b.offer_cosmetic_only?' checked':'')+'> العرض للتجميلي فقط</label>'
        + '<label class="chk" style="margin-top:8px;"><input type="checkbox" data-f="active"'+(b.active?' checked':'')+'> الماركة ظاهرة في المتجر</label>'
        + '<div class="fld" style="margin-top:14px; margin-bottom:0;"><label>شرح الماركة (بيظهر تحت كل منتجاتها)</label>'
@@ -510,16 +535,26 @@
     });
     $('brand-cards').innerHTML=h;
     $('brand-cards').querySelectorAll('.card[data-b]').forEach(function(card){
+      var allBtn=card.querySelector('[data-a="off-all"]'), noneBtn=card.querySelector('[data-a="off-none"]');
+      if(allBtn) allBtn.onclick=function(){ card.querySelectorAll('.off-slug').forEach(function(x){ x.checked=true; }); };
+      if(noneBtn) noneBtn.onclick=function(){ card.querySelectorAll('.off-slug').forEach(function(x){ x.checked=false; }); };
+
       card.querySelector('[data-a="save"]').onclick=function(){
         var key=card.dataset.b, payload={key:key};
         card.querySelectorAll('[data-f]').forEach(function(el){
           payload[el.dataset.f] = el.type==='checkbox' ? (el.checked?1:0) : el.value.trim();
         });
+        var picked=[];
+        card.querySelectorAll('.off-slug').forEach(function(x){ if(x.checked) picked.push(x.value); });
+        var total=card.querySelectorAll('.off-slug').length;
+        /* الكل مختار = زي ما تكون فاضية (العرض على كل الماركة) */
+        payload.offer_slugs = (picked.length && picked.length < total) ? picked : [];
         api('/admin/brand',{ method:'POST', body:JSON.stringify(payload) })
           .then(function(j){
             if(j&&j.ok){
               var b=brandOf(key);
               Object.keys(payload).forEach(function(k){ if(k!=='key') b[k]=payload[k]; });
+              if(b.offer) b.offer.slugs = payload.offer_slugs.length ? payload.offer_slugs : undefined;
               toast('اتحفظ'); drawBrands();
             } else toast('فشل الحفظ', true);
           }).catch(function(){ toast('مشكلة في الاتصال', true); });
