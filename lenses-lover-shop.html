@@ -275,6 +275,11 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   }
   .product-media .pupil{ width:34px; height:34px; border-radius:50%; background:#0b0906; position:relative; z-index:2; box-shadow:0 0 0 6px rgba(0,0,0,0.08); }
   .product-media .pupil::after{ content:""; position:absolute; width:9px; height:9px; background:rgba(255,255,255,0.85); border-radius:50%; top:5px; left:6px; }
+  .product-card.oos .product-media img{ filter:grayscale(.6) opacity(.75); }
+  .oos-badge{ position:absolute; top:10px; inset-inline-start:10px; z-index:2;
+    background:rgba(20,18,16,.82); color:#fff; font-size:11.5px; font-weight:700;
+    padding:5px 12px; border-radius:999px; }
+  .add-btn[disabled]{ opacity:.5; cursor:not-allowed; }
   .tag-badge{
     position:absolute; top:12px; inset-inline-start:12px; background:var(--rose); color:var(--ivory);
     font-size:11.5px; font-weight:700; padding:5px 10px; border-radius:999px;
@@ -759,10 +764,11 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
       const durEn=(DURMAP[p.dur]&&DURMAP[p.dur].en)||'';
       const card=document.createElement('a');
       card.href='lenses-lover-product.html?id='+p.id;
-      card.className='product-card';
+      card.className='product-card'+(p.outOfStock?' oos':'');
       card.innerHTML=`
         <div class="product-media has-photo">
-          ${(function(){var o=window.LL_CATALOG.offerOfProduct(p);return o?`<span class="tag-badge"><span class="ar">${o.ar.replace(' ج.م','')}</span><span class="en">${o.en.replace(' EGP','')}</span></span>`:'';})()}
+          ${p.outOfStock?`<span class="oos-badge"><span class="ar">غير متوفر</span><span class="en">Out of stock</span></span>`:''}
+          ${(function(){var o=window.LL_CATALOG.offerOfProduct(p);return (!p.outOfStock&&o)?`<span class="tag-badge"><span class="ar">${o.ar.replace(' ج.م','')}</span><span class="en">${o.en.replace(' EGP','')}</span></span>`:'';})()}
           <button class="wish-btn" aria-label="wishlist" onclick="event.preventDefault();this.style.color='var(--rose)';">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.4 2 4.8 5.6 4.1c2-.4 3.9.5 5 2.2 1.1-1.7 3-2.6 5-2.2 3.6.7 5.1 4.3 3.6 7.6C19.5 16.4 12 21 12 21z"/></svg>
           </button>
@@ -776,12 +782,15 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
           <div class="price-row">
             <span class="price-now">${p.price} <span class="ar">ج.م</span><span class="en">EGP</span></span>
           </div>
-          <button class="add-btn" data-add="1">
-            <span class="ar">أضيفي للسلة</span><span class="en">Add to Cart</span>
+          <button class="add-btn" data-add="1"${p.outOfStock?' disabled':''}>
+            ${p.outOfStock
+              ? `<span class="ar">غير متوفر</span><span class="en">Out of stock</span>`
+              : `<span class="ar">أضيفي للسلة</span><span class="en">Add to Cart</span>`}
           </button>
         </div>`;
       card.querySelector('[data-add]').addEventListener('click', function(e){
         e.preventDefault(); e.stopPropagation();
+        if(p.outOfStock) return;
         if(window.LL && window.LL.addToCart){
           window.LL.addToCart({ id:p.id, ar:p.ar, en:p.en, img:p.img, offer2:true,
             ar_m:(durAr?durAr+' · ':'')+p.brandAr, en_m:(durEn?durEn+' · ':'')+p.brandEn, price:p.price });

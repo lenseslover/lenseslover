@@ -213,6 +213,9 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   .qty-stepper .qty-val{ width:42px; text-align:center; font-size:15px; font-weight:700; }
   .p-stock{ font-size:13px; color:var(--jade-light); display:flex; align-items:center; gap:6px; }
   .p-stock .dot{ width:7px; height:7px; border-radius:50%; background:var(--jade-light); }
+  .p-stock.oos{ color:#c0392b; }
+  .p-stock.oos .dot{ background:#c0392b; }
+  .btn.disabled, .btn[disabled]{ opacity:.5; cursor:not-allowed; }
 
   .cta-row-product{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:30px; }
   .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:16px 30px; border-radius:999px; font-size:15px; font-weight:700; transition:transform .25s ease, box-shadow .25s ease, background .25s ease; }
@@ -495,7 +498,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
           <span class="qty-val" id="qty-val">1</span>
           <button onclick="changeQty(1)" aria-label="increase">+</button>
         </div>
-        <span class="p-stock"><span class="dot"></span><span class="ar">متوفر — يشحن خلال 24 ساعة</span><span class="en">In stock — ships within 24h</span></span>
+        <span class="p-stock" id="p-stock"><span class="dot"></span><span class="ar">متوفر — يشحن خلال 24 ساعة</span><span class="en">In stock — ships within 24h</span></span>
       </div>
 
       <div class="cta-row-product">
@@ -887,6 +890,21 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   }
   selectColor(P.id);
 
+  /* حالة التوفّر */
+  (function(){
+    if(!P.outOfStock) return;
+    var st=document.getElementById('p-stock');
+    if(st){
+      st.classList.add('oos');
+      st.innerHTML='<span class="dot"></span><span class="ar">غير متوفر حاليًا</span><span class="en">Currently out of stock</span>';
+    }
+    ['add-cart-btn','sticky-add-btn'].forEach(function(id){
+      var b=document.getElementById(id);
+      if(b){ b.disabled=true; b.classList.add('disabled');
+        b.innerHTML='<span class="ar">غير متوفر</span><span class="en">Out of stock</span>'; }
+    });
+  })();
+
   // ---------- اختيار المدة (للبراندات اللي بتبيع نفس اللون بمدتين) ----------
   function currentPrice(){
     const pr = CAT.pricingOf ? CAT.pricingOf(P) : null;
@@ -1051,6 +1069,7 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 
   // ---------- add to cart (uses shared LL cart drawer/toast) ----------
   function addToCart(btn){
+    if(P.outOfStock) return;
     if(!(window.LL && window.LL.addToCart)) return;
 
     const price = currentPrice();

@@ -349,6 +349,8 @@
       if(j && j.ok){
         try{ localStorage.setItem('ll_admin_key', k); }catch(e){}
         DATA={brands:j.brands||[], families:j.families||[], products:j.products||[]};
+        /* نضمن إن كل منتج له in_stock صريح — عشان أي حفظ ما يرجّعوش متوفر بالغلط */
+        DATA.products.forEach(function(p){ p.in_stock = p.outOfStock ? 0 : 1; });
         $('gate').style.display='none'; $('app').style.display='block';
         boot();
         return true;
@@ -493,7 +495,7 @@
     $('prod-count').textContent=list.length+' من '+DATA.products.length+' منتج';
     var h='<div class="row head"><span></span><span>المنتج</span>'
         + '<span class="hide-sm">الماركة</span><span class="hide-sm">النوع</span>'
-        + '<span>السعر</span><span>مميز</span><span class="hide-sm"></span></div>';
+        + '<span>السعر</span><span>مميز</span><span>متوفر</span><span class="hide-sm"></span></div>';
     list.slice(0,300).forEach(function(p){
       var b=brandOf(p.brand), f=famOf(p.family);
       var durAr = p.dur==='both'?'شهري أو سنوي':(p.dur==='yearly'?'سنوي':'شهري');
@@ -507,6 +509,7 @@
        + '</select></span>'
        + '<input class="mini price-edit" data-k="price" value="'+(p.price||0)+'">'
        + '<span><input type="checkbox" data-k="featured"'+(p.featured?' checked':'')+'></span>'
+       + '<span><input type="checkbox" data-k="stock"'+(p.outOfStock?'':' checked')+' title="شيلي العلامة = غير متوفر"></span>'
        + '<span class="hide-sm">'
        +   '<button class="btn ghost sm" data-a="edit">تعديل</button> '
        +   '<button class="btn danger sm" data-a="del">حذف</button>'
@@ -527,6 +530,7 @@
         el.onchange=function(){
           var k=el.dataset.k;
           if(k==='featured') p.featured=el.checked?1:0;
+          else if(k==='stock'){ p.outOfStock = !el.checked; p.in_stock = el.checked ? 1 : 0; }
           else if(k==='price') p.price=parseInt(el.value,10)||0;
           else p[k]=el.value;
           saveProduct(p, true);
