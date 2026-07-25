@@ -673,15 +673,16 @@
     if(!p){ $('img-card').innerHTML='<div class="msg">اختاري منتج</div>'; $('img-count').textContent=''; return; }
     var b=brandOf(p.brand);
     var count=p.img_count||0;
+    var bust='?v='+Date.now(); /* يمنع المتصفح من عرض نسخة قديمة متخزنة (كاش) لنفس رابط الصورة */
     $('img-count').textContent=count+' صورة';
     var base=(b.img_base||'https://cdn.lenseslover.com/products/').replace('https://cdn.lenseslover.com/','');
     var h='<div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">'
-        + (count>0 ? '<div class="thumb" style="width:50px;height:50px;background-image:url(\''+imgUrl(p,0)+'\')"></div>' : '')
+        + (count>0 ? '<div class="thumb" style="width:50px;height:50px;background-image:url(\''+imgUrl(p,0)+bust+'\')"></div>' : '')
         + '<div><b style="font-size:15px;">'+esc(p.ar)+'</b>'
         + '<div style="font-size:12px; color:var(--ivory-dim);">'+esc(p.en)+' · '+esc(b.ar||'')+'</div></div>'
         + '</div><div class="imgs">';
     for(var i=0;i<count;i++){
-      h+='<div class="img-box" style="background-image:url(\''+imgUrl(p,i)+'\')">'
+      h+='<div class="img-box" style="background-image:url(\''+imgUrl(p,i)+bust+'\')">'
        + '<button class="del" data-i="'+i+'">×</button>'
        + '<span class="ord">'+(i+1)+(i===0?' — الرئيسية':'')+'</span></div>';
     }
