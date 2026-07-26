@@ -686,6 +686,7 @@
     }
     h+='<label class="drop"><b>+</b><span>ارفعي صورة</span>'
      + '<input type="file" accept="image/*" hidden id="up"></label></div>'
+     + '<button class="btn sm" id="fix-seq" style="margin-top:10px;">🔧 إصلاح ترقيم الصور</button>'
      + '<div class="note">المسار: '+esc((b.img_base||'').replace('https://cdn.lenseslover.com/',''))+esc(p.slug)+'-N.webp</div>';
     $('img-card').innerHTML=h;
 
@@ -693,6 +694,18 @@
       btn.onclick=function(){ delImage(p, parseInt(btn.dataset.i,10)); };
     });
     var up=$('up'); if(up) up.onchange=function(){ uploadImage(p, up.files[0]); };
+    var fx=$('fix-seq'); if(fx) fx.onclick=function(){
+      toast('جاري الإصلاح…');
+      api('/admin/image/resequence',{ method:'POST',
+          body:JSON.stringify({ folder:folderOf(p), slug:p.slug }) })
+        .then(function(r){
+          if(r&&r.ok){
+            p.img_count=Math.max(1, r.count||1);
+            saveProduct(p, true).then(function(){ drawImages(); drawProducts();
+              toast('اتصلح — '+ (r.count||0) +' صورة'); });
+          } else toast('فشل الإصلاح', true);
+        }).catch(function(){ toast('مشكلة في الاتصال', true); });
+    };
   }
 
   function imgPath(p, idx){
@@ -701,34 +714,64 @@
     return b.numbered ? base+p.slug+'-'+(idx+1)+'.webp' : base+p.slug+'.webp';
   }
 
+  function folderOf(p){
+    var b=brandOf(p.brand);
+    return (b.img_base||'https://cdn.lenseslover.com/products/')
+             .replace('https://cdn.lenseslover.com/','').replace(/\/+$/,'');
+  }
+  /* نعدّ الصور الفعلية في R2 — الترقيم يعتمد على الواقع مش على العدّاد المخزّن */
+  function countRealImages(p){
+    var folder=folderOf(p);
+    return api('/admin/images?prefix='+encodeURIComponent(folder+'/'+p.slug+'-'))
+      .then(function(j){
+        if(!j||!j.objects) return 0;
+        var max=0;
+        j.objects.forEach(function(o){
+          var m=o.key.match(/-(\d+)\.webp$/i);
+          if(m){ var n=parseInt(m[1],10); if(n>max) max=n; }
+        });
+        return max;
+      }).catch(function(){ return (p.img_count||0); });
+  }
+
   function uploadImage(p, file){
     if(!file) return;
-    var idx=(p.img_count||1);
-    var path=imgPath(p, idx);
     toast('جاري الرفع…');
-    file.arrayBuffer().then(function(buf){
-      return fetch(API+'/admin/image?path='+encodeURIComponent(path),{
-        method:'POST',
-        headers:{'X-Admin-Key':KEY,'Content-Type':file.type||'image/webp'},
-        body:buf
-      }).then(function(r){ return r.json(); });
-    }).then(function(j){
-      if(j&&j.ok){
-        p.img_count=idx+1;
-        saveProduct(p, true).then(function(){ drawImages(); toast('الصورة اترفعت'); });
-      } else toast('فشل الرفع: '+((j&&j.error)||''), true);
+    /* اعرف آخر رقم موجود فعلاً، وارفع اللي بعده — مفيش فجوات */
+    countRealImages(p).then(function(existing){
+      var idx=existing+1;
+      var path=imgPath(p, idx-1);   /* imgPath بياخد index يبدأ من 0 */
+      return file.arrayBuffer().then(function(buf){
+        return fetch(API+'/admin/image?path='+encodeURIComponent(path),{
+          method:'POST',
+          headers:{'X-Admin-Key':KEY,'Content-Type':file.type||'image/webp'},
+          body:buf
+        }).then(function(r){ return r.json(); });
+      }).then(function(j){
+        if(j&&j.ok){
+          p.img_count=idx;
+          saveProduct(p, true).then(function(){ drawImages(); toast('الصورة اترفعت'); });
+        } else toast('فشل الرفع: '+((j&&j.error)||''), true);
+      });
     }).catch(function(){ toast('مشكلة في الرفع', true); });
   }
 
   function delImage(p, i){
     if(!confirm('تحذفي الصورة رقم '+(i+1)+'؟')) return;
     var path=imgPath(p, i);
+    toast('جاري الحذف…');
     api('/admin/image/delete',{ method:'POST', body:JSON.stringify({path:path}) })
       .then(function(j){
-        if(j&&j.ok){
-          p.img_count=Math.max(1,(p.img_count||1)-1);
-          saveProduct(p, true).then(function(){ drawImages(); drawProducts(); toast('الصورة اتحذفت'); });
-        } else toast('فشل الحذف', true);
+        if(!(j&&j.ok)){ toast('فشل الحذف', true); return; }
+        /* أعِد ترقيم الباقي في R2 عشان مفيش فجوات */
+        return api('/admin/image/resequence',{ method:'POST',
+                    body:JSON.stringify({ folder:folderOf(p), slug:p.slug }) })
+          .then(function(r){
+            var real=(r&&typeof r.count==='number')?r.count:Math.max(1,(p.img_count||1)-1);
+            p.img_count=Math.max(1, real);
+            return saveProduct(p, true);
+          })
+          .then(function(){ drawImages(); drawProducts(); toast('اتحذفت واترتّبت'); });
       }).catch(function(){ toast('مشكلة في الاتصال', true); });
   }
 
