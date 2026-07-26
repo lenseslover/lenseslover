@@ -26,11 +26,6 @@ html[data-theme="light"]{
   color-scheme: light;
 }
 html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
-
-  .oos-badge{ position:absolute; top:10px; inset-inline-start:10px; z-index:2;
-    background:rgba(20,18,16,.82); color:#fff; font-size:11.5px; font-weight:700;
-    padding:5px 12px; border-radius:999px; }
-  .add-btn[disabled]{ opacity:.5; cursor:not-allowed; }
 </style>
 
 <meta name="google-site-verification" content="pYL1RW-xSlZ9qi2uSqKyzT-syo1jawbTI_ZwYs_7Vt4" />
@@ -687,11 +682,11 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   const FAM_CDN2='https://cdn.lenseslover.com/families/';
   // family -> representative product photo for the hero
   const HERO_MAP={
-    gray:{img:'breeze-gray.webp'},
-    green:{img:'breeze-green.webp'},
-    blue:{img:'mona-lisa-blue.webp'},
-    hazel:{img:'clepatra-hazel.webp'},
-    brown:{img:'mrmr-brown.webp'}
+    gray:{img:'breeze-gray-1.webp'},
+    green:{img:'breeze-green-1.webp'},
+    blue:{img:'mona-lisa-blue-1.webp'},
+    hazel:{img:'clepatra-hazel-1.webp'},
+    brown:{img:'mrmr-brown-1.webp'}
   };
   /* الألوان المتاحة للمعاينة = اللي ليها صورة في HERO_MAP فقط */
   const FAMS=(window.LL_CATALOG?window.LL_CATALOG.families:[]).filter(f=>HERO_MAP[f.key]);
@@ -776,12 +771,11 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     const durEn=(picks[0].dur==='both')?'Monthly / Yearly':'Monthly';
     picks.forEach(pr=>{
     const card = document.createElement('div');
-    card.className = 'product-card'+(pr.outOfStock?' oos':''); card.style.cursor='pointer';
+    card.className = 'product-card'; card.style.cursor='pointer';
     card.addEventListener('click', (ev)=>{ if(!ev.target.closest('.add-btn') && !ev.target.closest('.wish-btn')) location.href='lenses-lover-product.html?id='+pr.id; });
     card.innerHTML = `
       <div class="product-media" style="padding:0;aspect-ratio:3/3.4;overflow:hidden;">
-        ${pr.outOfStock?'<span class="oos-badge"><span class="ar">غير متوفر</span><span class="en">Out of stock</span></span>':''}
-        ${(function(){if(pr.outOfStock)return '';const offer=offerFor(pr);return offer?('<span class="tag-badge"><span class="ar">'+offer.ar+'</span><span class="en">'+(offer.en||offer.ar)+'</span></span>'):'';})()}
+        ${(function(){const offer=offerFor(pr);return offer?('<span class="tag-badge"><span class="ar">'+offer.ar+'</span><span class="en">'+(offer.en||offer.ar)+'</span></span>'):'';})()}
         <button class="wish-btn" aria-label="wishlist">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.4 2 4.8 5.6 4.1c2-.4 3.9.5 5 2.2 1.1-1.7 3-2.6 5-2.2 3.6.7 5.1 4.3 3.6 7.6C19.5 16.4 12 21 12 21z"/></svg>
         </button>
@@ -795,14 +789,13 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
         <div class="price-row">
           <span class="price-now">${pr.price} <span class="ar">ج.م</span><span class="en">EGP</span></span>
         </div>
-        <button class="add-btn"${pr.outOfStock?' disabled':''}>
-          ${pr.outOfStock?'<span class="ar">غير متوفر</span><span class="en">Out of stock</span>':'<span class="ar">أضيفي للسلة</span><span class="en">Add to Cart</span>'}
+        <button class="add-btn">
+          <span class="ar">أضيفي للسلة</span><span class="en">Add to Cart</span>
         </button>
       </div>
     `;
     card.querySelector('.add-btn').onclick = function(ev){
       ev.stopPropagation();
-      if(pr.outOfStock) return;
       if(window.LL && window.LL.addToCart){
         window.LL.addToCart({ id:pr.id, ar:pr.ar, en:pr.en, img:pr.img, offer2:true,
           ar_m:'شهري · '+b.ar, en_m:'Monthly · '+b.en, price:pr.price });
