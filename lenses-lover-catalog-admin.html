@@ -782,15 +782,26 @@
     drawRelChips(); drawRelPicker();
     updatePath(); show('add');
   }
+  /* تنظيف الكود: حروف إنجليزي صغيرة وأرقام وشرطات بس — يمنع المسافات نهائيًا */
+  function slugify(v){
+    return String(v||'').toLowerCase().trim()
+      .replace(/[\s_]+/g,'-')      // مسافات وشرطات سفلية -> شرطة
+      .replace(/[^a-z0-9-]/g,'')   // احذف أي رمز تاني
+      .replace(/-+/g,'-')          // شرطات متكررة -> واحدة
+      .replace(/^-|-$/g,'');       // شيل الشرطة من الأطراف
+  }
   function updatePath(){
     var b=brandOf($('a-brand').value);
     var slug=$('a-slug').value||'slug';
     $('a-path').textContent='مسار الصور: '+((b.img_base||'').replace('https://cdn.lenseslover.com/',''))+slug+'-1.webp';
   }
   ['a-brand','a-slug'].forEach(function(id){ $(id).addEventListener('input', updatePath); $(id).addEventListener('change', updatePath); });
+  /* نظّف خانة الكود تلقائيًا وقت الكتابة */
+  $('a-slug').addEventListener('blur', function(){ this.value=slugify(this.value); updatePath(); });
 
   $('a-save').onclick=function(){
-    var ar=$('a-ar').value.trim(), slug=$('a-slug').value.trim(), brand=$('a-brand').value;
+    var ar=$('a-ar').value.trim(), slug=slugify($('a-slug').value), brand=$('a-brand').value;
+    $('a-slug').value=slug;
     if(!ar || !slug || !brand){ toast('املي الاسم والكود والماركة', true); return; }
     var p={
       id: editId || (brand+'-'+slug),
