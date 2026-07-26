@@ -727,14 +727,31 @@
 
   function delImage(p, i){
     if(!confirm('تحذفي الصورة رقم '+(i+1)+'؟')) return;
-    var path=imgPath(p, i);
-    api('/admin/image/delete',{ method:'POST', body:JSON.stringify({path:path}) })
-      .then(function(j){
-        if(j&&j.ok){
-          p.img_count=Math.max(0,(p.img_count||0)-1);
-          saveProduct(p, true).then(function(){ drawImages(); drawProducts(); toast('الصورة اتحذفت'); });
-        } else toast('فشل الحذف', true);
-      }).catch(function(){ toast('مشكلة في الاتصال', true); });
+    var count=p.img_count||0;
+    if(i<0 || i>=count) return;
+    toast('جاري الحذف…');
+
+    /* بعد ما تتحذف صورة رقم i، كل الصور اللي بعدها بترجع مكان واحد لورا
+       عشان الترقيم يفضل متصل (1،2،3...) من غير فجوات، وده اللي بيمنع
+       ضياع أو تلخبط الصور بغض النظر عن الماركة */
+    var chain=Promise.resolve();
+    for(var j=i+1;j<count;j++){
+      (function(j){
+        chain=chain.then(function(){
+          return api('/admin/image/move',{ method:'POST', body:JSON.stringify({ from:imgPath(p,j), to:imgPath(p,j-1) }) });
+        });
+      })(j);
+    }
+    /* لو اللي بتتحذف هي آخر صورة، مفيش حاجة تتنقل — لازم تتمسح هي بنفسها */
+    if(i===count-1){
+      chain=chain.then(function(){
+        return api('/admin/image/delete',{ method:'POST', body:JSON.stringify({ path:imgPath(p,i) }) });
+      });
+    }
+    chain.then(function(){
+      p.img_count=Math.max(0,count-1);
+      saveProduct(p, true).then(function(){ drawImages(); drawProducts(); toast('الصورة اتحذفت'); });
+    }).catch(function(){ toast('فشل الحذف', true); });
   }
 
   /* ---------- 4) إضافة / تعديل ---------- */
