@@ -73,7 +73,6 @@
   .fld label{ display:block; font-size:12px; color:var(--ivory-dim); margin-bottom:5px; }
   .fld input,.fld select{ width:100%; padding:9px 12px; border-radius:9px;
     border:1px solid var(--line); background:var(--ink); font-size:13.5px; color:var(--ivory); }
-  .fld input[readonly]{ background:var(--ink-3); color:var(--ivory-dim); cursor:not-allowed; }
   .two{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .chk{ font-size:12.5px; color:var(--ivory-dim); display:flex; gap:7px; align-items:center; cursor:pointer; }
 
@@ -238,7 +237,7 @@
             <div class="fld"><label>الكود (slug) *</label><input id="a-slug" placeholder="athena-grey"></div>
             <div class="fld"></div>
           </div>
-          <div class="fld"><label>عدد الصور</label><input id="a-n" type="number" value="0" min="0" readonly title="بتتحدث تلقائيًا من تبويب الصور"></div>
+          <div class="fld"><label>عدد الصور</label><input id="a-n" type="number" value="1" min="1"></div>
           <label class="chk"><input type="checkbox" id="a-featured"> منتج مميز (يظهر في الأكثر مبيعًا)</label>
 
           <div class="fld" style="margin-top:16px; margin-bottom:0;">
@@ -475,6 +474,7 @@
 
   function imgUrl(p, i){
     var b=brandOf(p.brand);
+    if(p.imgs && p.imgs.length) return p.imgs[Math.min(i||0, p.imgs.length-1)];
     var base=b.img_base||'https://cdn.lenseslover.com/products/';
     return b.numbered ? base+p.slug+'-'+((i||0)+1)+'.webp' : base+p.slug+'.webp';
   }
@@ -672,26 +672,21 @@
     var p=DATA.products.filter(function(x){ return x.id===id; })[0];
     if(!p){ $('img-card').innerHTML='<div class="msg">اختاري منتج</div>'; $('img-count').textContent=''; return; }
     var b=brandOf(p.brand);
-    var count=p.img_count||0;
-    var bust='?v='+Date.now(); /* يمنع المتصفح من عرض نسخة قديمة متخزنة (كاش) لنفس رابط الصورة */
+    var count=p.img_count||1;
     $('img-count').textContent=count+' صورة';
-    var base=(b.img_base||'https://cdn.lenseslover.com/products/').replace('https://cdn.lenseslover.com/','');
     var h='<div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">'
-        + (count>0 ? '<div class="thumb" style="width:50px;height:50px;background-image:url(\''+imgUrl(p,0)+bust+'\')"></div>' : '')
+        + '<div class="thumb" style="width:50px;height:50px;background-image:url(\''+imgUrl(p,0)+'\')"></div>'
         + '<div><b style="font-size:15px;">'+esc(p.ar)+'</b>'
         + '<div style="font-size:12px; color:var(--ivory-dim);">'+esc(p.en)+' · '+esc(b.ar||'')+'</div></div>'
         + '</div><div class="imgs">';
     for(var i=0;i<count;i++){
-      h+='<div class="img-box" style="background-image:url(\''+imgUrl(p,i)+bust+'\')">'
+      h+='<div class="img-box" style="background-image:url(\''+imgUrl(p,i)+'\')">'
        + '<button class="del" data-i="'+i+'">×</button>'
        + '<span class="ord">'+(i+1)+(i===0?' — الرئيسية':'')+'</span></div>';
     }
     h+='<label class="drop"><b>+</b><span>ارفعي صورة</span>'
      + '<input type="file" accept="image/*" hidden id="up"></label></div>'
-     + '<div class="note">'+(count===0
-          ? 'لسه معملتيش صورة — أول صورة ترفعيها هتبقى الرئيسية وهتتخزن باسم: '+esc(base)+esc(p.slug)+'-1.webp'
-          : 'الصورة الجاية هتتخزن باسم: '+esc(base)+esc(p.slug)+'-'+(count+1)+'.webp')
-     + '</div>';
+     + '<div class="note">المسار: '+esc((b.img_base||'').replace('https://cdn.lenseslover.com/',''))+esc(p.slug)+'-N.webp</div>';
     $('img-card').innerHTML=h;
 
     $('img-card').querySelectorAll('.del').forEach(function(btn){
@@ -708,7 +703,7 @@
 
   function uploadImage(p, file){
     if(!file) return;
-    var idx=(p.img_count||0);
+    var idx=(p.img_count||1);
     var path=imgPath(p, idx);
     toast('جاري الرفع…');
     file.arrayBuffer().then(function(buf){
@@ -727,31 +722,14 @@
 
   function delImage(p, i){
     if(!confirm('تحذفي الصورة رقم '+(i+1)+'؟')) return;
-    var count=p.img_count||0;
-    if(i<0 || i>=count) return;
-    toast('جاري الحذف…');
-
-    /* بعد ما تتحذف صورة رقم i، كل الصور اللي بعدها بترجع مكان واحد لورا
-       عشان الترقيم يفضل متصل (1،2،3...) من غير فجوات، وده اللي بيمنع
-       ضياع أو تلخبط الصور بغض النظر عن الماركة */
-    var chain=Promise.resolve();
-    for(var j=i+1;j<count;j++){
-      (function(j){
-        chain=chain.then(function(){
-          return api('/admin/image/move',{ method:'POST', body:JSON.stringify({ from:imgPath(p,j), to:imgPath(p,j-1) }) });
-        });
-      })(j);
-    }
-    /* لو اللي بتتحذف هي آخر صورة، مفيش حاجة تتنقل — لازم تتمسح هي بنفسها */
-    if(i===count-1){
-      chain=chain.then(function(){
-        return api('/admin/image/delete',{ method:'POST', body:JSON.stringify({ path:imgPath(p,i) }) });
-      });
-    }
-    chain.then(function(){
-      p.img_count=Math.max(0,count-1);
-      saveProduct(p, true).then(function(){ drawImages(); drawProducts(); toast('الصورة اتحذفت'); });
-    }).catch(function(){ toast('فشل الحذف', true); });
+    var path=imgPath(p, i);
+    api('/admin/image/delete',{ method:'POST', body:JSON.stringify({path:path}) })
+      .then(function(j){
+        if(j&&j.ok){
+          p.img_count=Math.max(1,(p.img_count||1)-1);
+          saveProduct(p, true).then(function(){ drawImages(); drawProducts(); toast('الصورة اتحذفت'); });
+        } else toast('فشل الحذف', true);
+      }).catch(function(){ toast('مشكلة في الاتصال', true); });
   }
 
   /* ---------- 4) إضافة / تعديل ---------- */
@@ -777,7 +755,7 @@
     editId=null;
     $('add-title').textContent='إضافة منتج جديد';
     ['a-ar','a-en','a-price','a-price-yearly','a-price-optical','a-price-optical-yearly','a-slug','a-desc'].forEach(function(id){ $(id).value=''; });
-    $('a-n').value=0; $('a-featured').checked=false;
+    $('a-n').value=1; $('a-featured').checked=false;
     relSelected=[]; drawRelChips(); drawRelPicker();
     updatePath();
   }
@@ -792,7 +770,7 @@
     $('a-price-optical').value=(p.priceOptical==null?'':p.priceOptical);
     $('a-price-optical-yearly').value=(p.priceOpticalYearly==null?'':p.priceOpticalYearly);
     $('a-slug').value=p.slug;
-    $('a-n').value=p.img_count||0; $('a-featured').checked=!!p.featured;
+    $('a-n').value=p.img_count||1; $('a-featured').checked=!!p.featured;
     $('a-desc').value=p.desc_ar||'';
     relSelected = Array.isArray(p.related) ? p.related.slice() : [];
     /* نزامن قايمة الاختيار فوق */
@@ -804,22 +782,16 @@
     drawRelChips(); drawRelPicker();
     updatePath(); show('add');
   }
-  function slugify(s){
-    return String(s||'').trim().toLowerCase().replace(/[^a-z0-9-]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
-  }
   function updatePath(){
     var b=brandOf($('a-brand').value);
-    var slug=slugify($('a-slug').value)||'slug';
+    var slug=$('a-slug').value||'slug';
     $('a-path').textContent='مسار الصور: '+((b.img_base||'').replace('https://cdn.lenseslover.com/',''))+slug+'-1.webp';
   }
   ['a-brand','a-slug'].forEach(function(id){ $(id).addEventListener('input', updatePath); $(id).addEventListener('change', updatePath); });
-  /* بمجرد ما تسيبي خانة الكود، بيتظبط شكله فورًا (مسافات/حروف كبيرة → صيغة صحيحة) */
-  $('a-slug').addEventListener('blur', function(){ $('a-slug').value=slugify($('a-slug').value); updatePath(); });
 
   $('a-save').onclick=function(){
-    var ar=$('a-ar').value.trim(), slug=slugify($('a-slug').value), brand=$('a-brand').value;
+    var ar=$('a-ar').value.trim(), slug=$('a-slug').value.trim(), brand=$('a-brand').value;
     if(!ar || !slug || !brand){ toast('املي الاسم والكود والماركة', true); return; }
-    $('a-slug').value=slug;
     var p={
       id: editId || (brand+'-'+slug),
       brand: brand, slug: slug,
@@ -830,7 +802,7 @@
       price_yearly: ($('a-price-yearly').value==='' ? null : (parseInt($('a-price-yearly').value,10)||0)),
       price_optical: ($('a-price-optical').value==='' ? null : (parseInt($('a-price-optical').value,10)||0)),
       price_optical_yearly: ($('a-price-optical-yearly').value==='' ? null : (parseInt($('a-price-optical-yearly').value,10)||0)),
-      img_count: parseInt($('a-n').value,10)||0,
+      img_count: parseInt($('a-n').value,10)||1,
       featured: $('a-featured').checked?1:0,
       active: 1,
       related: relSelected.slice(),
