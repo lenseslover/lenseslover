@@ -686,7 +686,8 @@
     }
     h+='<label class="drop"><b>+</b><span>ارفعي صورة</span>'
      + '<input type="file" accept="image/*" hidden id="up"></label></div>'
-     + '<button class="btn sm" id="fix-seq" style="margin-top:10px;">🔧 إصلاح ترقيم الصور</button>'
+     + '<button class="btn sm" id="fix-seq" style="margin-top:10px;">🔧 إصلاح ترقيم الصور (المنتج ده)</button>'
+     + '<button class="btn sm" id="migrate-brand" style="margin-top:10px; margin-inline-start:8px;">🔁 تحويل كل صور الماركة للترقيم</button>'
      + '<div class="note">المسار: '+esc((b.img_base||'').replace('https://cdn.lenseslover.com/',''))+esc(p.slug)+'-N.webp</div>';
     $('img-card').innerHTML=h;
 
@@ -704,6 +705,16 @@
             saveProduct(p, true).then(function(){ drawImages(); drawProducts();
               toast('اتصلح — '+ (r.count||0) +' صورة'); });
           } else toast('فشل الإصلاح', true);
+        }).catch(function(){ toast('مشكلة في الاتصال', true); });
+    };
+    var mig=$('migrate-brand'); if(mig) mig.onclick=function(){
+      if(!confirm('هيحوّل كل صور الماركة اللي من غير ترقيم لترقيم (slug.webp ← slug-1.webp). تمام؟')) return;
+      toast('جاري التحويل…');
+      api('/admin/image/migrate-numbered',{ method:'POST',
+          body:JSON.stringify({ folder:folderOf(p) }) })
+        .then(function(r){
+          if(r&&r.ok){ toast('اتحوّل '+(r.moved||0)+' صورة'); drawImages(); }
+          else toast('فشل التحويل: '+((r&&r.error)||''), true);
         }).catch(function(){ toast('مشكلة في الاتصال', true); });
     };
   }
