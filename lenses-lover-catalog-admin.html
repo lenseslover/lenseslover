@@ -160,6 +160,23 @@
     <div class="panel" id="p-prices">
       <h2>الأسعار والعروض</h2>
       <p class="sub" id="brand-count">—</p>
+      <button class="btn" id="add-brand-btn" style="margin-bottom:14px;">➕ إضافة ماركة جديدة</button>
+      <div id="new-brand-form" style="display:none; border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:16px; background:var(--ink-2);">
+        <div class="fld"><label>الكود (إنجليزي صغير، بشرطات) *</label>
+          <input id="nb-key" placeholder="new-brand"></div>
+        <div class="fld"><label>الاسم بالعربي *</label>
+          <input id="nb-ar" placeholder="اسم الماركة"></div>
+        <div class="fld"><label>الاسم بالإنجليزي *</label>
+          <input id="nb-en" placeholder="Brand Name"></div>
+        <div class="fld"><label>مسار الصور *</label>
+          <input id="nb-img" placeholder="https://cdn.lenseslover.com/newbrand/"></div>
+        <div class="note" id="nb-path" style="margin-bottom:10px;"></div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn" id="nb-save">حفظ الماركة</button>
+          <button class="btn ghost" id="nb-cancel">إلغاء</button>
+        </div>
+        <div class="note" style="margin-top:10px;">بعد الحفظ، الماركة هتظهر تحت (مخفية) — اضبطي الأسعار والعرض وفعّليها، وارفعي صور منتجاتها.</div>
+      </div>
       <div class="cards" id="brand-cards"></div>
     </div>
 
@@ -467,6 +484,7 @@
     fillPickProducts();
 
     drawProducts(); drawBrands(); fillImgProducts(); loadBanner();
+    wireNewBrand();
   }
 
   function brandOf(k){ return DATA.brands.filter(function(b){ return b.key===k; })[0]||{}; }
@@ -654,6 +672,52 @@
           }).catch(function(){ toast('مشكلة في الاتصال', true); });
       };
     });
+  }
+
+  /* ---------- إضافة ماركة جديدة ---------- */
+  function slugifyKey(v){
+    return String(v||'').toLowerCase().trim()
+      .replace(/[\s_]+/g,'-').replace(/[^a-z0-9-]/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'');
+  }
+  function wireNewBrand(){
+    var btn=$('add-brand-btn'), form=$('new-brand-form');
+    if(!btn||!form) return;
+    btn.onclick=function(){ form.style.display = form.style.display==='none' ? 'block' : 'none'; };
+    var cancel=$('nb-cancel');
+    if(cancel) cancel.onclick=function(){ form.style.display='none'; };
+    var keyInp=$('nb-key'), imgInp=$('nb-img'), pathNote=$('nb-path');
+    function updatePath(){
+      if(pathNote) pathNote.textContent = imgInp.value
+        ? ('مسار الصور: '+imgInp.value.replace('https://cdn.lenseslover.com/',''))
+        : '';
+    }
+    if(keyInp) keyInp.addEventListener('blur', function(){ this.value=slugifyKey(this.value); });
+    if(imgInp) imgInp.addEventListener('input', updatePath);
+    var save=$('nb-save');
+    if(save) save.onclick=function(){
+      var key=slugifyKey($('nb-key').value);
+      var ar=$('nb-ar').value.trim(), en=$('nb-en').value.trim(), img=$('nb-img').value.trim();
+      $('nb-key').value=key;
+      if(!key || !ar || !en){ toast('املي الكود والاسم عربي وإنجليزي', true); return; }
+      if(brandOf(key)){ toast('الكود ده موجود بالفعل', true); return; }
+      var payload={ key:key, ar:ar, en:en, img_base:img||('https://cdn.lenseslover.com/'+key+'/'), active:0 };
+      api('/admin/brand',{ method:'POST', body:JSON.stringify(payload) })
+        .then(function(j){
+          if(j&&j.ok){
+            DATA.brands.push({ key:key, ar:ar, en:en, img_base:payload.img_base, active:0 });
+            toast('اتضافت الماركة'); form.style.display='none';
+            $('nb-key').value=''; $('nb-ar').value=''; $('nb-en').value=''; $('nb-img').value='';
+            drawBrands();
+            /* نحدّث قوائم اختيار الماركة في تبويب المنتجات كمان */
+            try{
+              $('a-brand').innerHTML=DATA.brands.map(function(b){
+                return '<option value="'+esc(b.key)+'">'+esc(b.ar)+(b.active?'':' — قريبًا')+'</option>'; }).join('');
+              $('ib').innerHTML=DATA.brands.map(function(b){
+                return '<option value="'+esc(b.key)+'">'+esc(b.ar)+(b.active?'':' — قريبًا')+'</option>'; }).join('');
+            }catch(e){}
+          } else toast('فشل الإضافة', true);
+        }).catch(function(){ toast('مشكلة في الاتصال', true); });
+    };
   }
 
   /* ---------- 3) الصور ---------- */
