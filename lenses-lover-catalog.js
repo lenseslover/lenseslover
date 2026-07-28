@@ -10,7 +10,7 @@
   'use strict';
 
   var API   = 'https://lenseslover-orders.skymoonsport.workers.dev/catalog';
-  var CACHE = 'll_catalog_v1';
+  var CACHE = 'll_catalog_v2';   /* رفعنا الرقم — بيمسح أي كاش قديم عند العملاء تلقائيًا */
   var TTL   = 60 * 1000;   /* دقيقة واحدة */
 
   /* ---------- النسخة الاحتياطية ---------- */
