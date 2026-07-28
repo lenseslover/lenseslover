@@ -755,11 +755,13 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     colorGrid.appendChild(card);
   });
 
-  // ---------- bestsellers: أفضل 4 من كل براند، مجموعة تحت مجموعة ----------
-  const CATB = window.LL_CATALOG || { products:[], brands:[] };
+  // ---------- bestsellers: كل المميز من كل براند، مجموعة تحت مجموعة ----------
   const productGrid = document.getElementById('product-grid');
-  productGrid.style.display='block';
-  CATB.brands.forEach(function(b){
+  function renderBestsellers(){
+    const CATB = window.LL_CATALOG || { products:[], brands:[] };
+    productGrid.style.display='block';
+    productGrid.innerHTML='';   /* نمسح القديم قبل الرسم — يمنع التكرار والتذبذب */
+    CATB.brands.forEach(function(b){
     let picks = CATB.products.filter(p=>p.brand===b.key && p.featured);
     if(!picks.length) picks = CATB.products.filter(p=>p.brand===b.key).slice(0,4);
     if(!picks.length) return;
@@ -811,7 +813,11 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     };
     grid.appendChild(card);
     });
-  });
+    });
+  }
+  renderBestsellers();
+  /* نعيد الرسم لما البيانات تتحدّث من السيرفر — من غير إعادة تحميل الصفحة */
+  window.addEventListener('ll-catalog-updated', renderBestsellers);
 
   // ---------- reveal on scroll ----------
   const io = new IntersectionObserver((entries)=>{
@@ -821,6 +827,6 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
 </script>
 
 <script src="lenses-lover-enhance.js"></script>
-<script>(function(){var d=false;window.addEventListener('ll-catalog-updated',function(){if(d)return;d=true;try{if(window.LL_CATALOG_SOURCE==='api')location.reload();}catch(e){}});})();</script>
+<script>/* التحديث بيتم عبر renderBestsellers من غير إعادة تحميل */</script>
 </body>
 </html>
