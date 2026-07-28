@@ -640,6 +640,12 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   function normTxt(x){
     return String(x||'').trim().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/\s+/g,' ').toLowerCase();
   }
+  /* هل المحافظة متحددة؟ — عشان نفرّق بين "لسه" و"مجاني" */
+  function govChosen(){
+    var cc=(document.getElementById('country')||{}).value || 'eg';
+    if(cc!=='eg') return true;
+    return !!(((document.getElementById('gov-input')||{}).value||'').trim());
+  }
   /* سعر الشحن: منطقة خاصة أولًا، بعدين المحافظة */
   function shipCost(){
     var cc=(document.getElementById('country')||{}).value || 'eg';
@@ -768,13 +774,16 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     const sub=items.reduce((s,i)=>s+i.price*i.qty,0)-offD;
     const freeShip=(window.LL_CATALOG&&window.LL_CATALOG.hasFreeShipOffer)?window.LL_CATALOG.hasFreeShipOffer(items):false;
     const ship=freeShip?0:shipCost();
+    const shipUnknown=!freeShip && !govChosen();   /* لسه ما اختارتش محافظة */
     const prepay=(selected && selected!=='cod');
     const disc=prepay?Math.round(sub*0.05):0;
     document.getElementById('co-sub').textContent=money(sub);
-    document.getElementById('co-ship').textContent=ship===0?(isAr()?'مجاني':'Free'):money(ship);
+    document.getElementById('co-ship').textContent=
+      shipUnknown ? (isAr()?'يُحدد بعد اختيار المحافظة':'Set after choosing governorate')
+                  : (ship===0?(isAr()?'مجاني':'Free'):money(ship));
     document.getElementById('co-disc-row').style.display=disc>0?'flex':'none';
     document.getElementById('co-disc').textContent='-'+money(disc);
-    document.getElementById('co-total').textContent=money(sub+ship-disc);
+    document.getElementById('co-total').textContent=money(sub+(shipUnknown?0:ship)-disc);
     document.getElementById('cart-count').textContent=items.reduce((s,i)=>s+i.qty,0);
     drawLines();
   }
