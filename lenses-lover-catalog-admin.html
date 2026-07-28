@@ -699,7 +699,7 @@
       var ar=$('nb-ar').value.trim(), en=$('nb-en').value.trim(), img=$('nb-img').value.trim();
       $('nb-key').value=key;
       if(!key || !ar || !en){ toast('املي الكود والاسم عربي وإنجليزي', true); return; }
-      if(brandOf(key)){ toast('الكود ده موجود بالفعل', true); return; }
+      if(brandOf(key).key){ toast('الكود ده موجود بالفعل', true); return; }
       var payload={ key:key, ar:ar, en:en, img_base:img||('https://cdn.lenseslover.com/'+key+'/'), active:0 };
       api('/admin/brand',{ method:'POST', body:JSON.stringify(payload) })
         .then(function(j){
