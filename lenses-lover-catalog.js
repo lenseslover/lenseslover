@@ -10,7 +10,7 @@
   'use strict';
 
   var API   = 'https://lenseslover-orders.skymoonsport.workers.dev/catalog';
-  var CACHE = 'll_catalog_v3';   /* رفعنا الرقم — بيمسح أي كاش قديم عند العملاء تلقائيًا */
+  var CACHE = 'll_catalog_v4';   /* رفعنا الرقم — بيمسح أي كاش قديم عند العملاء تلقائيًا */
   var TTL   = 60 * 1000;   /* دقيقة واحدة */
 
   /* ---------- النسخة الاحتياطية ---------- */
@@ -181,30 +181,43 @@
     try{ sessionStorage.setItem(CACHE, JSON.stringify({ t:Date.now(), d:d })); }catch(e){}
   }
 
-  /* نبني من الكاش أو النسخة الاحتياطية فورًا — الصفحة متستناش الشبكة */
+  /* الأولوية: كاش حديث (سريع ومظبوط) → لو مفيش، نستنى السيرفر لحظة →
+     الـ FALLBACK يظهر فقط لو الاتنين فشلوا. كده القديم ما يظهرش عند التعديل */
   var cached = fromCache();
-  build(cached || FALLBACK);
-  window.LL_CATALOG_SOURCE = cached ? 'cache' : 'fallback';
+  if(cached){
+    /* عندنا كاش — نعرضه فورًا (سريع)، ونحدّث من السيرفر في الخلفية */
+    build(cached);
+    window.LL_CATALOG_SOURCE = 'cache';
+  }
+  /* لو مفيش كاش: ما نبنيش من الـ FALLBACK دلوقتي — نستنى السيرفر عشان
+     ما يظهرش سعر قديم. الـ FALLBACK احتياطي أخير لو السيرفر فشل. */
 
-  /* نحدّث من السيرفر في الخلفية دايمًا — حتى لو فيه كاش —
-     عشان أي تعديل في لوحة التحكم يظهر فورًا للزائر */
   (function refreshFromServer(){
     try{
       fetch(API, { cache:'no-store' })
         .then(function(r){ return r.json(); })
         .then(function(j){
-          if(!j || !j.ok || !j.products || !j.products.length) return;
+          if(!j || !j.ok || !j.products || !j.products.length){
+            /* السيرفر رد بشكل غير صالح — لو مفيش كاش، نستخدم الاحتياطي */
+            if(!cached){ build(FALLBACK); window.LL_CATALOG_SOURCE = 'fallback'; }
+            return;
+          }
           var fresh = { brands:j.brands, families:j.families,
                         durations:FALLBACK.durations, products:j.products };
           var changed = JSON.stringify(fresh) !== JSON.stringify(cached);
           toCache(fresh);
-          if(changed){
+          if(changed || !cached){
             build(fresh);
             try{ window.dispatchEvent(new CustomEvent('ll-catalog-updated')); }catch(e){}
           }
           window.LL_CATALOG_SOURCE = 'api';
         })
-        .catch(function(){ /* النسخة المعروضة شغالة بالفعل */ });
-    }catch(e){}
+        .catch(function(){
+          /* السيرفر فشل تمامًا — نستخدم الاحتياطي فقط لو مفيش كاش معروض */
+          if(!cached){ build(FALLBACK); window.LL_CATALOG_SOURCE = 'fallback'; }
+        });
+    }catch(e){
+      if(!cached){ build(FALLBACK); window.LL_CATALOG_SOURCE = 'fallback'; }
+    }
   })();
 })();
