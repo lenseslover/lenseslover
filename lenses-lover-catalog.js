@@ -123,6 +123,28 @@
     return lines;
   };
 
+  /* شحن مجاني: بيرجّع true لو في الكارت عرض مكتمل (bundle) من ماركة
+     مفعّل عليها "شحن مجاني مع العرض" — يعني العميلة كمّلت العرض فعلاً */
+  C.hasFreeShipOffer = function(cart){
+    if(!cart || !cart.length) return false;
+    var byBrand = {};
+    cart.forEach(function(it){
+      if(!it || it.offer2 === false) return;
+      var p = C.resolve(it);
+      if(!p) return;
+      var o = C.offerOf(p.brand);
+      if(!o || !o.freeShip) return;   /* الماركة دي مالهاش شحن مجاني */
+      if(o.cosmeticOnly && (it.price != null) && Number(it.price) !== Number(p.price)) return;
+      if(!byBrand[p.brand]) byBrand[p.brand] = { offer:o, qty:0 };
+      byBrand[p.brand].qty += (it.qty || 1);
+    });
+    /* لو أي ماركة كمّلت العرض (قطعتين مثلاً) → شحن مجاني */
+    return Object.keys(byBrand).some(function(k){
+      var g = byBrand[k];
+      return Math.floor(g.qty / g.offer.qty) >= 1;
+    });
+  };
+
   /* duration label helpers */
   /* أسعار المدد لبراند بيبيع نفس اللون بمدتين (زي Urban Layer) */
   C.pricingOf = function(p){
