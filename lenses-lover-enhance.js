@@ -9,8 +9,6 @@
   var WA='201011423093';
 
   /* ---------- تخزين مصدر الإحالة (UTM) ---------- */
-  /* أول ما العميل يدخل من لينك صانعة (?utm_source=...) نخزّن المصدر 30 يوم.
-     وقت الطلب، الـ checkout بيقراه ويبعته مع الأوردر. */
   try{
     var _p = new URLSearchParams(location.search);
     var _src = _p.get('utm_source');
@@ -21,7 +19,6 @@
         localStorage.setItem('ll_ref_time', String(Date.now()));
       }
     }
-    /* نمسح المصدر لو عدّى 30 يوم */
     var _t = parseInt(localStorage.getItem('ll_ref_time')||'0',10);
     if(_t && (Date.now()-_t) > 30*24*60*60*1000){
       localStorage.removeItem('ll_ref_source');
@@ -530,9 +527,7 @@
     { key:'fresh-lady',  ar:'فريش ليدي',   en:'Fresh Lady'  },
     { key:'dahab',       ar:'دهب',         en:'Dahab'       },
     { key:'wonderlook',  ar:'وندرلوك',     en:'Wonderlook'  },
-    { key:'luminous',    ar:'لومينوس',     en:'Luminous'    },
-    { key:'naturel',     ar:'ناتوريل',     en:'Naturel'     },
-    { key:'mylense',     ar:'ماي لينس',    en:'MyLense'     }
+    { key:'luminous',    ar:'لومينوس',     en:'Luminous'    }
   ];
 
   var brands=document.createElement('aside'); brands.className='ll-brands';
