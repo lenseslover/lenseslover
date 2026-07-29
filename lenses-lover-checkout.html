@@ -1057,8 +1057,26 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
       (area?('المنطقة: '+area):''),
       (city?('المحافظة: '+city):''),
       (meta&&meta.ar?('الدولة: '+meta.ar):''),
+      (function(){ try{ var r=localStorage.getItem('ll_ref_source'); return r?('🔗 المصدر: '+r):''; }catch(e){ return ''; } })(),
       SEP
     ].filter(function(x){ return x !== '' && x != null; }).join('\n');
+    /* ---- تسجيل عملية الشراء في Google Analytics ---- */
+    (function trackPurchase(){
+      try{
+        if(typeof gtag!=='function') return;
+        var ref=''; try{ ref=localStorage.getItem('ll_ref_source')||''; }catch(e){}
+        gtag('event','purchase',{
+          transaction_id: order.no,
+          value: total,
+          currency: cur,
+          affiliation: ref || 'direct',
+          items: items.map(function(i){
+            return { item_name:(i.en||i.ar), quantity:i.qty, price:i.price };
+          })
+        });
+      }catch(e){}
+    })();
+
     /* ---- تسجيل الطلب في قاعدة البيانات (D1) ---- */
     (function saveOrder(){
       try{
@@ -1075,7 +1093,8 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
           address: full,
           items: order.items,
           subtotal: sub, shipping: ship, discount: disc, total: total,
-          currency: cur, pay_method: (m?m.ar:'')
+          currency: cur, pay_method: (m?m.ar:''),
+          referral: (function(){ try{ return localStorage.getItem('ll_ref_source')||''; }catch(e){ return ''; } })()
         };
         console.log('[LL] بيبعت الطلب لقاعدة البيانات:', payload);
         fetch(API,{ method:'POST', headers:{'Content-Type':'application/json'},

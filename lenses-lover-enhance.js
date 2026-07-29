@@ -7,6 +7,28 @@
 (function(){
   'use strict';
   var WA='201011423093';
+
+  /* ---------- تخزين مصدر الإحالة (UTM) ---------- */
+  /* أول ما العميل يدخل من لينك صانعة (?utm_source=...) نخزّن المصدر 30 يوم.
+     وقت الطلب، الـ checkout بيقراه ويبعته مع الأوردر. */
+  try{
+    var _p = new URLSearchParams(location.search);
+    var _src = _p.get('utm_source');
+    if(_src){
+      _src = _src.toLowerCase().replace(/[^a-z0-9_]/g,'').slice(0,40);
+      if(_src){
+        localStorage.setItem('ll_ref_source', _src);
+        localStorage.setItem('ll_ref_time', String(Date.now()));
+      }
+    }
+    /* نمسح المصدر لو عدّى 30 يوم */
+    var _t = parseInt(localStorage.getItem('ll_ref_time')||'0',10);
+    if(_t && (Date.now()-_t) > 30*24*60*60*1000){
+      localStorage.removeItem('ll_ref_source');
+      localStorage.removeItem('ll_ref_time');
+    }
+  }catch(e){}
+
   var isAr=function(){ return document.body.classList.contains('lang-ar'); };
   var FREE_SHIP=800, SHIP_COST=60;
 
@@ -296,23 +318,9 @@
   });
 
   /* ---------- product catalog (shared, mirrors shop) ---------- */
-  function buildCatalog(){
-    return (window.LL_CATALOG?window.LL_CATALOG.products:[]).map(mapProduct);
-  }
-  function mapProduct(p){
-    /* الماركة والمدة من المنتج نفسه — مش مكتوبين صريح */
-    var C=window.LL_CATALOG||{};
-    var b=(C.brandByKey&&C.brandByKey[p.brand])?C.brandByKey[p.brand]:null;
-    var bAr=b?b.ar:'', bEn=b?b.en:'';
-    var dAr=(p.dur==='yearly')?'سنوي':(p.dur==='both')?'شهري أو سنوي':'شهري';
-    var dEn=(p.dur==='yearly')?'Yearly':(p.dur==='both')?'Monthly / Yearly':'Monthly';
+  var CATALOG=(window.LL_CATALOG?window.LL_CATALOG.products:[]).map(function(p){
     return {id:p.id, ar:p.ar, en:p.en, img:p.img, price:p.price,
-      ar_m: dAr+(bAr?' · '+bAr:''), en_m: dEn+(bEn?' · '+bEn:'')};
-  }
-  var CATALOG=buildCatalog();
-  /* لو الكتالوج وصل من الشبكة بعد تحميل الصفحة، نعيد بناء قايمة البحث */
-  window.addEventListener('ll-catalog-updated', function(){
-    CATALOG=buildCatalog();
+      ar_m:'شهري · إيكوال بيري', en_m:'Monthly · Eqqual Berre'};
   });
 
   /* ---------- cart state (sessionStorage) ---------- */
@@ -485,19 +493,10 @@
 
   /* make existing header cart icon open the drawer instead of navigating (except on cart page) */
   var onCartPage=/lenses-lover-cart\.html/.test(location.pathname);
-  /* السلة ممكن تكون <a> أو <button> حسب الصفحة */
-  var cartLink=document.querySelector('.header-actions [aria-label="cart"]');
+  var cartLink=document.querySelector('.header-actions a[aria-label="cart"]');
   if(cartLink && !onCartPage){
-    cartLink.style.cursor='pointer';
     cartLink.addEventListener('click', function(e){ e.preventDefault(); openDrawer(); });
   }
-
-  /* اللوجو يودّي للصفحة الرئيسية */
-  document.querySelectorAll('header .logo').forEach(function(lg){
-    if(lg.closest('a')) return;
-    lg.style.cursor='pointer';
-    lg.addEventListener('click', function(){ location.href='index.html'; });
-  });
 
   /* ---------- auto-wire product "add to cart" buttons on catalog pages ---------- */
   /* Shop & wishlist build cards dynamically with their own handlers; to avoid double-adds
@@ -531,7 +530,9 @@
     { key:'fresh-lady',  ar:'فريش ليدي',   en:'Fresh Lady'  },
     { key:'dahab',       ar:'دهب',         en:'Dahab'       },
     { key:'wonderlook',  ar:'وندرلوك',     en:'Wonderlook'  },
-    { key:'luminous',    ar:'لومينوس',     en:'Luminous'    }
+    { key:'luminous',    ar:'لومينوس',     en:'Luminous'    },
+    { key:'naturel',     ar:'ناتوريل',     en:'Naturel'     },
+    { key:'mylense',     ar:'ماي لينس',    en:'MyLense'     }
   ];
 
   var brands=document.createElement('aside'); brands.className='ll-brands';
@@ -630,21 +631,10 @@
     if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openSearch(); }
   });
 
-  /* ---------- اللغة: حفظ الاختيار وتطبيقه في كل الصفحات ---------- */
+  /* ---------- keep language-dependent bits in sync ---------- */
   if(typeof window.setLang==='function'){
     var _sl=window.setLang;
-    window.setLang=function(l){
-      _sl(l);
-      try{ localStorage.setItem('ll_lang', l); }catch(e){}
-      refreshWa();
-      if(drawer.classList.contains('show')) renderDrawer();
-      if(brands.classList.contains('show')) renderBrands();
-    };
-    /* طبّق اللغة المحفوظة عند فتح أي صفحة */
-    try{
-      var saved=localStorage.getItem('ll_lang');
-      if(saved && saved!=='ar'){ window.setLang(saved); }
-    }catch(e){}
+    window.setLang=function(l){ _sl(l); refreshWa(); if(drawer.classList.contains('show')) renderDrawer(); if(brands.classList.contains('show')) renderBrands(); };
   }
 
   /* ---------- الشريط العلوي ---------- */
