@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<title>LENSES LOVER</title>
+<script>
+  /* بيقرا اسم صانع المحتوى من الرابط (?r=الاسم) ويحوّل للرئيسية مع تتبّع الإحالة */
+  (function(){
+    var p = new URLSearchParams(location.search);
+    var r = (p.get('r')||'').toLowerCase().replace(/[^a-z0-9_]/g,'').slice(0,40);
+    var base = 'https://www.lenseslover.com/';
+    var dest = r
+      ? base + '?utm_source=' + r + '&utm_medium=influencer&utm_campaign=creators'
+      : base;
+    location.replace(dest);
+  })();
+</script>
+</head>
+<body style="font-family:sans-serif;text-align:center;padding:40px;">
+  جاري التحويل…
+</body>
+</html>
