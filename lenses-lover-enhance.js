@@ -484,6 +484,11 @@
     else cart.push(Object.assign({qty:1}, prod));
     saveCart(cart); syncBadges();
     toast('تمت إضافة «'+prod.ar+'» للسلة', 'Added "'+prod.en+'" to cart', true);
+    /* GA4: add_to_cart */
+    try{ if(typeof gtag==='function') gtag('event','add_to_cart',{
+      currency:'EGP', value:prod.price,
+      items:[{ item_name:(prod.en||prod.ar), price:prod.price, quantity:1 }]
+    }); }catch(e){}
   };
   window.LL.openCart=openDrawer;
   window.LL.toast=toast;

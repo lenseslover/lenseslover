@@ -909,6 +909,11 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     if(sda) sda.textContent = CAT.durAr(P);
     if(sde) sde.textContent = CAT.durEn(P);
     history.replaceState(null,'','?id='+P.id);
+    /* GA4: view_item */
+    try{ if(typeof gtag==='function') gtag('event','view_item',{
+      currency:'EGP', value:P.price,
+      items:[{ item_name:(P.en||P.ar), item_brand:(BRAND&&BRAND.key)||P.brand, price:P.price, quantity:1 }]
+    }); }catch(e){}
   }
   selectColor(P.id);
 

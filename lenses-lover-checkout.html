@@ -613,6 +613,12 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
   }
   const items=llLoadCart();
   if(items.length===0){ location.replace('lenses-lover-cart.html'); }
+  /* GA4: begin_checkout */
+  try{ if(typeof gtag==='function' && items.length){ gtag('event','begin_checkout',{
+    currency:'EGP',
+    value: items.reduce(function(s,i){return s+i.price*i.qty;},0),
+    items: items.map(function(i){ return { item_name:(i.en||i.ar), price:i.price, quantity:i.qty }; })
+  }); } }catch(e){}
   /* ---------- أسعار الشحن (من لوحة التحكم) ---------- */
   var SHIP_RATES = [];          // [{gov, area, price}]
   var SHIP_FALLBACK = 70;       // لو الجدول لسه محملش
