@@ -489,6 +489,10 @@
       currency:'EGP', value:prod.price,
       items:[{ item_name:(prod.en||prod.ar), price:prod.price, quantity:1 }]
     }); }catch(e){}
+    try{ if(typeof fbq==='function') fbq('track','AddToCart',{
+      content_name:(prod.en||prod.ar), content_type:'product',
+      value:prod.price, currency:'EGP'
+    }); }catch(e){}
   };
   window.LL.openCart=openDrawer;
   window.LL.toast=toast;

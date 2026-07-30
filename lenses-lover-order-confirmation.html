@@ -9,6 +9,16 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-SWCBDVH7VN');
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','1556958962691930'); fbq('track','PageView');
+  </script>
+  <!-- End Meta Pixel -->
 </script>
 <script>
 /* الثيم بيتحدد قبل أي رسم — يمنع وميض اللون الغامق عند التحديث */
@@ -667,6 +677,20 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     document.getElementById('oc-ship').textContent=order.ship===0?(isAr()?'مجاني':'Free'):money(order.ship);
     if(order.disc>0){ document.getElementById('oc-disc-row').style.display='flex'; document.getElementById('oc-disc').textContent='-'+money(order.disc); }
     document.getElementById('oc-total').textContent=money(order.total);
+
+    /* Meta Pixel: Purchase — مرة واحدة لكل طلب (حماية ضد الـ refresh) */
+    try{
+      var _k='ll_fbq_purchased_'+order.no;
+      if(typeof fbq==='function' && order.no && !localStorage.getItem(_k)){
+        fbq('track','Purchase',{
+          value: order.total, currency:'EGP',
+          num_items:(order.items||[]).reduce(function(s,i){return s+(i.qty||1);},0),
+          content_type:'product',
+          contents:(order.items||[]).map(function(i){ return { id:(i.en||i.ar), quantity:(i.qty||1), item_price:i.price }; })
+        });
+        localStorage.setItem(_k,'1');
+      }
+    }catch(e){}
   }
 
   window.copyNo=function(){

@@ -9,6 +9,16 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-SWCBDVH7VN');
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','1556958962691930'); fbq('track','PageView');
+  </script>
+  <!-- End Meta Pixel -->
 </script>
 <script>
 /* الثيم بيتحدد قبل أي رسم — يمنع وميض اللون الغامق عند التحديث */
@@ -618,6 +628,10 @@ html[data-theme="light"] body{ background:#faf7f2; color:#221c14; }
     currency:'EGP',
     value: items.reduce(function(s,i){return s+i.price*i.qty;},0),
     items: items.map(function(i){ return { item_name:(i.en||i.ar), price:i.price, quantity:i.qty }; })
+  }); } }catch(e){}
+  try{ if(typeof fbq==='function' && items.length){ fbq('track','InitiateCheckout',{
+    value: items.reduce(function(s,i){return s+i.price*i.qty;},0),
+    currency:'EGP', num_items: items.reduce(function(s,i){return s+i.qty;},0)
   }); } }catch(e){}
   /* ---------- أسعار الشحن (من لوحة التحكم) ---------- */
   var SHIP_RATES = [];          // [{gov, area, price}]
